@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>FAQ for RCurl</title>
+</head>
+
+<body>
+<h1>Installation</h1>
+
+<dl>
+
+  <dt>
+  <li> What version of libcurl do I need?
+  <dd>
+      I use curl-7.12.0. This is sometimes know as libcurl3
+      (e.g. in Debian packages).
+      Some other versions of libcurl work, but I have only tested
+      this with curl-7.11.2  (a.k.a libcurl2)
+      You can download the versions from
+      <a href="http://curl.haxx.se/download.html">http://curl.haxx.se/download.html</a>.
+      
+  <dt>
+  <li> I get errors about <code>CURLOPT_HTTPAUTH</code>
+      not being defined when the C code is being compiled.
+      What's the problem?
+  <dd>
+      The version of libcurl is important. I have developed this
+      package using curl-7.12. You should download and install that.
+      If this becomes a problem, we can perform tests as to what
+      features are available at installation time and customize
+      to that.
+
+  <dt> I get errors about such as
+<pre>
+ url.c: In function `RCurlVersionInfoToR':
+ curl.c:613: structure has no member named `libidn'
+ curl.c:613: structure has no member named `libidn'
+</pre>
+
+      <dd> Again, this is a version of libcurl problem.  We have seen
+	  this with curl-7.11.2.  Again, we want curl-7.12!  However,
+	  I have added a test for this in the code so that this
+	  problem doesn't arise.
+	  The libidn field will be NA if there is no such field in the
+	  version structure.  If it is present but empty, we return "". </dl>
+
+
+      <dt>
+      <li> I get errors about things not being defined, even basic
+	  curl  structures, etc. What's the problem?
+      <dd>
+	  Possibly, you are not using GNU make.
+	  The Makevars file in the src/ directory
+	  uses some GNU make constructs.
+	  Please set the environment variable
+	  MAKE to gmake.
+</dl>
+
+<h2>Runtime</h2>
+<dl>
+  <dt>
+  <li>When I go to a page that is just a directory,
+      I get results about "302 Moved Permanently".
+      My browser shows the list of files. What's the difference?
+  <dd>
+      Not entirely certain yet!  But try putting a / at the end of the
+      URI, e.g.
+      change
+<pre>
+      http://www.omegahat.org/RCurl
+</pre>            
+      to
+<pre>
+      http://www.omegahat.org/RCurl/
+</pre>
+      That works for me.
+
+
+  <dt> <li> Why does https not work for me?
+
+  <dd> Probably because when you compiled/installed libcurl, you didn't have support for
+  SSL.  You can check this with the command <pre> curl-config
+  --feature </pre> If ssl doesn't appear there, you don't have support
+  for it.  You should reinstall curl, having first installed SSL
+  (e.g. <a href="http://www.openssl.org">openssl</a>).
+      
+     
+</dl>
+
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Wed Aug  4 06:37:52 PDT 2004
+<!-- hhmts end -->
+</body> </html>
