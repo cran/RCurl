@@ -33,9 +33,40 @@ AC_TRY_COMPILE([
 [echo "No libidn field in version structure."])
 
 
+LDFLAGS=`${CURL_CONFIG} --libs`
+
+
+dnl Next we determine if the Curl_base64_encode routine has an extra parameter
+dnl which appeared in curl-7.18.0 (approx?). This routine is not in the header
+dnl file, so we can't use compilation warnings, etc. So we use the old style call and
+dnl make  a sample program that uses this invocation. If it seg faults, we need the new style.
+#AC_TRY_RUN([
+##include <curl/curl.h>
+##include <string.h>
+#
+#int main(int argc, char *argv[])
+#{
+#  char text[100] = "Some text", ans[200];
+#  int len;
+#  len = Curl_base64_encode(text, strlen(text), &ans);
+#  return(0);
+#}
+#],
+#[echo "Using older Curl_base64_enccode form with _no_ SessionHandle parameter."],
+#[echo "Using Curl_base64_encode with SessionHandle parameter."; DEFINES="$DEFINES -DBASE64_NEEDS_SESSION_DATA=1"] 
+#)
+
+
+CURL_LIBS=`${CURL_CONFIG} --libs`
+CURL_CFLAGS=`${CURL_CONFIG} --cflags`
+
+
 AC_SUBST(DEFINES)
 
 AC_SUBST(CURL_CONFIG)
+AC_SUBST(CURL_CFLAGS)
+AC_SUBST(CURL_LIBS)
+
 
 AC_OUTPUT(src/Makevars)
 

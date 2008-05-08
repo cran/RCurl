@@ -1,6 +1,7 @@
 \name{curlOptions}
 \alias{curlOptions}
 \alias{getCurlOptionsConstants}
+\alias{listCurlOptions}
 \alias{mapCurlOptNames}
 \alias{[<-.CURLOptions}
 \alias{[[<-.CURLOptions}
@@ -21,7 +22,8 @@
   will cause an error.
 
   The set of possible names is given by
-  \code{names(getCurlOptionsConstants)}.
+  \code{names(getCurlOptionsConstants())}
+   or more directly with \code{listCurlOptions()}.
 
   \code{mapCurlOptNames} handles the partial matching and
   expansion of the names of the options for all the functions
@@ -33,16 +35,19 @@
   As a result, "head" will match both
   "header" and "headerfunction".
   We may change this behavior in the future, but
-  encourage using the full names for readability of code.
+  we encourage using the full names for readability of code if nothing
+  else.
   
 
 }
 \usage{
 curlOptions(..., .opts = list())
-getCurlConstants()
-"[<-.CURLOptions"(x, i, value)
-"[[<-.CURLOptions"(x, i, value)
+getCurlOptionsConstants()
+\method{[}{CURLOptions}(x, i) <- value
+\method{[[}{CURLOptions}(x, i) <- value
+listCurlOptions()
 }
+%"[<-.CURLOptions"(x, i, value)
 \arguments{
   \item{\dots}{name-value pairs identifying the settings for the options
   of interest.}

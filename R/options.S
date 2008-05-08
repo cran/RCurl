@@ -8,7 +8,14 @@ setClass("CurlOptions",
 curlOptions =
 function(...)
 {
-    .args = list(...)
+    .args = rev(list(...))
+
+    dups = duplicated(names(.args))
+    if(any(dups)) {
+      warning("Duplicated curl options: ", paste(names(.args)[dups], collapse = ", "))
+      .args = .args[!dup]
+    }
+    
     opts = mapCurlOptNames(names(.args))
 
     o = new("CurlOptions")
@@ -25,6 +32,7 @@ if(FALSE) {
   # Try to get these using GccTranslationUnit.
 CurlConstants =
  c(file = 1,
+   writedata = 1,
    url = 2,
    port = 3,
    proxy = 4,
@@ -87,10 +95,40 @@ debugfunction = 55 # function
 
 } # FALSE
 
-#XXX Check.
-CurlNetrc = c(optional = 0, ignored = 1, required = 2)
+
+CurlNetrc = c(ignored = 0, optional = 1, required = 2)
+mode(CurlNetrc) = "integer"
 class(CurlNetrc) = c("CurlNetrcEnum", "Enum")
 
+
+setClass("Enum", contains = "integer")
+setMethod("show", "Enum", function(object) show(paste(names(object), " (", object, ")", sep = "")))
+
+
+setClass("NetrcEnum", contains = "Enum")
+setMethod("coerce", c("numeric", "NetrcEnum"),
+          function(from, to, strict = TRUE) {
+             asEnum(from, CurlNetrc, "NetrcEnum")
+          })
+
+
+asEnum = 
+function(val, def, className)
+{
+  idx = ifelse(is.character(val), pmatch(val, names(def)), match(val, def))
+
+  if(is.na(idx)) 
+        stop("no match for enumeration value ", val, " of type ", className)
+
+  new(className, .Data = def[idx]) 
+}
+
+
+listCurlOptions =
+function()
+{
+   sort(names(getCurlOptionsConstants()))
+}
 
 getCurlOptionsConstants =
 function()
@@ -123,8 +161,14 @@ function(ids, asNames = FALSE)
 curlOptions =
 function(..., .opts = list())
 {
-  .els = merge(list(...),.opts)
+  .els = rev(merge(list(...), .opts))
 
+  dups = duplicated(names(.els))
+  if(any(dups)) {
+      warning("Duplicated curl options: ", paste(names(.els)[dups], collapse = ", "))
+      .els = .els[!dups]
+  }
+  
   if(length(.els))
       names(.els) <- mapCurlOptNames(names(.els), asNames = TRUE)
   else

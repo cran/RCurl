@@ -1,5 +1,6 @@
 #include "Rcurl.h"
 
+#include "Rversion.h"
 
 /* Not thread-safe, but okay for now. */
 static char RCurlErrorBuffer[1000] = "<not set>";
@@ -8,22 +9,27 @@ static char RCurlErrorBuffer[1000] = "<not set>";
 
 
 /* Callback routines that can be used to call R functions as handlers.  */
-size_t R_curl_write_data(void *buffer, size_t size, size_t nmemb, SEXP fun);
+size_t R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *);
+size_t R_curl_write_header_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data);
+
 int R_curl_getpasswd(SEXP fun, char *prompt, char* buffer, int  buflen  );
 int R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len,  SEXP fun);
+int R_curl_progress_callback (SEXP fun, double total, double now, double uploadTotal, double uploadNow);
+CURLcode R_curl_ssl_ctx_callback(CURL *curl, void *sslctx, void *parm);
+
 
 void * getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *handle);
 SEXP makeCURLcodeRObject(CURLcode val);
 CURL *getCURLPointerRObject(SEXP obj);
-SEXP makeCURLPointerRObject(CURL *obj);
+SEXP makeCURLPointerRObject(CURL *obj, int addFinalizer);
 char *getCurlError(CURL *h, int throw);
 SEXP RCreateNamesVec(const char * const *vals,  int n);
 
 void addFormElement(SEXP el, SEXP name, struct curl_httppost **post, struct curl_httppost **last, int which);
 void buildForm(SEXP params, struct curl_httppost **post, struct curl_httppost **last);
 
-SEXP getRStringsFromNullArray(const char **d);
-SEXP RCurlVersionInfoToR(curl_version_info_data *d);
+SEXP getRStringsFromNullArray(const char * const *d);
+SEXP RCurlVersionInfoToR(const curl_version_info_data *d);
 
 struct curl_slist* Rcurl_set_header(CURL *obj, SEXP headers, Rboolean isProtected);
 
@@ -44,7 +50,7 @@ R_curl_easy_init(void)
    	       getCurlError(obj, 1);
 
 	}
-	return(makeCURLPointerRObject(obj));
+	return(makeCURLPointerRObject(obj, TRUE));
 }
 
 
@@ -57,18 +63,18 @@ R_curl_easy_duphandle(SEXP handle)
 
 	obj = curl_easy_duphandle(obj);
 
-	return(makeCURLPointerRObject(obj));
+	return(makeCURLPointerRObject(obj, TRUE));
 }
 
 
 SEXP
-R_curl_easy_perform(SEXP handle, SEXP opts, SEXP isProtected)
+R_curl_easy_perform(SEXP handle, SEXP opts, SEXP isProtected, SEXP encoding)
 {
 	CURL *obj;
 	CURLcode status;
 
 	if(GET_LENGTH(opts)) {
-  	    R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected);
+	    R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected, encoding);
 	}
 
 	obj = getCURLPointerRObject(handle);
@@ -95,8 +101,11 @@ R_curl_global_init(SEXP flag)
 	return(makeCURLcodeRObject(status));
 }
 
+
+#include <stdlib.h>
+
 SEXP
-R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected)
+R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP encoding)
 {
 	CURL *obj;
 	CURLcode status = 0;
@@ -105,12 +114,22 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected)
 	int i, n;
 	void *val;
 	SEXP el;
+	RWriteDataInfo *data;
+	int useData = 0;
 
         /* get the CURL * handler */
 	obj = getCURLPointerRObject(handle);
 
         /* Find out how many options we are setting. */
 	n = GET_LENGTH(values);
+
+	data = (RWriteDataInfo *) calloc(1, sizeof(RWriteDataInfo));
+	data->encoding = CE_LATIN1;
+	if(Rf_length(encoding)) {
+ 	    data->encoding =  INTEGER(encoding)[0];
+	    data->encodingSetByUser = 1;
+	} 
+	
 
 	/* Loop over all the options we are setting. */
 	for(i = 0; i < n; i++) {
@@ -120,17 +139,66 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected)
 		val = getCurlPointerForData(el, opt, LOGICAL(isProtected)[0], obj);
 
                 if(opt == CURLOPT_WRITEFUNCTION && TYPEOF(el) == CLOSXP) {
+			data->fun = val; useData++;
 			status =  curl_easy_setopt(obj, CURLOPT_WRITEFUNCTION, &R_curl_write_data);
-			status =  curl_easy_setopt(obj, CURLOPT_FILE, val);
+			status =  curl_easy_setopt(obj, CURLOPT_FILE, data);
+			status =  curl_easy_setopt(obj, CURLOPT_HEADERFUNCTION, &R_curl_write_header_data);
+			status =  curl_easy_setopt(obj, CURLOPT_WRITEHEADER, data);
+
+		} else if(opt == CURLOPT_WRITEFUNCTION && TYPEOF(el) == EXTPTRSXP) {
+                        curl_write_callback f;
+			f = (curl_write_callback) val;
+			status =  curl_easy_setopt(obj, CURLOPT_WRITEFUNCTION, f);
+
 		} else  if(opt == CURLOPT_DEBUGFUNCTION && TYPEOF(el) == CLOSXP) {
 			status =  curl_easy_setopt(obj, opt, &R_curl_debug_callback);
 			status =  curl_easy_setopt(obj, CURLOPT_DEBUGDATA, val);
+
+		} else  if(opt == CURLOPT_DEBUGFUNCTION && TYPEOF(el) == EXTPTRSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+
 		} else  if(opt == CURLOPT_HEADERFUNCTION && TYPEOF(el) == CLOSXP) {
-			status =  curl_easy_setopt(obj, opt, &R_curl_write_data);
-			status =  curl_easy_setopt(obj, CURLOPT_WRITEHEADER, val);
+			data->headerFun = val; useData++;
+			status =  curl_easy_setopt(obj, opt, &R_curl_write_header_data);
+			status =  curl_easy_setopt(obj, CURLOPT_WRITEHEADER, data);
+
+		} else  if(opt == CURLOPT_HEADERFUNCTION && TYPEOF(el) == EXTPTRSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+
+		} else  if(opt == CURLOPT_PROGRESSFUNCTION && TYPEOF(el) == CLOSXP) {
+			status =  curl_easy_setopt(obj, opt, &R_curl_progress_callback);
+			status =  curl_easy_setopt(obj, CURLOPT_PROGRESSDATA, val);
+
+		} else  if(opt == CURLOPT_PROGRESSFUNCTION && TYPEOF(el) == EXTPTRSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+
+		} else  if(opt == CURLOPT_SSL_CTX_FUNCTION && TYPEOF(el) == CLOSXP) {
+			status =  curl_easy_setopt(obj, opt, &R_curl_ssl_ctx_callback);
+			status =  curl_easy_setopt(obj, CURLOPT_SSL_CTX_DATA, val);
+
+		} else  if(opt == CURLOPT_SSL_CTX_FUNCTION && TYPEOF(el) == EXTPTRSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+
+		} else  if(opt == CURLOPT_WRITEDATA && TYPEOF(el) == EXTPTRSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+
 		} else {
+		    switch(TYPEOF(el)) {
+		    case REALSXP:
+		    case INTSXP:
+		    case LGLSXP:
+ 		       {
+			   long l = *(long *)val;
+			   status = curl_easy_setopt(obj, opt, l);
+		       }
+		       break;
+ 		    default:
 			status = curl_easy_setopt(obj, opt, val);
+		    }
 		}
+
+		if(opt == CURLOPT_NOBODY && TYPEOF(el) == LGLSXP && LOGICAL(el)[0])
+		    data->nobody = 1;
 
 		if(status) {
 			PROBLEM "Error setting the option for # %d (status = %d) (enum = %d) (value = %p): %s %s", 
@@ -140,34 +208,56 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected)
 
 	}
 
+	if(!useData) free(data);
+
 	return(makeCURLcodeRObject(status));
 }
 
 
+#include <R_ext/Arith.h>
 
 SEXP
-R_post_form(SEXP handle, SEXP opts, SEXP params, SEXP isProtected)
+R_post_form(SEXP handle, SEXP opts, SEXP params, SEXP isProtected, SEXP r_style)
 {
 	CURLcode status;
 	CURL *obj;
         struct curl_httppost* post = NULL;
         struct curl_httppost* last = NULL;
 
+	int style = CURLOPT_HTTPPOST;
+	if(LENGTH(r_style)) {
+	    style = asInteger(r_style);
+	    if(style == NA_INTEGER)
+		style = CURLOPT_HTTPPOST;
+
+	    if(style != CURLOPT_HTTPPOST && style != CURLOPT_POST) {
+		PROBLEM  "using form post style that is not HTTPPOST or POST"
+		    WARN
+	    }
+	}
 
         /* get the CURL * handler */
 	obj = getCURLPointerRObject(handle);
 
-	buildForm(params, &post, &last);
-         /* Arrange to have this struct curl_httppost object cleaned. */
-	RCurl_addMemoryAllocation(CURLOPT_HTTPPOST, post, obj);
-
-	if(GET_LENGTH(opts)) {
-  	    R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected);
+	if(style == CURLOPT_HTTPPOST) {
+	    buildForm(params, &post, &last);
+	    /* Arrange to have this struct curl_httppost object cleaned. */
+	    RCurl_addMemoryAllocation(style, post, obj);
+	    curl_easy_setopt(obj, style, post);
+	} else {
+	    const char *body;
+	    body = CHAR(STRING_ELT(params, 0));
+	    curl_easy_setopt(obj, CURLOPT_POSTFIELDS, body);
 	}
 
-        curl_easy_setopt(obj, CURLOPT_HTTPPOST, post);
+	if(GET_LENGTH(opts)) 
+		R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected, R_NilValue);
 
 	status = curl_easy_perform(obj);
+	
+	if(style != CURLOPT_HTTPPOST) {
+	    curl_easy_setopt(obj, CURLOPT_POSTFIELDS, NULL);
+	}
 
 
 /*      Not supposed to call free here until we do the cleanup on the CURL object.
@@ -199,11 +289,77 @@ buildForm(SEXP params, struct curl_httppost **post, struct curl_httppost **last)
 void
 addFormElement(SEXP el, SEXP name, struct curl_httppost **post, struct curl_httppost **last, int which)
 {
-    curl_formadd(post, last, 
-		 CURLFORM_PTRNAME, CHAR(name),
-		 CURLFORM_NAMELENGTH, strlen(CHAR(name)), 
-		 CURLFORM_PTRCONTENTS, CHAR(STRING_ELT(el, 0)),
-		 CURLFORM_END);
+    int i, n ;
+    
+    /* If the value is an UploadInfo object, then deal with that.*/
+    SEXP className = GET_CLASS(el);
+    if(GET_LENGTH(className) && strcmp(CHAR(STRING_ELT(className, 0)), "FileUploadInfo") == 0) {
+        const char *filename = NULL;
+	const char *type = NULL;
+	if(GET_LENGTH(VECTOR_ELT(el, 0))) 
+           filename = CHAR(STRING_ELT(VECTOR_ELT(el, 0), 0));
+
+	if(GET_LENGTH(VECTOR_ELT(el, 2)))
+	   type = CHAR(STRING_ELT(VECTOR_ELT(el, 2), 0));
+
+
+        if(GET_LENGTH(VECTOR_ELT(el, 1))) {
+		const char *buf = CHAR(STRING_ELT(VECTOR_ELT(el, 1), 0));
+		if(type) 
+  		   curl_formadd(post, last, 
+			     CURLFORM_PTRNAME, CHAR(name),
+			     CURLFORM_BUFFER, filename,
+			     CURLFORM_BUFFERPTR, buf,
+			     CURLFORM_BUFFERLENGTH, strlen(buf),
+			     CURLFORM_CONTENTTYPE, type,
+			     CURLFORM_END);
+		else
+  		   curl_formadd(post, last, 
+			     CURLFORM_PTRNAME, CHAR(name),
+			     CURLFORM_BUFFER, filename,
+			     CURLFORM_BUFFERPTR, buf,
+			     CURLFORM_BUFFERLENGTH, strlen(buf),
+			     CURLFORM_END);
+	} else if(filename) {
+		if(type) 
+   		   curl_formadd(post, last, 
+			     CURLFORM_PTRNAME, CHAR(name),
+			     CURLFORM_FILE, filename,
+			     CURLFORM_CONTENTTYPE, type,
+			     CURLFORM_END);
+		else
+   		   curl_formadd(post, last, 
+			     CURLFORM_PTRNAME, CHAR(name),
+			     CURLFORM_FILE, filename,
+			     CURLFORM_END);
+
+	} else {
+		PROBLEM "need to specify either the contents or a file name when uploading the contents of a file"
+		ERROR;
+	}
+	
+#if 0
+        if(GET_LENGTH(VECTOR_ELT(el, 2))) {
+		char *type = CHAR(STRING_ELT(VECTOR_ELT(el, 2), 0));
+		curl_formadd(post, last, 
+			     CURLFORM_PTRNAME, CHAR(name),
+			     CURLFORM_CONTENTTYPE, type,
+			     CURLFORM_END);
+	}
+#endif
+
+        return;
+    }
+    
+
+    n = GET_LENGTH(el);
+    for(i = 0; i < n ; i++) {
+	curl_formadd(post, last, 
+		     CURLFORM_PTRNAME, CHAR(name),
+		     CURLFORM_NAMELENGTH, strlen(CHAR(name)), 
+		     CURLFORM_PTRCONTENTS, CHAR(STRING_ELT(el, i)),
+		     CURLFORM_END);
+    }
 }
 
 
@@ -245,7 +401,7 @@ R_curl_set_header(SEXP handle, SEXP headers, SEXP isProtected)
 struct curl_slist*
 Rcurl_set_header(CURL *obj, SEXP headers, Rboolean isProtected)
 {
-	char *val;
+	const char *val;
 	int n, i;
 	struct curl_slist *headerList = NULL;
 
@@ -260,9 +416,8 @@ Rcurl_set_header(CURL *obj, SEXP headers, Rboolean isProtected)
 		}
 		val = isProtected ? val : strdup(val);
 		headerList = curl_slist_append(headerList, val);
-		if(!isProtected) {
+		if(!isProtected) 
 			RCurl_addMemoryAllocation(CURLOPT_LASTENTRY, val, obj);			
-		}
 	}
 
 #if 0
@@ -301,12 +456,13 @@ R_curl_escape(SEXP vals, SEXP escape)
 	n = GET_LENGTH(vals);
 	PROTECT(ans = allocVector(STRSXP, n));
 	for(i = 0; i < n ; i++) {
-		char *tmp, *ptr;
+	    char *tmp;
+	    const char *ptr;
 		ptr = CHAR(STRING_ELT(vals, i));
 		if(ptr) {
 			tmp = LOGICAL(escape)[0] ? curl_escape(ptr, 0) : curl_unescape(ptr, 0);
 			if(tmp) {
-				SET_VECTOR_ELT(ans, i, COPY_TO_USER_STRING(tmp));
+				SET_STRING_ELT(ans, i, COPY_TO_USER_STRING(tmp ? tmp : ""));
 				curl_free(tmp);
 			}
 		}
@@ -384,6 +540,7 @@ getCurlError(CURL *h, int throw)
 }
 
 
+#include <stdlib.h>
 
 void *
 getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *curl)
@@ -400,11 +557,12 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    } else {
 /*XX Memory management */
 			    if(GET_LENGTH(el) == 1) {
-				    ptr = (isProtected ? CHAR(STRING_ELT(el, 0)) : strdup(CHAR(STRING_ELT(el, 0))));
+				    ptr = (void *) (isProtected ? CHAR(STRING_ELT(el, 0)) : strdup(CHAR(STRING_ELT(el, 0))));
 			    } else {
-				    char **els;
+				    const char **els;
 				    n = GET_LENGTH(el);
-				    ptr = (void *) els = (char **) malloc(sizeof(char *) * n);
+                                    /* '(void *) els' broke RCurl under gcc4 */
+				    ptr = els = (const char **) malloc(sizeof(char *) * n);
 				    for(i = 0; i < n; i++) {
 					    els[i] = (isProtected ? CHAR(STRING_ELT(el, i)) : strdup(CHAR(STRING_ELT(el, i))));
 				    }
@@ -429,40 +587,245 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    ptr = (void *) malloc(sizeof(long));
 		    *( (long*) ptr) = (long) INTEGER(el)[0];
 	      break;
+	    case EXTPTRSXP:
+		    ptr = (void *) R_ExternalPtrAddr(el);
+		    isProtected = 1;
+	      break;
    	    default:
 		    PROBLEM "Unhandled case for curl_easy_setopt"
 		    ERROR;
   	      break;
 	}
 
-	if(!isProtected)
-		RCurl_addMemoryAllocation(option, ptr, curl);
+	if(ptr && !isProtected) {
+		RCurlMemory *mem;
+		mem = RCurl_addMemoryAllocation(option, ptr, curl);
+		if(TYPEOF(el) == CLOSXP) 
+  		    mem->type = R_OBJECT;
+	}
 
 	return(ptr);
 }
 
 
-size_t
-R_curl_write_data(void *buffer, size_t size, size_t nmemb, SEXP fun)
-{
-	SEXP str, e;
-	int errorOccurred;
+/*
+  Create an RCurl_BinaryData object and give it a hint at how big we want the 
+  initial buffer, but don't allocate it. Leave that until we are in the actual 
+  call to R and the we can use R_alloc() and have R clean up. Alternatively,
+  we can just register a finalizer on this and clean up directly. 
+*/
 
+
+typedef struct {
+  unsigned char *data;   /* the start of the data */
+  unsigned char *cursor; /* where to put next insertion */ 
+  unsigned int len;      /* how many bytes we have already. */
+  unsigned int alloc_len; /* how much space we have allocated already. */
+} RCurl_BinaryData;
+
+RCurl_BinaryData *
+getBinaryDataFromR(SEXP r_ref)
+{
+  RCurl_BinaryData *data;
+  if(TYPEOF(r_ref) != EXTPTRSXP) {
+     PROBLEM "BinaryData_to_raw expects and external pointer to access the C-level data structure"
+     ERROR;
+  }
+
+  if(R_ExternalPtrTag(r_ref) != Rf_install("RCurl_BinaryData")) {
+     PROBLEM "external pointer passed to BinaryData_to_raw is not an RCurl_BinaryData"
+     ERROR;
+  }
+  data = (RCurl_BinaryData *) R_ExternalPtrAddr(r_ref);
+  if(!data) {
+     PROBLEM "nil value passed for RCurl_BinaryData object"
+     ERROR;
+  }
+  return(data);
+}
+
+void
+R_curl_BinaryData_free(SEXP r_ref)
+{
+  RCurl_BinaryData *data = getBinaryDataFromR(r_ref);
+  if(data->data)
+      free(data->data);
+  free(data);
+}
+
+SEXP
+R_curl_BinaryData_new(SEXP r_size)
+{
+  int size = INTEGER(r_size)[0];
+  SEXP r_ans;
+  RCurl_BinaryData *data;
+
+  data = (RCurl_BinaryData *) malloc(sizeof(RCurl_BinaryData));
+
+  if(!data) {
+     PROBLEM "cannot allocate space for RCurl_BinaryData: %d bytes", (int) sizeof(RCurl_BinaryData)
+     ERROR;
+  }  
+
+  size = size > 0 ? size : 1;
+  data->alloc_len = size;
+  data->data = (unsigned char *) malloc( size * sizeof(unsigned char ));
+  data->cursor = data->data;
+  data->len = 0;
+
+  if(!data->data) {
+     PROBLEM "cannot allocate more space: %d bytes", data->alloc_len
+     ERROR;
+  }  
+
+
+  PROTECT(r_ans = R_MakeExternalPtr(data, Rf_install("RCurl_BinaryData"), R_NilValue));
+  R_RegisterCFinalizer(r_ans, R_curl_BinaryData_free);
+  UNPROTECT(1);
+  return(r_ans);
+}
+
+
+SEXP
+R_curl_BinaryData_to_raw(SEXP r_ref)
+{
+  RCurl_BinaryData *data;
+  SEXP r_ans;
+ 
+  data = getBinaryDataFromR(r_ref);
+
+  r_ans = allocVector(RAWSXP, data->len * sizeof(unsigned char ));
+  memcpy(RAW(r_ans), data->data, data->len * sizeof(unsigned char ));
+
+  return(r_ans);
+}
+
+size_t 
+R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData)
+{
+  RCurl_BinaryData *data;
+  int total = size*nmemb;
+  data = (  RCurl_BinaryData *) userData;
+  if(!data->data || (data->cursor +  total >= data->data + data->alloc_len )) {
+       data->alloc_len *= 2;
+       data->data = (unsigned char *) realloc(data->data, sizeof(unsigned char ) * data->alloc_len);
+       if(!data->data) {
+         PROBLEM "cannot allocate more space: %d bytes", data->alloc_len
+         ERROR;
+       }
+       data->cursor = data->data + data->len;
+  }
+
+  memcpy(data->cursor, buffer, total);
+  data->len += total;
+  data->cursor += total;
+
+  return(total);
+}
+
+
+size_t
+R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data, cetype_t encoding)
+{
+	SEXP str, e, ans;
+	int errorOccurred = 0;
+	size_t numRead = 0;
 
 	PROTECT(e = allocVector(LANGSXP, 2));
 	SETCAR(e, fun);
 
-	PROTECT(str = allocString(size * nmemb + 1));
-	memcpy(CHAR(str), buffer, size * nmemb);
-	CHAR(str)[size * nmemb] = '\0';
+	/* Use Latin-1 encoding for now. Look into more intelligent, dynamic and adaptive schemes
+           such as allowing the user to specify the encoding or read it from the HTTP response 
+           header but I am not certain we can believe that, so potentially read the contents a little
+           e.g. use IsASCII. */
+#if defined(R_VERSION) && R_VERSION >= R_Version(2, 8, 0)
+
+ 	PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
+
+#else
+	/* PROTECT(str = mkCharLen(buffer, size * nmemb)); */
+//        PROTECT(str = mkCharLen(buffer, size *nmemb));  /* Problems with the upload example in complete.Rd */
+	{
+		/* Can't use mkCharLen because we need the encoding to be latin1 for at least some of our examples 
+                   e.g. the HTML files from the RCurl website that were generated from XML via xsltproc.
+                 */
+  	  char *tmp = (char *) R_alloc(size * nmemb + 1, sizeof(char));
+	  memcpy(tmp, buffer, size*nmemb);
+	  tmp[size*nmemb] = '\0';
+  	  PROTECT(str = mkCharCE(tmp, encoding));
+	}
+	/*   This would avoid the copy, but doesn't allow us to specify the latin encoding.
+  	  PROTECT(str = mkChar(translateChar(mkCharLen(buffer, size * nmemb))));
+         */
+#endif
+
 	SETCAR(CDR(e), ScalarString(str));
 
-	R_tryEval(e, R_GlobalEnv, &errorOccurred);
+	ans = Rf_eval(e, R_GlobalEnv); /* , &errorOccurred); */
+	if(TYPEOF(ans) == LGLSXP) {
+             if(LOGICAL(ans)[0] == 1)
+		errorOccurred = 1;
+	} else if(TYPEOF(ans) == INTSXP) {
+		numRead = INTEGER(ans)[0];
+	} else 
+	    numRead = asInteger(ans);
 
 	UNPROTECT(2);
-	return(size * nmemb);
+
+	if(numRead < size*nmemb) {
+	    PROBLEM  "only read %d of the %d input bytes/characters", numRead, size*nmemb
+   	    WARN;
+	}
+
+#ifndef WITH_CE
+	/* When we use PROTECT(str = mkCharCE(buffer, CE_LATIN1)); , the R string can appear to have more characters via nchar()
+           than nmemb * size tells us. So in this case*/
+	return(errorOccurred ? 0 :  (numRead >= size * nmemb ? size *nmemb : numRead)) ;
+#else
+//	return(errorOccurred ? 0 :  size *nmemb);
+	return(errorOccurred ? 0 :  (numRead >= size * nmemb ? size *nmemb : numRead)) ;
+#endif
 }
 
+void
+checkEncoding(char *buffer, size_t len, RWriteDataInfo *data)
+{
+	SEXP e;
+	int ans;
+	PROTECT(e = allocVector(LANGSXP, 2));
+	SETCAR(e, Rf_install("findHTTPHeaderEncoding"));
+	SETCAR(CDR(e), ScalarString(mkCharLen(buffer, len)));
+	ans = INTEGER(Rf_eval(e, R_GlobalEnv))[0];
+
+	UNPROTECT(1);
+	
+	if(ans != -1)
+	    data->encoding = ans;
+}
+
+
+size_t
+R_curl_write_header_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data)
+{
+    if(data->nobody == 0 && data->encodingSetByUser == 0)
+        checkEncoding(buffer, nmemb*size, data);
+
+    if(data->headerFun) {
+        return(R_call_R_write_function(data->headerFun, buffer, size, nmemb, data, CE_NATIVE));
+    }
+    return(nmemb*size);
+}
+
+
+size_t
+R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data)
+{
+	return(R_call_R_write_function(data->fun, buffer, size, nmemb, data, data->encoding));
+}
+
+
+
+#include <Rversion.h>
 
 int
 R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len,  SEXP fun)
@@ -473,19 +836,75 @@ R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len, 
 	PROTECT(e = allocVector(LANGSXP, 4));
 	SETCAR(e, fun);
 
+#if defined(R_VERSION) && R_VERSION >= R_Version(2, 6, 0)
+	{
+          char * buf = (char *) malloc(len * sizeof(char));
+	  if(!buf) {
+	      PROBLEM "cannot allocate memory for string (%d bytes)", (int) len
+ 	      ERROR;
+	  }
+	  memcpy(buf, msg, len);	  
+	  PROTECT(str = mkChar(buf));
+	  free(buf);
+	}
+#else
+#if 0
 	PROTECT(str = allocString(len * sizeof(char) + 1));
 	memcpy(CHAR(str), msg, len);
 	CHAR(str)[len] = '\0';
+#else
+//	PROTECT(str = mkCharLen(msg, len * nmemb));
+	PROTECT(str = mkCharLenCE(msg, len * nmemb, CE_LATIN1));
+#endif
+#endif
 	SETCAR(CDR(e), ScalarString(str));
 
 	SETCAR(CDR(CDR(e)), ScalarInteger(type));
 
-	SETCAR(CDR(CDR(CDR(e))), R_MakeExternalPtr((void *) curl, Rf_install("CURLHandle"), R_NilValue));
+	SETCAR(CDR(CDR(CDR(e))), makeCURLPointerRObject(curl, FALSE));
 
 	R_tryEval(e, R_GlobalEnv, &errorOccurred);
 
 	UNPROTECT(2);
 	return(0);
+}
+
+
+
+int
+R_curl_progress_callback (SEXP fun, double total, double now, double uploadTotal, double uploadNow)
+{
+	SEXP down, up, e, ans;
+	int errorOccurred, status;
+	static const char * const names[] = {"downloadTotal", "downloadNow",
+				"uplodateTotal", "uploadNow"};
+
+
+	PROTECT(e = allocVector(LANGSXP, 3));
+	SETCAR(e, fun);
+
+	PROTECT(down = allocVector(REALSXP, 2));
+	REAL(down)[0] = total;
+	REAL(down)[1] = now;
+	SET_NAMES(down, RCreateNamesVec(names, 2));
+	SETCAR(CDR(e), down);
+
+	PROTECT(up = allocVector(REALSXP, 2));
+	REAL(up)[0] = uploadTotal;
+	REAL(up)[1] = uploadNow;
+	SET_NAMES(up, RCreateNamesVec(names+2, 2));
+	SETCAR(CDR(CDR(e)), up);
+
+	ans = R_tryEval(e, R_GlobalEnv, &errorOccurred);
+
+	if(GET_LENGTH(ans) && TYPEOF(ans) == INTSXP) {
+	    status = INTEGER(ans)[0];
+	}
+	else
+	    status = errorOccurred;
+
+	UNPROTECT(3);
+	return(status);
 }
 
 
@@ -503,40 +922,70 @@ CURL *
 getCURLPointerRObject(SEXP obj)
 {
 	CURL *handle;
-	handle = (CURL *) R_ExternalPtrAddr(obj);
+	SEXP ref;
+	if(TYPEOF(obj) != EXTPTRSXP)
+   	   ref = GET_SLOT(obj, Rf_install("ref"));
+	else
+    	   ref = obj;
+
+	handle = (CURL *) R_ExternalPtrAddr(ref);
 	if(!handle) {
 		PROBLEM "Stale CURL handle being passed to libcurl"
+		ERROR;
+	}
+
+	if(R_ExternalPtrTag(ref) != Rf_install("CURLHandle")) {
+		PROBLEM "External pointer with wrong tag passed to libcurl. Was %s",
+                        CHAR(PRINTNAME(R_ExternalPtrTag(ref)))
 		ERROR;
 	}
 
 	return(handle);
 }
 
-void
+static void
 R_finalizeCurlHandle(SEXP h)
 {
    CURL *curl = getCURLPointerRObject(h);
-   if(curl) {
-/*     fprintf(stderr, "Clearing %p\n", (void *)curl);fflush(stderr); */
 
-     RCurl_releaseMemoryTickets(curl);
+   if(curl) {
+     /* fprintf(stderr, "Clearing %p\n", (void *)curl);fflush(stderr);  */
+
+     CURLOptionMemoryManager *mgr = RCurl_getMemoryManager(curl);
      curl_easy_cleanup(curl);
+     RCurl_releaseManagerMemoryTickets(mgr); 
    }
 }
 
 SEXP
-makeCURLPointerRObject(CURL *obj)
+makeCURLPointerRObject(CURL *obj, int addFinalizer)
 {
-	SEXP ans;
+	SEXP ans, klass, ref;
+
 	if(!obj) {
 		PROBLEM "NULL CURL handle being returned"
 		ERROR;
 	}
 
+#if 0
 	PROTECT(ans = R_MakeExternalPtr((void *) obj, Rf_install("CURLHandle"), R_NilValue));
 	SET_CLASS(ans, mkString("CURLHandle"));
-	R_RegisterCFinalizer(ans, R_finalizeCurlHandle);
+	if(addFinalizer)
+   	   R_RegisterCFinalizer(ans, R_finalizeCurlHandle);
 	UNPROTECT(1);
+#else
+	PROTECT(klass = MAKE_CLASS("CURLHandle"));
+	PROTECT(ans = NEW(klass));
+	PROTECT(ref = R_MakeExternalPtr((void *) obj, Rf_install("CURLHandle"), R_NilValue));
+
+	if(addFinalizer)
+	    R_RegisterCFinalizer(ref, R_finalizeCurlHandle);
+	ans = SET_SLOT(ans, Rf_install("ref"), ref);
+
+	UNPROTECT(3);
+
+#endif
+
 	return(ans);
 } 
 
@@ -594,7 +1043,7 @@ static const char *const VersionInfoFieldNames[] =
   };
 
 SEXP
-RCurlVersionInfoToR(curl_version_info_data *d)
+RCurlVersionInfoToR(const curl_version_info_data *d)
 {
    SEXP ans, tmp;
    int n;
@@ -650,7 +1099,7 @@ RCreateNamesVec(const char * const *vals,  int n)
 }
 
 SEXP
-getRStringsFromNullArray(const char **d)  
+getRStringsFromNullArray(const char * const *d)  
 {
   int i, n;
   const char **p;
@@ -705,3 +1154,209 @@ R_check_bits(int *val, int *bits, int *ans, int *n)
 }
 
 
+
+
+SEXP
+makeMultiCURLPointerRObject(CURLM *obj)
+{
+    SEXP ans, klass;
+
+	if(!obj) {
+		PROBLEM "NULL CURL handle being returned"
+		ERROR;
+	}
+
+	
+	PROTECT(klass = MAKE_CLASS("MultiCURLHandle"));
+	PROTECT(ans = NEW(klass));
+	PROTECT(ans = SET_SLOT(ans, Rf_install("ref"), 
+                                R_MakeExternalPtr((void *) obj, Rf_install("MultiCURLHandle"), R_NilValue)));
+
+	/*XXX R_RegisterCFinalizer(ans, R_finalizeMultiCurlHandle); */
+	UNPROTECT(3);
+
+	return(ans);
+} 
+
+
+CURLM *
+getMultiCURLPointerRObject(SEXP obj)
+{
+	CURLM *handle;
+	SEXP ref;
+
+	handle = (CURLM *) R_ExternalPtrAddr(ref = GET_SLOT(obj, Rf_install("ref")));
+	if(!handle) {
+		PROBLEM "Stale MultiCURL handle being passed to libcurl"
+		ERROR;
+	}
+
+	if(R_ExternalPtrTag(ref) != Rf_install("MultiCURLHandle")) {
+		PROBLEM "External pointer with wrong tag passed to libcurl (not MultiCURLHandle), but %s", 
+                        CHAR(PRINTNAME(R_ExternalPtrTag(ref)))
+		ERROR;
+	}
+
+	return(handle);
+}
+
+
+SEXP
+R_getCurlMultiHandle()
+{
+    CURLM *h;
+    h =  curl_multi_init();
+    return(makeMultiCURLPointerRObject(h));
+}
+
+
+SEXP
+R_pushCurlMultiHandle(SEXP m, SEXP curl)
+{
+    CURL *c;
+    CURLM *h;
+    CURLMcode status;
+    c = getCURLPointerRObject(curl);
+    h = getMultiCURLPointerRObject(m);
+
+    status = curl_multi_add_handle(h, c);
+
+    return(makeCURLcodeRObject(status));
+}
+
+SEXP
+R_popCurlMultiHandle(SEXP m, SEXP curl)
+{
+    CURL *c;
+    CURLM *h;
+    CURLMcode status;
+    c = getCURLPointerRObject(curl);
+    h = getMultiCURLPointerRObject(m);
+
+    status = curl_multi_remove_handle(h, c);
+
+    return(makeCURLcodeRObject(status));    
+}
+
+SEXP
+R_curlMultiPerform(SEXP m, SEXP repeat)
+{
+    CURLM *h;
+    CURLMcode status;
+    int n;
+    SEXP ans;
+
+    fd_set read_fd_set,  write_fd_set, exc_fd_set;
+    int max_fd = 0;
+    int ctr = 0;
+
+    struct timeval tm = {0, 100};
+
+    h = getMultiCURLPointerRObject(m);
+
+    do {
+      int state;
+      if(ctr > 0)  {
+
+	FD_ZERO(&read_fd_set);
+	FD_ZERO(&write_fd_set);
+	FD_ZERO(&exc_fd_set);
+	max_fd = 0;
+
+	state = curl_multi_fdset(h, 
+                                 &read_fd_set,
+				 &write_fd_set,
+				 &exc_fd_set,
+				 &max_fd);
+
+        if(state != CURLM_OK || max_fd == -1) {
+           PROBLEM "curl_multi_fdset"
+           ERROR;
+	}
+
+	if(max_fd != -1) {
+	    state = select(max_fd+1, &read_fd_set, &write_fd_set, &exc_fd_set, NULL /* &tm */);
+#if 0
+            fprintf(stderr, "<select> %d state = %d, max_fd = %d\n", ctr, state, max_fd);
+#endif
+ 	}
+      }
+
+     do {
+         status = curl_multi_perform(h, &n);
+         if(n <= 0)
+ 	    break;
+#if 0
+          fprintf(stderr, "status %d, num running %d\n", status, n);
+#endif
+          ctr ++;
+      } while(LOGICAL(repeat)[0] && status == CURLM_CALL_MULTI_PERFORM);
+
+    } while(LOGICAL(repeat)[0] && n > 0);
+
+ 
+    PROTECT(ans = allocVector(VECSXP, 2));
+    SET_VECTOR_ELT(ans, 0, makeCURLcodeRObject(status));
+    SET_VECTOR_ELT(ans, 1, ScalarInteger(n));
+    UNPROTECT(1);
+
+    return(ans);
+}
+
+
+/*
+ Test routine that we can pass to (R code)
+     curlPerform(....,  writefunction = getNativeSymbolInfo("R_internalWriteTest")$address)
+  to have this routine be called when there is data on the HTTP response.
+*/
+size_t 
+R_internalWriteTest(void *buffer, size_t size, size_t nmemb, void *data)
+{
+    fprintf(stderr,"<R_internalWrite> size = %d, nmemb = %d\n", (int) size, (int) nmemb);
+    return(size * nmemb);
+}
+
+
+
+
+CURLcode 
+R_curl_ssl_ctx_callback(CURL *curl, void *sslctx, void *parm)
+{
+  SEXP fun = (SEXP) parm;
+  SEXP e, ctx, ans;
+  CURLcode status;
+
+  PROTECT(e = allocVector(LANGSXP, 3));
+
+  SETCAR(e, fun);
+  SETCAR(CDR(e), makeCURLPointerRObject(curl, FALSE));
+
+  PROTECT(ctx=  R_MakeExternalPtr(sslctx, Rf_install("SSL_CTX"), R_NilValue));
+  SET_CLASS(ctx, mkString("SSL_CTX"));
+
+  SETCAR(CDR(CDR(e)), ctx);
+
+  ans = eval(e, R_GlobalEnv);
+
+  status = asInteger(ans);
+
+  UNPROTECT(2);
+
+  return(status);
+}
+
+
+#if 0
+/*XXX not working
+   need to be able to get at cookies but these are in an opaque data type.
+ */
+SEXP
+R_get_Cookies(SEXP handle, SEXP fileName)
+{
+   CURL *obj = getCURLPointerRObject(handle);
+   int status;
+   status = Curl_cookie_output(obj->cookies,  CHAR(STRING_ELT(fileName, 0)));
+
+   return(Rf_ScalarLogical(status));
+}
+#endif

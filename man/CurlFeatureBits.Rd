@@ -9,7 +9,7 @@
   constants used in libcurl and used in
   R to specify values symbolically.
 }
-\usage{data(CurlFeatureBits)}
+\usage{CurlFeatureBits}
 \format{
   named integer vectors.
   The names give the symbolic constants that can be used

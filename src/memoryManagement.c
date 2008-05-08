@@ -1,5 +1,6 @@
 #include "Rcurl.h"
 
+#include <stdlib.h>
 
 CURLOptionMemoryManager *OptionMemoryManager = NULL;
 
@@ -15,7 +16,7 @@ struct {
 
 
 RCurlMemory *
-RCurl_addMemoryAllocation(CURLoption opt, void *data, CURL *curl)
+RCurl_addMemoryAllocation(CURLoption opt, const void *data, CURL *curl)
 {
 	RCurlMemory *el;
 	el = (RCurlMemory *) malloc(sizeof(RCurlMemory));
@@ -25,6 +26,7 @@ RCurl_addMemoryAllocation(CURLoption opt, void *data, CURL *curl)
 	}
 	el->data = data;
 	el->option = opt;
+	el->type = VOID_TYPE;
 	el->curl = curl;
 	el->next = NULL;
 
@@ -90,7 +92,12 @@ RCurl_getMemoryManager(CURL *curl)
 void
 RCurl_releaseMemoryTickets(CURL *curl)
 {
-    CURLOptionMemoryManager *mgr = RCurl_getMemoryManager(curl);
+   RCurl_releaseManagerMemoryTickets( RCurl_getMemoryManager(curl) );
+}
+
+void
+RCurl_releaseManagerMemoryTickets(CURLOptionMemoryManager *mgr)
+{
     RCurlMemory *ptr, *tmp;
 
 #ifdef RCURL_DEBUG_MEMORY
@@ -130,11 +137,13 @@ RCurl_releaseMemoryTickets(CURL *curl)
 		    curl_formfree((struct curl_httppost *) ptr->data);
             } else if(ptr->option > CURLOPTTYPE_FUNCTIONPOINT  && ptr->option < CURLOPTTYPE_OFF_T) {
 		    /* Leak here. We Preserved the R function, but if we unpreserve it, others may lose it also. */
+	    } else if(ptr->type == R_OBJECT) {
+     	          R_ReleaseObject((SEXP) ptr->data);
 	    } else
   	       free(ptr->data);
 
 	    free(ptr);
-	    ptr =  tmp;
+	    ptr = tmp;
 
 #ifdef RCURL_DEBUG_MEMORY
 	    mgr->numTickets--;

@@ -1,10 +1,17 @@
 CURL_CONFIG=@CURL_CONFIG@
 
+# CURL_CFLAGS=$(shell $(CURL_CONFIG) --cflags)
+# CURL_LIBS=$(shell $(CURL_CONFIG) --libs)
+
+CURL_CFLAGS=@CURL_CFLAGS@
+CURL_LIBS=@CURL_LIBS@
+
+
 # -DRCURL_DEBUG_MEMORY
 DEFINES=@DEFINES@
 
-PKG_CPPFLAGS=-Wall $(shell $(CURL_CONFIG) --cflags) $(DEFINES)
-PKG_LIBS=$(shell $(CURL_CONFIG) --libs)
+PKG_CPPFLAGS=$(CURL_CFLAGS) $(DEFINES)
+PKG_LIBS=$(CURL_LIBS)
 
 # enums.o: enums.c CurlOptEnums.h
 

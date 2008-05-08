@@ -9,6 +9,43 @@
 <dl>
 
   <dt>
+  <li> I tried to install the package, but it fails. What's wrong?
+  <dd> Very hard to tell without more information!
+
+  <dt>
+  <li> Okay, I'll tell you more about how the package failed to
+  install.
+       It said something about not finding curl-config and then gave
+         a line something like
+<pre>
+   ERROR: configuration failed for package 'RCurl'
+</pre>      
+      
+  <dd> (Mostly for UNIX/Linux/Mac OS X users)
+      So this seems pretty clear. R is telling you that the
+  <underline>configuration</underline> for RCurl failed. 
+        So you need to think about how it is configured.
+         The fact that it couldn't find curl-config should
+      suggest the problem.  And what it means is
+      that one or more of the following is true
+      <ul>
+	<li> curl-config is not found in your path
+	<li> curl-config and related devlopment libraries (libcurl)
+	      are not installed.
+      </ul>
+   So you need to make certain that libcurl is available.
+       Do something like <code>locate libcurl</code> and see
+      if it returns something like libcurl.so in the lines it
+      emits. Alternatively, do
+      <code>locate curl-config</code> and see if it is present.
+      <p/>
+      If libcurl is not installed, use your binary package manager
+      to install the curl-dev package. This is different from
+      the curl package which is the command-line tool
+      for using curl to download files. We need the "linkable" library.
+      
+  
+  <dt>
   <li> What version of libcurl do I need?
   <dd>
       I use curl-7.12.0. This is sometimes know as libcurl3
@@ -92,6 +129,6 @@
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Aug  4 06:37:52 PDT 2004
+Last modified: Mon Jan 28 09:46:25 NZDT 2008
 <!-- hhmts end -->
 </body> </html>
