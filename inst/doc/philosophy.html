@@ -1,57 +1,13 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title>
-<link rel="stylesheet" href="http://www.omegahat.org/OmegaTech.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.65.1">
-<meta name="keywords" content="HTTP, RCurl, R">
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en">
-<div class="titlepage">
-<div><div><div class="author">
-<h3 class="author">
-<span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>
-</h3>
-<div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></span></div>
-</div></div></div>
-<div></div>
-<hr>
-</div>
-<div class="toc">
-<p><b>Table of Contents</b></p>
-<dl>
-<dt><span class="section"><a href="#id684948">Overview</a></span></dt>
-<dt><span class="section"><a href="#id752139">A Quick Tour</a></span></dt>
-<dd><dl><dt><span class="section"><a href="#id752645">Forms</a></span></dt></dl></dd>
-<dt><span class="section"><a href="#CURLHandle">CURL Handles</a></span></dt>
-<dt><span class="section"><a href="#id752910">Statistics on the Request</a></span></dt>
-<dt><span class="section"><a href="#id752945">libcurl Version Information</a></span></dt>
-<dt><span class="section"><a href="#id753005">Initialization</a></span></dt>
-<dt><span class="section"><a href="#id753069">Options</a></span></dt>
-<dt><span class="section"><a href="#id753194">Example Application</a></span></dt>
-<dt><span class="section"><a href="#id753288">Additional Notes</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="#id753296">Providing Text Handlers</a></span></dt>
-<dt><span class="section"><a href="#id753363">Alternatives</a></span></dt>
-<dt><span class="section"><a href="#id753430">Notes</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="#id753445"></a></span></dt>
-</dl>
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id684948"></a>Overview</h2></div></div>
-<div></div>
-</div>
-<p></p>
-The <a href="http://www.omegahat.org/RCurl" target="_top">RCurl package</a> provides
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title></title><link rel="stylesheet" href="/Users/duncan/Classes/StatComputing/IDynDocs/inst/CSS/OmegaTech.css" type="text/css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"></meta><meta name="keywords" content="HTTP, RCurl, R"></meta></head><body><div class="article" lang="en"><div class="titlepage"><div><div><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></br></span></div></div></div></div><hr></hr></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1392950"></a>Overview</h2></div></div></div><p></p>
+The <a class="ulink" href="http://www.omegahat.org/RCurl" target="_top">RCurl package</a> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
-generally compose HTTP requests.  It supports HTTPS, the secure HTTP,
-handles authentication using passwords and can use FTP to download
+generally compose HTTP requests.  It supports HTTPS, the secure HTTP;
+handles authentication using passwords; and can use FTP to download
 files.  It also handles escaping characters in requests, binary data,
-and file uploads.  Users can provide or override additional headers in
+and file uploads.  Users can override or  provide additional headers in
 the HTTP request in order to customize the communication.  The
 response from the HTTP server is processed as a stream and chunk
 encoding automatically handled.  While the default mechanism simply
@@ -73,21 +29,17 @@ boundary strings and creating the "Content-Disposition" elements.  In
 short, there is a lot of work to do and significant potential for
 error.  Rather than doing this in R, RCurl uses an existing
 implementation that is provided in a widely used C library - 
-<a href="http://curl.haxx.se" target="_top">libcurl</a>.
+<a class="ulink" href="http://curl.haxx.se" target="_top">libcurl</a>.
 This has several benefits:
-<div class="itemizedlist"><ul type="disc">
-<li> libcurl is well tested and very portable. As a result it
+<div class="itemizedlist"><ul type="disc"><li> libcurl is well tested and very portable. As a result it
 is available on many platforms and bugs have been identified and
 fixed.
-</li>
-<li>
+</li><li>
  Many people and applications use libcurl which means that it has
 support for common features that are used in various contexts.
-</li>
-<li>
+</li><li>
 libcurl is in C and so is fast.
-</li>
-</ul></div>
+</li></ul></div>
 
 On the negative side, it is hard to extend libcurl.  We can only hope
 that the hooks to customize requests are adequate for our needs.  We
@@ -96,8 +48,10 @@ these needs have been fed back to the designers of libcurl.
 
 <p></p>
 R already provides  its own way to download URIs.
-Functions like <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="download.url.html">download.url</a></code>
-and connection constructors such as <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="url.html">url</a></code>.
+Functions like <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">download.url</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
+and connection constructors such as <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">url</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.
 
 
 <p></p> Since the libcurl library provides opaque data structures for
@@ -109,28 +63,25 @@ for input pending and essentially put the connection <span class="emphasis"><em>
 background</em></span>.  The support for threads in libcurl might make this
 easier if/when we support threads in R.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id752139"></a>A Quick Tour</h2></div></div>
-<div></div>
-</div>
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1393017"></a>A Quick Tour</h2></div></div></div>
 
 This document aims to provide a basic overview of the RCurl package.
 It doesn't try to provide all the details.  The R function help files
 and the libcurl documentation have all the relevant information.
 Since the package is an interface to libcurl, it is important to use
 the documentation for it regarding features, options, etc.  You can
-consult the <a href="http://curl.haxx.se/docs" target="_top">libcurl
-documentation</a> and <a href="http://curl.planetmirror.com/libcurl/c/example.html" target="_top">libcurl
+consult the <a class="ulink" href="http://curl.haxx.se/docs" target="_top">libcurl
+documentation</a> and <a class="ulink" href="http://curl.planetmirror.com/libcurl/c/example.html" target="_top">libcurl
 examples</a> (in C code).
 
 <p></p>
 The RCurl package provides three primary high-level entry points.
 These allow us to fetch a URL and submit forms.  The functions are
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>, <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getForm.html">getForm</a></code> and
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="postForm.html">postForm</a></code>.  The first is relatively
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">, <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">postForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.  The first is relatively
 straightforward, given the name; it allows us to fetch the contents of
 a URI.  The other two functions provide ways to submit a form using
 the GET or POST methods.  These are quite different internally, but
@@ -140,15 +91,18 @@ is submitted and the POST method allows us to submit/upload files,
 binary content, etc.
 
 <p></p>
-Let us look at the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>
+Let us look at the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 function.
 At it simplest, this is just like 
-the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="download.url.html">download.url</a></code>
+the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">download.url</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 function in the standard R.
 We can fetch a URI with the command something like
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl/index.html")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 The idea is that we specify the URI.
 There are several other arguments to this function,
 but for the most part we don't need them.
@@ -156,53 +110,59 @@ but for the most part we don't need them.
 <p></p>
 We can use HTTPS to fetch URIs securely.
 For example, 
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("https://sourceforge.net")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 This is already more than we can do with the 
-regular connections or <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="download.url.html">download.url</a></code>
-in R.
+regular connections or built-in <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">download.url</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
+in R.  (Using an external program allows HTTPS access.)
 
 <p></p> There are three different sets of arguments for the
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> function.  One is named
-<i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">curl</i> and we will cover this in section <a href="#CURLHandle" title="CURL Handles">the section called &#8220;CURL Handles&#8221;</a>.  This is merely a way to cumulate requests on a
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> function.  One is named
+<i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">curl</i> and we will cover this in section <a class="xref" href="#CURLHandle" title="CURL Handles">the section called &#8220;CURL Handles&#8221;</a>.  This is merely a way to cumulate requests on a
 single connection with shared options.
 
 <p></p>
-The  <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">write</i> function is again rather specialized.
+The  <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">write</i> function is again rather specialized.
 It allows us to specify an R function that is called each time
 libcurl has some text as part of the HTTP response.
 It hands this text (as a sequence of bytes) to the function
 so that it can process it in whatever way it deems fit.
-This corresponds to the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writefunction</font> option 
+This corresponds to the <span style="color: red">&lt;curl:opt&gt;writefunction&lt;/curl:opt&gt;</span> option 
 for the libcurl operation described next. We have it as an explicit
 argument simply because we need to use it to get the return value
 in a single action as the default behavior.
 
 
 <p></p> The third set of arguments is the most general and is handled
-by the ... in the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> function.  With
+by the ... in the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> function.  With
 this, one can specify name-value pairs governing the actual request.
 There are numerous possible settings that one can specify.  The basic
 idea is that one can set options provided by the
-<i xmlns:c="http://www.C.org" class="croutine">curl_easy_setopt()</i> routine.  These allow us to
+<i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="c:routine(%22curl_easy_setopt%22)">curl_easy_setopt</a></i> routine.  These allow us to
 set parameters for many different aspects of the request.  For
 example, we can specify additional headers for the HTTP request, or
 include a password for the Web site.
 The set of possible options can be determined
 via the function 
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getCurlOptionConstants.html">getCurlOptionConstants</a></code>.
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getCurlOptionConstants</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.
 and the set of names for the different options
 can be found via the command
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 names(getCurlOptionsConstants())
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 This is a collection of names of options that are understood
 by many of the functions in the  RCurl package.
 
 <p></p>
 At present, there are 113 possible options.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
 sort(names(getCurlOptionsConstants()))
   [1] "autoreferer"             "buffersize"             
   [3] "cainfo"                  "capath"                 
@@ -263,7 +223,7 @@ sort(names(getCurlOptionsConstants()))
 [113] "writeinfo"              
 </pre>
 Each of these and what it controls is described in the libcurl man(ual) page
-for <i xmlns:c="http://www.C.org" class="croutine">curl_easy_setopt()</i>
+for <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="c:routine(%22curl_easy_setopt%22)">curl_easy_setopt</a></i>
 and that is the authoritative documentation.
 Anything we provide here is merely repetition or additional
 explanation.
@@ -271,16 +231,16 @@ explanation.
 <p></p>
 The names of the options require a slight explanation.  These
 correspond to symbolic names in the C code of libcurl.  For example,
-the option <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">url</font> in R corresponds to
-<i xmlns:c="http://www.C.org" class="cenumValue">CURLOPT_URL</i> in C.  Firstly, uppercase
+the option <span style="color: red">&lt;curl:opt&gt;url&lt;/curl:opt&gt;</span> in R corresponds to
+<i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_URL</i> in C.  Firstly, uppercase
 letters are annoying to type and read, so we have mapped them to lower
 case letters in R.  We have also removed the prefix "CURLOPT_" since
 we know the context in which they option names are being used.  And
 lastly, any option names that have a _ (after we have removed the
 CURLOPT_ prefix) are changed to replace the '_' with a '.'  so we can
 type them in R without having to quote them.  For example, combining
-these three rules, "CURLOPT_URL" becomes <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">url</font> and
-<i xmlns:c="http://www.C.org" class="cenumValue">CURLOPT_NETRC_FILE</i> becomes <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">netrc.file</font>.
+these three rules, "CURLOPT_URL" becomes <span style="color: red">&lt;curl:opt&gt;url&lt;/curl:opt&gt;</span> and
+<i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_NETRC_FILE</i> becomes <span style="color: red">&lt;curl:opt&gt;netrc.file&lt;/curl:opt&gt;</span>.
 That is the mapping scheme.
 
 <p></p>
@@ -290,25 +250,27 @@ that you can use any mixture of upper-case
 that makes your code more readable to you and others.
 For example, we might
 write
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Sexpression">
+<code xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="Sexpression">
  writeFunction = basicTextGatherer()
 </code>
 or
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Sexpression">
+<code xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="Sexpression">
   HTTPHeader = c(Accept="text/html")
 </code><p></p>
 We specify one or more options by using the names.  To make
 interactive use easier, we perform partial matching on the names
 relative to the set of know names.  So, for example, we could specify
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl/testPassword",
         verbose = TRUE)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 or, more succinctly,
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl/testPassword",
         v = TRUE)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 Obviously, the first is more readable and less ambiguous.
 Please use the full form when writing
 "software". But you might use the abbreviated form when
@@ -319,7 +281,7 @@ working interactively.
 Each option expects a certain type of value from R.
 For example, the following options
 expect a number or logical value.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
  [1] "autoreferer"             "buffersize"             
  [3] "closepolicy"             "connecttimeout"         
  [5] "cookiesession"           "crlf"                   
@@ -349,54 +311,57 @@ expect a number or logical value.
 [53] "unrestricted.auth"       "upload"                 
 [55] "verbose"                
 </pre>
-The <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">connecttimeout</font> gives the maximum number 
+The <span style="color: red">&lt;curl:opt&gt;connecttimeout&lt;/curl:opt&gt;</span> gives the maximum number 
 of seconds the connection should take before
 raising an error, so this is a number.
-The <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">header</font> option, on the other hand, 
+The <span style="color: red">&lt;curl:opt&gt;header&lt;/curl:opt&gt;</span> option, on the other hand, 
 is merely a flag to indicate whether header information
 from the response should be included.
 So this can be a logical value (or a number that is
 0 to say FALSE or non-zero for TRUE.) 
 At present, all numbers passed from R are converted to 
-<i xmlns:c="http://www.C.org" class="ctype">long</i> when used in libcurl. 
+<i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="$class">long</i> when used in libcurl. 
 
 <p></p>
 Many options are specified as strings.
 For example, we can specify  
 the user password for a URI as
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl/testPassword/index.html", userpwd = "bob:duncantl", verbose = TRUE)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 Note that we also turned on the "verbose" option so that we can see what libcurl is doing.
 This is extremely convenient when trying to understand why things aren't
 working (or are working in a particular way!).
 
 <p></p>
 Another example of using strings is to
-specify a <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">referer</font> URI and a user-agent.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+specify a <span style="color: red">&lt;curl:opt&gt;referer&lt;/curl:opt&gt;</span> URI and a user-agent.
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.org")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 (Again, you might want to turn on the "verbose" option
 to see what libcurl  is doing with this information.)
 
 <p></p>
 The libcurl facilities allow us to not only set our own values for
-fields used in the HTTP request header (such as the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">referer</font> or
+fields used in the HTTP request header (such as the <span style="color: red">&lt;curl:opt&gt;referer&lt;/curl:opt&gt;</span> or
 user-agent), but it also allows us to set an entire collection of new
 fields or replacements for any existing field.  We do this in R using
-the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">httpheader</font> option for libcurl and we specify a value which is a
+the <span style="color: red">&lt;curl:opt&gt;httpheader&lt;/curl:opt&gt;</span> option for libcurl and we specify a value which is a
 named character vector.
 For example, suppose we want to provide a value
 for the Accept field and add a new field named,
 say, Made-up-field.
 We could do this in the request as
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 getURL("http://www.omegahat.org/RCurl", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"))
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 If you turn on the verbose option again for this request, you will see these
 fields being set.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
 &gt; getURL("http://www.omegahat.org", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"), verbose = TRUE)
 * About to connect() to www.omegahat.org port 80
 * Connected to www.omegahat.org (169.237.46.32) port 80
@@ -415,13 +380,15 @@ The key thing to note is that headers are specified as name-value
 pairs in a character vector.  R takes these and pastes the name and
 value together and passes the resulting character vector to libcurl.
 So while it is convenient to express the headers as 
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
  c(name = "value", name = "value")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 if you already have the data in the form
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
  c("name: value", "name: value")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 you can use that directly.
 
 
@@ -429,14 +396,15 @@ you can use that directly.
 
 Some of the libcurl options expect a C routine.  For example, when
 libcurl is receiving the response from the HTTP server, it will call
-the C routine specified via the option <i xmlns:c="http://www.C.org" class="cenumValue">CURLOPT_WRITEFUNCTION</i> each time
+the C routine specified via the option <i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_WRITEFUNCTION</i> each time
 it has a full buffer of bytes.  While it is possible for us to be able
 to specify a C routine from R (using
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getNativeSymbolInfo.html">getNativeSymbolInfo</a></code>), we currently don't
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getNativeSymbolInfo</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">), we currently don't
 support this.  Instead, it is more natural to specify an R function
 which is to be called when appropriate.  And this is indeed how we do
-things in RCurl.  One can specify a function for the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writefunction</font><font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writeheader</font> and <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">debugfunction</font> options.  (We can add support for
-the others such as <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">readfunction</font>.) To use these is quite simple.  We
+things in RCurl.  One can specify a function for the <span style="color: red">&lt;curl:opt&gt;writefunction&lt;/curl:opt&gt;</span><span style="color: red">&lt;curl:opt&gt;writeheader&lt;/curl:opt&gt;</span> and <span style="color: red">&lt;curl:opt&gt;debugfunction&lt;/curl:opt&gt;</span> options.  (We can add support for
+the others such as <span style="color: red">&lt;curl:opt&gt;readfunction&lt;/curl:opt&gt;</span>.) To use these is quite simple.  We
 expect an R function that takes a single argument which is the
 character of bytes to process.  The function can do what it wants with
 this argument.  Typically, it will accumulate it in a persistent
@@ -444,67 +412,76 @@ variable (e.g. using closures) or process it on-the-fly such as adding
 to a plot, passing it to an HTML parser, ....  
 
 <p></p>
-The function <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="basicTextGatherer.html">basicTextGatherer</a></code> is an example
+The function <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">basicTextGatherer</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is an example
 of the idea and this mechanism is used in
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>.  Suppose, for some reason, we wanted
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.  Suppose, for some reason, we wanted
 to read the header information that was returned by HTTP server in the
 response to our request.  (This has interesting things like cookies,
 content type, etc.  that libcurl uses internally, but we may also want
-to process.)  Then we would firstly use the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">header</font> option to turn on
+to process.)  Then we would firstly use the <span style="color: red">&lt;curl:opt&gt;header&lt;/curl:opt&gt;</span> option to turn on
 the libcurl facility to report the response header information.
 If we just do this, the header information will be included in
-the text that <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> returns.
+the text that <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> returns.
 This is fine, but we will have to separate it out
 by finding the first line, etc.
 Instead, it is easier to ask libcurl to hand the header
 information to use separate from the text/body of the response.
 We can do this by creating a callback function via the
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="basicTextGatherer.html">basicTextGatherer</a></code> function.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">basicTextGatherer</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> function.
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
  h = basicTextGatherer()
  txt = getURL("http://www.omegahat.org/RCurl", header = TRUE, headerfunction = h$update)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 All we have done is create a collection of functions (stored in
-<b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">h</b>) and passed the update callback to libcurl.  Each
+<b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">h</b>) and passed the update callback to libcurl.  Each
 time libcurl receives more of the headers, it calls this function with
 the header text.  It may call this just once or several times. This
 depends on how large the header information is, how libcurl buffers
 the information, etc.
 
 <p></p>
-Having called <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>, we have the text
+Having called <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">, we have the text
 from the URI. The header information is available from
-<b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">h</b>, specifically its <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">value</b>
+<b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">h</b>, specifically its <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">value</b>
 function element.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
  h$value()
 </pre>
-<p></p>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><p></p>
 
-The <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="debugGatherer.html">debugGatherer</a></code> is another example of a
+The <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">debugGatherer</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is another example of a
 callback that can be used with libcurl.  If we set the "verbose"
-option to <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><code>TRUE</code></i>, libcurl will provide a lot of information about
+option to <i xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4"><code>TRUE</code></i>, libcurl will provide a lot of information about
 its actions.  By default, these will be written on the console
 (e.g. stderr).  In some cases, we would not want these to be on the
 screen but instead, for example, displayed in a GUI or stored in a
 variable for closer examination.  We can do this by providing a
-callback function for the debugging output via the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">debugfunction</font>
+callback function for the debugging output via the <span style="color: red">&lt;curl:opt&gt;debugfunction&lt;/curl:opt&gt;</span>
 option for libcurl.
-The <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="debugGatherer.html">debugGatherer</a></code> is a simple
+The <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">debugGatherer</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is a simple
 one that merely cumulates its inputs in different
 categories and makes them available via
-the <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">value</b> function.
+the <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">value</b> function.
 The setup is easy:
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
   d = debugGatherer()
   x = getURL("http://www.omegahat.org/RCurl", debugfunction=d$update, verbose = TRUE)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 At the end of the request, again we have the text from the URI in
-<b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">x</b>, but we also have the debugging information.
-libcurl has called our <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">update</b> function
+<b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">x</b>, but we also have the debugging information.
+libcurl has called our <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">update</b> function
 each time it has some information (either from the
 HTTP server or from its own internal dialog).
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
 (R) names(d$value())
 [1] "text"      "headerIn"  "headerOut" "dataIn"    "dataOut"  
 </pre>
@@ -519,21 +496,16 @@ And the text is just messages from libcurl.
 <p></p>
 We should note that not all options are (currently)) meaningful in R.
 For example, it is not <span class="emphasis"><em>currently</em></span> possible to redirect
-standard error for libcurl to a different <i xmlns:c="http://www.C.org" class="ctype">FILE*</i> via
+standard error for libcurl to a different <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="$class">FILE*</i> via
 the "stderr" option.  (In the future, we may be able to specify an R
 function for writing errors from libcurl, but we have not put that in
 yet.)
 
 
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id752645"></a>Forms</h3></div></div>
-<div></div>
-</div> The RCurl package provides many additional
+<div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id1393497"></a>Forms</h3></div></div></div> The RCurl package provides many additional
 mechanisms for downloading URIs that R does not currently have
 built-in. But perhaps the most pressing reason for developing the
-RCurl package was the need to submit forms.  The [<a href="#bib:odbAccess" title="[odbAccess]"><span class="abbrev">odbAccess</span></a>] package is
+RCurl package was the need to submit forms.  The <a class="xref" href="#bib:odbAccess" title="The odbAccess package: creating S functions from HTML forms.">[<abbr class="abbrev">odbAccess</abbr>]</a> package is
 a package that can read an HTML page with one or more forms and create
 an S function for each form that allows S users to submit the form
 programmatically rather than requiring interactively browsing the
@@ -551,10 +523,10 @@ name-value pairs are delivered to the HTTP server.
 The GET method puts the name-value pairs of parameters
 at the end of the URI name,
 e.g.
-<div class="literallayout"><p><br>
-<br>
-  http://www.omegahat.org/cgi-bin/form.pl?a=1&amp;b=2<br>
-<br>
+<div class="literallayout"><p><br></br>
+<br></br>
+  http://www.omegahat.org/cgi-bin/form.pl?a=1&amp;b=2<br></br>
+<br></br>
 </p></div>
 The POST method expects the name-value pairs to be
 sent as the body of the HTTP request,
@@ -563,15 +535,17 @@ This is more complicated but supports sending binary data, etc.
 
 <p></p>
 Which of the GET and POST mechanism is appropriate is specified with the HTML form itself via the
-<font xmlns:html="http://www.w3.org/HTML4" class="htmlAttribute">action</font> attribute of the
-<font xmlns:html="http://www.w3.org/HTML4" class="htmlTag">FORM</font> itself.  To the user, however, the browser
+<span style="color: red">&lt;html:attribute&gt;action&lt;/html:attribute&gt;</span> attribute of the
+<span style="color: red">&lt;html:tag&gt;FORM&lt;/html:tag&gt;</span> itself.  To the user, however, the browser
 takes care of figuring out the correct way to deliver the name-value
 pairs specified by the user when interacting with the components of
 the form.  In RCurl, we don't have access to the original HTML form so
 we cannot tell what mechanism to use.  It is up to the caller to
-determine whether to use <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getForm.html">getForm</a></code> or
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="postForm.html">postForm</a></code> depending on the value of the
-<font xmlns:html="http://www.w3.org/HTML4" class="htmlAttribute">action</font> attribute in the original HTML
+determine whether to use <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> or
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">postForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> depending on the value of the
+<span style="color: red">&lt;html:attribute&gt;action&lt;/html:attribute&gt;</span> attribute in the original HTML
 file.  
 
 
@@ -589,28 +563,33 @@ pairs, but just transports them.
 <p></p>
 Let's look at an example of sending a query to Google
 (via HTTP rather than its API).
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
   getForm("http://www.google.com/search", hl="en", lr="", ie="ISO-8859-1",  q="RCurl", btnG="Search")
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 The result is the HTML you would ordinarily see in your browser.
 You might use
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="htmlTreeParse.html">htmlTreeParse</a></code>
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">htmlTreeParse</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 to parse it.
 What is important in the example is that we are specifying the required fields
 in the query as named arguments to R. 
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getForm.html">getForm</a></code> takes care of bringing them together and constructing
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> takes care of bringing them together and constructing
 the full URI name. Note that libcurl also handles escaping the 
 special characters, e.g. converting a space to %20.
 Note that if you wanted to explicitly do this escaping on a string 
 rather than having libcurl implicitly do it, you can 
-use <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlEscape.html">curlEscape</a></code>.
+use <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlEscape</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.
 Similarly, there is a function
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlUnescape.html">curlUnescape</a></code> to reverse the escaping and make a string "human-readable".
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlUnescape</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> to reverse the escaping and make a string "human-readable".
 
-<p></p>
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="postForm.html">postForm</a></code> is almost identical.
+<p></p><pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">postForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is almost identical.
 Let's submit a POST form to 
-<a href="http://www.speakeasy.org/~cgires/perl_form.cgi" target="_top">http://www.speakeasy.org/~cgires/perl_form.cgi</a><pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<a class="ulink" href="http://www.speakeasy.org/~cgires/perl_form.cgi" target="_top">http://www.speakeasy.org/~cgires/perl_form.cgi</a><pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
   postForm("http://www.speakeasy.org/~cgires/perl_form.cgi",
             "some_text" = "Duncan",
             "choice" = "Ho",
@@ -618,38 +597,34 @@ Let's submit a POST form to
             "box" = "box1, box2"
           )
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 Here, the form elements are named some_text, choice, radbut, box.  We
 have simply provided values for them.  Again, the result is the
 regular response from the HTTP server.
 
 <p></p>
 Sometimes we already have the arguments in a list.  It is slightly
-more complex then to pass them to the function via the <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b>
+more complex then to pass them to the function via the <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b>
 argument.  The two form submission functions in RCurl
-(<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getForm.html">getForm</a></code> and
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="postForm.html">postForm</a></code>) also accept the name-value
-arguments via the <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b> parameter.  This arises in programmatic
+(<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">postForm</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">) also accept the name-value
+arguments via the <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b> parameter.  This arises in programmatic
 access to the functions rather than interactive use.
 
 <p></p>
 
-Since we use <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b> for the name-value pairs of the form, we cannot
+Since we use <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b> for the name-value pairs of the form, we cannot
 specify the libcurl options (unambiguously) in this way and we require
 than any such options to control the HTTP request at the libcurl-level
-be passed via the <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i> parameter.  RCurl and libcurl
+be passed via the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i> parameter.  RCurl and libcurl
 construct the HTTP request and after that, the request is just like a
 regular URI download. All of the usual techniques for reading the
 response, its header, etc.  work.
 
 
-</div>
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="CURLHandle"></a>CURL Handles</h2></div></div>
-<div></div>
-</div>
+</div></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="CURLHandle"></a>CURL Handles</h2></div></div></div>
 
 The functions we have presented above are the high-level entry points
 that allow R users to make the common-style HTTP requests.  The RCurl
@@ -661,7 +636,8 @@ effect for that call.  An alternative model (used more in C code) is
 that we first create a libcurl object to represent the HTTP request,
 then we customize it by setting options and then we invoke the
 request.  This is far more involved than we need in R. There is a
-simplicity about the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> function that
+simplicity about the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> function that
 removes the need to know about the internal C structure representing
 the call.  However, there are occasions when it is useful to know
 about this and exploit it.  Specifically, one can create an instance
@@ -683,27 +659,28 @@ Now that we both know about the internal libcurl structures and know
 why we might be interested in reusing them across requests, the
 question remains how do we do this.  It is quite easy.  Each of the
 "action" functions in the package (i.e. that work with libcurl
-directly) have a parameter named <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">curl</i>.  For each of
+directly) have a parameter named <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">curl</i>.  For each of
 these functions, the default value is
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getCurlHandle.html">getCurlHandle</a></code> and what this means is that, if
-no value is given for <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">curl</i>, a new handle is created for
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getCurlHandle</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and what this means is that, if
+no value is given for <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">curl</i>, a new handle is created for
 the duration of this call.
 So it is easy for us to create such a handle before calling
 one of these functions and then pass that as the value 
-for <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">curl</i>.
+for <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">curl</i>.
 For example, we can make two requests to the
 www.omegahat.org site using the same handle
 as follows:
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
  handle = getCurlHandle()
  a = getURL("http://www.omegahat.org/RCurl", curl = handle)
  b = getURL("http://www.omegahat.org/", curl = handle)
 </pre>
-<p></p>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><p></p>
 It is important to remember that if we set any options in any of the
 calls, these will be set in the libcurl handle and these will persist
 across requests unless they are reset.  For example, if we had set the
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Sexpression">header=TRUE</code> option in the first call
+<code xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="Sexpression">header=TRUE</code> option in the first call
 above, it would remain set for the second call. This can be sometimes
 inconvenient. In such cases, either use separate libcurl handles, or
 reset the options.
@@ -711,13 +688,14 @@ reset the options.
 
 <p></p>
 The function 
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="dupCurlHandle.html">dupCurlHandle</a></code> allows us to
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">dupCurlHandle</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> allows us to
 create a new libcurl handle that is an exact copy of the
 existing one.  This allows us to quickly reuse
 existing settings without having them affect
 other requests.
 (The data in the option values are not copied).
-See <i xmlns:c="http://www.C.org" class="croutine">curl_easy_duphandle()</i>.
+See <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="c:routine(%22curl_easy_duphandle%22)">curl_easy_duphandle</a></i>.
 
 <p></p>
 By reusing libcurl handles, we avoid reallocating
@@ -735,33 +713,31 @@ libcurl doesn't have any explicit function for fetching a
 URL. Instead, it uses a powerful but simple interface which involves
 merely setting the options in the libcurl handle as desired and then
 invoking the request.  So one just prepares the request and forces it
-to be sent.  This is done via the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlPerform.html">curlPerform</a></code>
-function in R. This is how <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> is actually
+to be sent.  This is done via the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlPerform</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
+function in R. This is how <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is actually
 implemented.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id752910"></a>Statistics on the Request</h2></div></div>
-<div></div>
-</div>
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1393750"></a>Statistics on the Request</h2></div></div></div>
 S is a statistical programming language and environment
 so why not gather data when we can.
 The function
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getCurlInfo.html">getCurlInfo</a></code>
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getCurlInfo</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 allows us to find out information about the
 last request made for a given libcurl handle.
 (Of course, this assumes we have explicitly 
 created the handle rather than used the default
-value for <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">curl</i> and so lost it.)
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+value for <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">curl</i> and so lost it.)
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 h = getCurlHandle()
 getURL("http://www.omegahat.org", curl = h)
 names(getCurlInfo(h))
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 The names of the resulting elements are
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
  [1] "effective.url"           "response.code"          
  [3] "total.time"              "namelookup.time"        
  [5] "connect.time"            "pretransfer.time"       
@@ -777,25 +753,21 @@ The names of the resulting elements are
 </pre>
 These provide us the actual name of the URI downloaded after
 redirections, etc.; information about the transfer speed, etc.; etc.
-See the man page for <i xmlns:c="http://www.C.org" class="croutine">curl_easy_getinfo()</i>.
+See the man page for <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="c:routine(%22curl_easy_getinfo%22)">curl_easy_getinfo</a></i>.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id752945"></a>libcurl Version Information</h2></div></div>
-<div></div>
-</div>
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1393783"></a>libcurl Version Information</h2></div></div></div>
 The RCurl package provides a way to obtain
 reflectance information about libcurl itself.
-The function <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlVersion.html">curlVersion</a></code>
+The function <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlVersion</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 returns the contents of the
-<b xmlns:c="http://www.C.org" class="cstruct">curl_version_info_data</b> structure.
+<b xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cstruct">curl_version_info_data</b> structure.
 
 <p></p>
 For my  installation,
-the return value from <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlVersion.html">curlVersion</a></code> is
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+the return value from <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlVersion</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is
+<pre xmlns="" class="routput">
 $age
 [1] 2
 
@@ -839,25 +811,20 @@ The help page for the R function
 explains the fields which are hopefully
 clear from the names.
 The only ones that might be obscure are
-<b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">ares</b> and <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">libidn</b>.
-<b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">ares</b> refers to asynchronous domain name server (DNS) lookup
+<b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">ares</b> and <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">libidn</b>.
+<b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">ares</b> refers to asynchronous domain name server (DNS) lookup
 for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name (e.g. www.omegahat.org).
 "GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN)"
-(taken from <a href="http://www.gnu.org/software/libidn/" target="_top">http://www.gnu.org/software/libidn/</a>).
+(taken from <a class="ulink" href="http://www.gnu.org/software/libidn/" target="_top">http://www.gnu.org/software/libidn/</a>).
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id753005"></a>Initialization</h2></div></div>
-<div></div>
-</div> As with most C libraries, one must
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1393839"></a>Initialization</h2></div></div></div> As with most C libraries, one must
 typically initialize it to get the basic run-time structure
 established.  Fortunately, when we call any of the R functions, this
 is taken care of implicitly; libcurl handles this when we create a new
 handle.  However, sometimes it is important to explicitly specify
 options to control how the library is initialized.  RCurl provides a
-way to do this via the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlGlobalInit.html">curlGlobalInit</a></code>
+way to do this via the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlGlobalInit</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 function.  The only argument is a flag that indicates what features to
 initialize.  For the most part, the defaults work best and we can
 leave libcurl to perform this initialization. However, we may need to
@@ -868,24 +835,28 @@ We can avoid this, if necessary, but telling libcurl to initialize
 only the SSL facilities.
 
 <p></p>
-The argument to <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlGlobalInit.html">curlGlobalInit</a></code> is typically a
+The argument to <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlGlobalInit</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is typically a
 character vector of names of features to turn on.  The possible names
-can be obtained from <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="svariable">CurlGlobalBits</b> which is a named
+can be obtained from <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4" class="$">CurlGlobalBits</b> which is a named
 integer vector:
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="soutput">
+<pre xmlns="" class="routput">
  none   ssl win32   all 
     0     1     2     3 
 attr(,"class")
 [1] "CurlGlobalBits" "BitIndicator"  
 </pre>
-We would call <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlGlobalInit.html">curlGlobalInit</a></code> as
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+We would call <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlGlobalInit</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> as
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 curlGlobalInit(c("ssl", "win32"))
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 or
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 curlGlobalInit(c("ssl"))
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 to activate both SSL and Win32 sockets,
 or just SSL respectively.
 
@@ -893,48 +864,45 @@ or just SSL respectively.
 One can specify integer values directly, but this is
 less readable to others (or yourself in a few weeks!).
 The names are converted and combined to a flag using
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="setBitIndicators.html">setBitIndicators</a></code>.
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">setBitIndicators</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id753069"></a>Options</h2></div></div>
-<div></div>
-</div>
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1393900"></a>Options</h2></div></div></div>
 
  It is hopefully clear that it is the libcurl options that make this
  interface work and allow us to make interesting queries. From
  specifying the URI to how to read the text, to providing passwords,
  it is the options that are critical.  For the most part, these
- options are passed by name to functions in RCurl via the <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b>
- mechanism in R and the <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i> argument.
+ options are passed by name to functions in RCurl via the <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b>
+ mechanism in R and the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i> argument.
 These two collections of arguments are merged, with those 
-in <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b> overriding corresponding ones in the
-<i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i> object.
+in <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b> overriding corresponding ones in the
+<i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i> object.
 <p></p>
-  Why do we have the <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i> argument?
-The reason is similar to the <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.params</i>
+  Why do we have the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i> argument?
+The reason is similar to the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.params</i>
 in the form functions: often we have the options
 in a list and it is not as convenient to use
-the <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b> approach.
+the <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b> approach.
 Having both allows the caller/programmer to use
 whichever is most convenient.
 <p></p>
 
-One case in which the <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i> argument is useful is if we
+One case in which the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i> argument is useful is if we
 want to prepare a set of options that are to be used in all (or a set
 of) calls.  We can combine these arguments into a list just once and
 then pass them to each HTTP request easily by simply using that
-variable.  Since we merge the values in <b xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">...</b> and
-<i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org">.opts</i>, this works nicely.
+variable.  Since we merge the values in <b xmlns="" xmlns:rs="http://www.omegahat.org/RS" xmlns:s="http://cm.bell-labs.com/stat/S4">...</b> and
+<i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.opts</i>, this works nicely.
 
 <p></p>
 To create such a list of options, we can use the function
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlOpts.html">curlOpts</a></code>.  This creates an S3-style object
-with class <i xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="sclass">CURLOptions</i>.  This function never
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlOpts</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">.  This creates an S3-style object
+with class <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="CURLOptions-class.html">CURLOptions</a></i>.  This function never
 involves libcurl, but sorts out the names of the options by using
-partial matching (via the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="mapCurlOptNames.html">mapCurlOptNames</a></code>
+partial matching (via the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">mapCurlOptNames</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 function) and returns an R object with the options as name-value pairs in a list.
 The fact that this is a class means that if we access any elements, the
 full names are used, even when we set an element. This means that the
@@ -943,10 +911,11 @@ to real libcurl options.
 
 <p></p>
 We can use this function something like the following.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
 getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 Here we create the options ahead of time and use them in a call while
 specifying additional options (i.e. "verbose").
 
@@ -957,31 +926,28 @@ calls by reusing a libcurl handle.  We could create the handle, set
 the common options, and then use that handle in the set of calls.
 This is indeed a natural and often good way to do things.
 The following code does what we want.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
 getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
 </pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 The first line creates a new handle and fills in the three
 "persistent" options.  These are in the handle itself, not in R at
 this stage.  Now, when we perform the request via
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>, we specify this libcurl handle and
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">, we specify this libcurl handle and
 provide the "verbose" option.
 
 <p></p>
-The function <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlSetOpt.html">curlSetOpt</a></code> is used implicitly in
+The function <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlSetOpt</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> is used implicitly in
 the code above and this actually sets the option-values in a libcurl
 handle.  It can also be used to simply resolve them.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id753194"></a>Example Application</h2></div></div>
-<div></div>
-</div>
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1394018"></a>Example Application</h2></div></div></div>
 
 In this section, we will outline a more complex use of the RCurl
-facilities.  Specifically, we will use it to send SOAP [<a href="#bib:SOAP" title="[SOAP]"><span class="abbrev">SOAP</span></a>] requests.
+facilities.  Specifically, we will use it to send SOAP <a class="xref" href="#bib:SOAP" title="Programming Web Services with SOAP">[<abbr class="abbrev">SOAP</abbr>]</a> requests.
 
 
 SOAP uses HTTP to send XML content that encodes a method invocation.
@@ -989,56 +955,56 @@ We have to add the appropriate fields to the HTTP header to identify
 the SOAP call and then insert the XML that defines the method call
 in the body of the request.
 Using our favorite client SOAP facility
-(e.g. SOAP::Lite, <a href="http://www.omegahat.org/SSOAP" target="_top">SSOAP</a>), 
+(e.g. SOAP::Lite, <a class="ulink" href="http://www.omegahat.org/SSOAP" target="_top">SSOAP</a>), 
 we can send the SOAP request that performs the HTTP request. 
 We can find out what the actual HTTP request looks like using
 facilities in those tools or actually sniffing the packets as they go across the wire using
 tcpdump or ethereal or some such tool.
 This is what we see.
 The HTTP header in the request is
-<div class="literallayout"><p><br>
-<br>
-POST /hibye.cgi HTTP/1.1<br>
-Connection: close<br>
-Accept: text/xml<br>
-Accept: multipart/*<br>
-Host: services.soaplite.com<br>
-User-Agent: SOAP::Lite/Perl/0.55<br>
-Content-Length: 450<br>
-Content-Type: text/xml; charset=utf-8<br>
-SOAPAction: "http://www.soaplite.com/Demo#hi"<br>
-<br>
+<div class="literallayout"><p><br></br>
+<br></br>
+POST /hibye.cgi HTTP/1.1<br></br>
+Connection: close<br></br>
+Accept: text/xml<br></br>
+Accept: multipart/*<br></br>
+Host: services.soaplite.com<br></br>
+User-Agent: SOAP::Lite/Perl/0.55<br></br>
+Content-Length: 450<br></br>
+Content-Type: text/xml; charset=utf-8<br></br>
+SOAPAction: "http://www.soaplite.com/Demo#hi"<br></br>
+<br></br>
 </p></div>
 The body of the request is
-<div class="literallayout"><p><br>
-<br>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>
-&lt;SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" <br>
-                   xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" <br>
-                   xmlns:xsd="http://www.w3.org/1999/XMLSchema" <br>
-                   xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" <br>
-                   xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"&gt;<br>
-  &lt;SOAP-ENV:Body&gt;<br>
-       &lt;namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/&gt;<br>
-  &lt;/SOAP-ENV:Body&gt;<br>
-&lt;/SOAP-ENV:Envelope&gt;<br>
-<br>
+<div class="literallayout"><p><br></br>
+<br></br>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br></br>
+&lt;SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" <br></br>
+                   xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" <br></br>
+                   xmlns:xsd="http://www.w3.org/1999/XMLSchema" <br></br>
+                   xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" <br></br>
+                   xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance"&gt;<br></br>
+  &lt;SOAP-ENV:Body&gt;<br></br>
+       &lt;namesp1:hi xmlns:namesp1="http://www.soaplite.com/Demo"/&gt;<br></br>
+  &lt;/SOAP-ENV:Body&gt;<br></br>
+&lt;/SOAP-ENV:Envelope&gt;<br></br>
+<br></br>
 </p></div>
 
 So we need to add fields to the HTTP header.
 Specifically, we need 
-<div class="literallayout"><p><br>
-Accept: text/xml<br>
-Accept: multipart/*<br>
-SOAPAction: "http://www.soaplite.com/Demo#hi"<br>
-Content-Type: text/xml; charset=utf-8<br>
+<div class="literallayout"><p><br></br>
+Accept: text/xml<br></br>
+Accept: multipart/*<br></br>
+SOAPAction: "http://www.soaplite.com/Demo#hi"<br></br>
+Content-Type: text/xml; charset=utf-8<br></br>
 </p></div>
 libcurl should take care of the Content-Length field.
 
-The body is specified for the HTTP request using the <font xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">postfields</font> option.
-To do this using the <a href="javascript:getPackage()">RCurl</a> package, we use
+The body is specified for the HTTP request using the <span style="color: red">&lt;curl:opt&gt;postfields&lt;/curl:opt&gt;</span> option.
+To do this using the <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="s:package(%22RCurl%22)">RCurl</a></i> package, we use
 the following code.
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 
 body = '&lt;?xml version="1.0" encoding="UTF-8"?&gt;\
 &lt;SOAP-ENV:Envelope SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" \
@@ -1059,14 +1025,19 @@ curlPerform(url="http://services.soaplite.com/hibye.cgi",
            )
 
 </pre>
-Note that this similar to calling <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> and we have used it to
-illustrate how we can use <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlPerform.html">curlPerform</a></code>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
+Note that this similar to calling <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and we have used it to
+illustrate how we can use <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlPerform</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">
 directly. The only difference is that the result is printed to the
 console, not returned to us as a character vector.  This is a problem
 when we really want to process the response.  So for that, we would
-simply replace the call to <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="curlPerform.html">curlPerform</a></code> with
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>:
-<pre xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org" class="Scode">
+simply replace the call to <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">curlPerform</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> with
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">:
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="S">
 curlPerform(url="http://services.soaplite.com/hibye.cgi",
             httpheader=c(Accept="text/xml", Accept="multipart/*", SOAPAction='"http://www.soaplite.com/Demo#hi"',
                          'Content-Type' = "text/xml; charset=utf-8"),
@@ -1074,23 +1045,12 @@ curlPerform(url="http://services.soaplite.com/hibye.cgi",
             verbose = TRUE
            )
 </pre>
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h2 class="title" style="clear: both">
-<a name="id753288"></a>Additional Notes</h2></div></div>
-<div></div>
-</div>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"></div><div class="section" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1394102"></a>Additional Notes</h2></div></div></div>
 These were written before the package was finished.
 They are left here, but may not be helpful.
 
 
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id753296"></a>Providing Text Handlers</h3></div></div>
-<div></div>
-</div> 
+<div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id1394110"></a>Providing Text Handlers</h3></div></div></div> 
 
 One can provide a different text handler to consume/process the text
 that is received by the libcurl engine from the HTTP response.  We can
@@ -1109,19 +1069,24 @@ example, it might use this to find the base URL, to determine the
 actual host, or identify settings that are in effect, or simply reuse
 the handle (by duplicating it).  Rather than make the curl object
 explicitly available, one can initialize it separately ahead of the
-call to <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code>, and then make it available to the R
+call to <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">, and then make it available to the R
 function as a variable in the function's environment.
 
 
 A more realistic example is the following.  Suppose we want to parse
 HTML files and follow the links within those files to find their
 links. This is a spider or 'bot.  We can fetch the entire document via
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> and then parse it (using
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="htmlTreeParse.html">htmlTreeParse</a></code>).  Alternatively, we can use
-<code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="htmlTreeParse.html">htmlTreeParse</a></code> and provide it with a connection from
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and then parse it (using
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">htmlTreeParse</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude">).  Alternatively, we can use
+<pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">htmlTreeParse</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> and provide it with a connection from
 which the HTML/XML parser requests content as it is needed.  We can
 then setup this connection from which the XML parser reads by having
-it be supplied by the <code xmlns:omg="http://www.omegahat.org" xmlns:rs="http://www.omegahat.org/RS" xmlns:r="http://www.r-project.org"><a href="getURL.html">getURL</a></code> text gatherer.  We can parse a document
+it be supplied by the <pre xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude" class="rfunction">getURL</pre>
+<br xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"> text gatherer.  We can parse a document
 and collect the names of all the links to which it refers and then
 process each of them.  An alternative is to process an individual link
 when it is discovered. There are trade-offs between the two
@@ -1142,15 +1107,7 @@ Obviously, this example is also somewhat contrived as the XML/HTML
 parsing facilities have their own HTTP facilities.  However, they do
 not understand all the finer points of HTTP such as SSL, FTP, passwords,
 etc.
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
-<h3 class="title">Note</h3>This is not a very compelling example anymore!</div>
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id753363"></a>Alternatives</h3></div></div>
-<div></div>
-</div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>This is not a very compelling example anymore!</div></div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id1394174"></a>Alternatives</h3></div></div></div>
 
  Using libcurl is by no means the only
 approach to getting HTTP access in R.  Firstly, we have HTTP access in
@@ -1164,13 +1121,13 @@ add header fields, handle binary data, set the body of the request, etc.
 We can use R's socket connections and implement the details of HTTP
 ourselves.  There is a great deal of work in this as we have discussed
 before. Also, we currently don't have secure sockets (i.e. using SSL)
-in R<sup>[<a name="id753383" href="#ftn.id753383">1</a>]</sup> I initially started using this approach
+in R<sup>[<a id="id1394193" href="#ftn.id1394193" class="footnote">1</a>]</sup> I initially started using this approach
 so that I could discover the nuances of HTTP.  It quickly gets
 overwhelming to handle all the details.  It is more tedious than
 technically challenging, especially when others have done it already
 in C libraries and done it well.  The code that I have is in an
-unreleased package named <a href="javascript:getPackage()">httpClient</a>. If anyone is interested, please
-contact me.  Using R's sockets is also used in the <a href="http://cran.r-project.org/src/contrib/DESCRIPTIONS/httpRequest.html" target="_top">httpRequest</a>
+unreleased package named <i xmlns="" xmlns:cpp="http://www.cplusplus.org" xmlns:xi="http://www.w3.org/2001/XInclude"><a href="s:package(%22httpClient%22)">httpClient</a></i>. If anyone is interested, please
+contact me.  Using R's sockets is also used in the <a class="ulink" href="http://cran.r-project.org/src/contrib/DESCRIPTIONS/httpRequest.html" target="_top">httpRequest</a>
 package on CRAN.  This allows submitting forms and retrieving URIs.
 It is useful and, as the authors state, a "basic HTTP request"
 implementation.  It doesn't escape characters, handle chunked
@@ -1181,47 +1138,15 @@ RCurl inherits many, many good features for "free" from libcurl.
 <p></p>
 
 libcurl is not the only C-level library that we could have used.
-Alternative libraries include <a href="http://www.w3.org/Library/" target="_top">libwww</a> from the W3 group.  We
+Alternative libraries include <a class="ulink" href="http://www.w3.org/Library/" target="_top">libwww</a> from the W3 group.  We
 <span class="emphasis"><em>may</em></span> find that that is more suitable, but libcurl
 will definitely suffice for the present.
 
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div><div><h3 class="title">
-<a name="id753430"></a>Notes</h3></div></div>
-<div></div>
-</div> 
+</div><div class="section" lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id1394236"></a>Notes</h3></div></div></div> 
 
-libcurl can use <a href="ftp://athena-dist.mit.edu/pub/ATHENA/ares/" target="_top">ares</a> for
+libcurl can use <a class="ulink" href="ftp://athena-dist.mit.edu/pub/ATHENA/ares/" target="_top">ares</a> for
 asynchronous DNS resolution.
 
-</div>
-</div>
-<div class="section" lang="en">
-<div class="titlepage">
-<div></div>
-<div></div>
-</div>
-<div class="bibliography">
-<div class="titlepage">
-<div><div><h2 class="title">
-<a name="id753447"></a>Bibliography</h2></div></div>
-<div></div>
-</div>
-<div class="biblioentry">
-<a name="bib:odbAccess"></a><p>[<span class="abbrev">odbAccess</span>] <span class="authorgroup"><span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, <span class="firstname">Sunduz</span> <span class="surname">Keles</span>, and <span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>. </span><span class="title"><i>The odbAccess package: creating S functions from HTML forms.</i>. </span><a href="http://www.omegahat.org/odbAccess" target="_top">odbAccess (coming soon)</a></p>
-</div>
-<div class="biblioentry">
-<a name="bib:SOAP"></a><p>[<span class="abbrev">SOAP</span>] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><i>Programming Web Services with SOAP</i>. </span><a href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p>
-</div>
-</div>
-</div>
-<div class="footnotes">
-<br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id753383" href="#id753383">1</a>] </sup>I have a local version but they are not
+</div></div><div class="section" lang="en"><div class="titlepage"></div><div class="bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1394252"></a>Bibliography</h3></div></div></div><div class="biblioentry"><a id="bib:odbAccess"></a><p>[<abbr class="abbrev">odbAccess</abbr>] <span class="authorgroup"><span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, <span class="firstname">Sunduz</span> <span class="surname">Keles</span>, and <span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>. </span><span class="title"><i>The odbAccess package: creating S functions from HTML forms.</i>. </span><a class="ulink" href="http://www.omegahat.org/odbAccess" target="_top">odbAccess (coming soon)</a></p></div><div class="biblioentry"><a id="bib:SOAP"></a><p>[<abbr class="abbrev">SOAP</abbr>] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><i>Programming Web Services with SOAP</i>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1394193" href="#id1394193" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
 connections since the connection data structure is not exposed in the
-R API, yet!</p></div>
-</div>
-</div></body>
-</html>
+R API, yet!</p></div></div></div></body></html>

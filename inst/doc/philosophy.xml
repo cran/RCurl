@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
 <article  xmlns:s="http://cm.bell-labs.com/stat/S4"
           xmlns:c="http://www.C.org"
@@ -30,10 +30,10 @@ The <ulink
 url="http://www.omegahat.org/RCurl">RCurl package</ulink> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
-generally compose HTTP requests.  It supports HTTPS, the secure HTTP,
-handles authentication using passwords and can use FTP to download
+generally compose HTTP requests.  It supports HTTPS, the secure HTTP;
+handles authentication using passwords; and can use FTP to download
 files.  It also handles escaping characters in requests, binary data,
-and file uploads.  Users can provide or override additional headers in
+and file uploads.  Users can override or  provide additional headers in
 the HTTP request in order to customize the communication.  The
 response from the HTTP server is processed as a stream and chunk
 encoding automatically handled.  While the default mechanism simply
@@ -140,8 +140,8 @@ For example,
 getURL("https://sourceforge.net")
 </s:code>
 This is already more than we can do with the 
-regular connections or <s:function>download.url</s:function>
-in R.
+regular connections or built-in <s:function>download.url</s:function>
+in R.  (Using an external program allows HTTPS access.)
 
 <para/> There are three different sets of arguments for the
 <s:function>getURL</s:function> function.  One is named
@@ -1137,7 +1137,7 @@ add header fields, handle binary data, set the body of the request, etc.
 We can use R's socket connections and implement the details of HTTP
 ourselves.  There is a great deal of work in this as we have discussed
 before. Also, we currently don't have secure sockets (i.e. using SSL)
-in R<footnote><para>I have a local version but they are not
+in R<footnote><para>I have a local version (not with SSL) but they are not
 connections since the connection data structure is not exposed in the
 R API, yet!</para></footnote> I initially started using this approach
 so that I could discover the nuances of HTTP.  It quickly gets

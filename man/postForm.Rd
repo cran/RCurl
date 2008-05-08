@@ -11,8 +11,9 @@
   not the caller.
 }
 \usage{
-postForm(uri, ..., .params = list(), .opts = curlOptions(url = uri), curl = getCurlHandle())
-getForm(uri, ..., .params = character(), curlOptions = list(), curl = getCurlHandle())
+postForm(uri, ..., .params = list(), .opts = curlOptions(url = uri),
+         curl = getCurlHandle(), style = 'HTTPPOST')
+getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,7 +30,20 @@ getForm(uri, ..., .params = character(), curlOptions = list(), curl = getCurlHan
   \item{curl}{the \code{CURLHandle} object created earlier if one is
     reusing these objects. Otherwise, a new one is generated and
     discarded.}
-  \item{curlOptions}{same as .opts but with a different name! This may change.}
+  \item{style}{this is typically a string
+    and controls how the form data is posted, specifically
+    the value for the Content-Type header and the particular
+    representation.
+    Use 'httppost' to use a \code{multipart/form-data}
+    transmission
+    and use 'post' for \code{application/x-www-form-urlencoded}
+    content.
+    This string is compared to the names
+    of (the internal) \code{PostStyles} vector using partial
+    matching.  In the future, we will use
+    enum values within R.
+    The default is \code{multipart/form-data} for reasons of backward compatability.
+    }
 }
 \details{
   Creating a new \code{CURLHandle} allows the C-level code

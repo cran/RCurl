@@ -1,10 +1,269 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
-<title></title>
+<title>Change log for RCurl</title>
 </head>
 
 <body>
-<h1></h1>
+
+<h2>0.9-2</h2>
+<dl>
+
+  <dt>
+  <li> Fix for base64() computing whether to encode or not incorrectly
+       due to lazy evaluation.
+  <dd>
+  
+  <dt>
+  <li>  Now we use the base64 encode and decode routines from the
+      libcurl distribution   with our own names on the routines to avoid synchronization problems.
+  <dd>
+
+  <dt>
+  <li> Fix in chunkToLineReader to report number of "characters" read
+       and warning emitted in C code if full number of "characters"
+       not consumed.
+  <dd>
+</dl>
+
+<h2>0.9-1</h2>
+<dl>
+  <dt> Configuration-time check to see if Curl_base64_encode() in
+       libcurl (unexported) has the  new additional parameter and so requires us to use that..
+  <dd>
+</dl>
+
+<h2>0.9-0</h2>
+<dl>
+
+  <dt>
+  <li> Moved the tests/ directory to inst/examples/.
+  <dd> This has some quite rich/advanced examples that should be
+      available to people and also take some time to run during R CMD
+      check.
+      
+  <dt>
+  <li> Allow for an .encoding parameter in getURL()/getURI() for
+       explicitly specifying the encoding of the response from the HTTP.
+  <dd>
+  <dt>
+  <li> A mechanism that reads the HTTP response header and finds the
+       Content-Type field and attempts to infer the encoding of the response.
+      
+  <dd> Note that this registers a handler routine for processing the
+       header. This continues to work when an R function is provided as
+       for the  headerfunction option, but will not work correctly
+       if a routine is provided for the headerfunction option.
+      
+  <dt>
+  <li> Updates to deal with encoding of strings.
+  <dd> The basic text gathering function (used as the argument for
+       write and the curl option writefunction) returns
+       <code>nchar(, "bytes")</code> which may be more than the number
+       of characters in an encoded string. 
+      
+  <dt>
+  <li> Replaced internal calls to allocString() with mkCharLenCE() when
+       available (i.e. R >= 2.8.0), or explicitly copy the string given
+       to us from libcurl and create an encoded character string.
+  <dd>
+
+      
+</dl>
+
+
+<h2>0.8-3</h2>
+<dl>
+  <dt>
+  <li> Support for CURLOPT_POST and using
+      application/x-www-form-urlencoded as the Content-Type in
+      POST'ing a form. This is controlled via the style parameter in postForm.
+  <dd>  
+  <dt>
+  <li> Construct body of a form-urlencoded POST in R with the relevant  escaping.
+  <dd>
+
+</dl>
+
+
+
+<h2>0.8-1</h2>
+<dl>
+  <dt>
+  <li> Added code to support the new hashing of strings in R-devel
+      (for what will be 2.6.0).
+  <dd>
+
+  <dt>
+  <li> Bug fix which caused segmentation faults when external pointer
+      objects were used as options for curl.
+  <dd>
+  <dt>
+  <li> Allow dynamic symbol lookup in the RCurl DLL/SO to permit the
+      use of routines such as R_curl_write_binary_data.
+  <dd>
+</dl>
+
+<h2>0.7-0</h2>
+ <dl>
+  <dt>
+  <li> Added support for base64 encoding and decoding using the code from libcurl
+    (copyright
+  <dd> See the file COPYING.
+ </dl>
+
+<h2>0.7-0</h2>
+<dl>
+  <dt>
+  <li>  Added mechanism and example for reading binary data from a request.
+  <dd>  This is not connected to R's connection mechanism as the API
+        for that is not public and external extensions (i.e. via
+        packages) are not feasible. (R's internals are not object
+        oriented; one must work through the interpreted language even if
+        working directly in compiled languages.)
+       <p/>
+       This is useful for handling gzip/bzip2 files, images, etc.
+       To uncompress such in-memory data directly, see the
+      Rcompression package.
+
+  <dt>
+  <li> fileUpload() function and mechanism for specifying details
+       about a file whose contents are to be  included in a form
+       submission via postForm.
+  <dd>
+       
+</dl>
+
+<h2>0.6-4</h2>
+
+<dl>
+  <dt>
+  <li>  Fix the problem identified by Seth Falcon of
+        releasing/free'ing an R function object in the RCurl memory
+        management.
+  <dd>  Added a type to the RCurlMemory structure so we know when we
+        should R_Release() an object. Probably will also duplicate
+        such functions when preserving them.
+</dl>
+
+
+<h2>0.6-3</h2>
+<dl>
+
+  <dt>
+   Introduced mechanism for converting options to target types, including enumerated values.
+  <dd> Works for netrc option and extensible for any of the values.
+
+
+  <dt> Added support for specifying an R function or C routine
+       for the SSL_CTX_FUNCTION option.
+  <dd>
+
+  <dt> Accept a logical value from the R function used for the write
+    callback.  FALSE indicates an error and TRUE means that the
+    function processed the text successfully.
+  <dd>
+
+  <dt> Fixed bug in memory management and garbage collection of the
+       curl handles.
+  <dd>
+      
+</dl>
+
+<h2>0.6-2</h2>
+<dl>
+  <dt> Further changes re postForm() with a curl handle provided.
+  <dd> Problem was NULL for httppost setting.
+</dl>
+
+<h2>0.6-1</h2>
+<dl>
+  <dt> Fixed type in postForm() that caused error when a curl handle
+    was specified.
+  <dd>  Name matching in ... of curlSetOpt() caught the cur which
+    should have been curl.
+      Thanks to Jim McDonal for catching this one and using the
+      curl handle mechanism for repeated calls.
+</dl>
+
+
+
+<h2>0.6-0</h2>
+
+<dl>
+  <dt>
+  <li>  Allow C routines to be passed as values for the CURL options
+       that can be R functions.  Use
+      <code>getNativeSymbolInfo(routine, package)$address</code>
+       to identify the routine.
+  <dd>
+
+  <dt>
+  <li> Support for concurrent, asynchronous HTTP requests using the
+     curl_multi interface.</li>
+  <dd>  See the examples in tests/
+       or on the Web:
+    <ul>
+      <li><a href="concurrent.html">concurrent</a>  </li>            
+      <li><a href="nestedHTML.html">nestedHTML</a>  </li>
+      <li><a href="xmlParse.html">xmlParse</a>  </li>
+    </ul>
+
+</dl>
+
+<h2>0.5-3</h2>
+<dl>
+  <dt>
+    <li>Fixed the SSL example in getURL to turn off verification of
+    the peer, i.e.
+   <pre>
+getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
+   </pre></li>
+  <dd>
+</dl>
+
+
+<h2>0.5-2</h2>
+<dl>
+  <dt> Fix for R-devel and counting of \0's in strings for the length.
+  <dd>
+</dl>
+
+
+<h2>0.5-1</h2>
+<dl>
+  <dt> When POSTing a form, only the first string in each element 
+       of the list was written to the body of the form. In other
+      words, multi-valued elements such as for checkboxes with several
+      elements selected were mishandled.
+  <dd> 
+</dl>
+
+
+<h2>0.5-0</h2>
+<dl>
+  <dt> Internal correction for passing numbers as options.
+  <dd>  Manifested itself with progress function not being called.
+
+</dl>
+
+
+<h2>0.4-0</h2>
+
+<dl>
+  <dt>
+  <li> Use the return value from a CURLOPT_WRITEFUNCTION
+  <dd> This allows the user to raise an error.
+
+  <dt>
+  <li> Support the CURLOPT_PROGRESSFUNCTION
+  <dd>
+
+  <dt>
+  <li> CURL_CFLAGS and CURL_LIBS computed in configure so as to handle
+      no-GNU versions of make.
+  <dd>
+
+ </dl>
 
 <h2>0.3-0</h2>
 <dl>
@@ -18,6 +277,6 @@
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Aug  4 08:08:01 PDT 2004
+Last modified: Thu May  8 02:10:44 NZST 2008
 <!-- hhmts end -->
 </body> </html>

@@ -1,0 +1,35 @@
+#!/bin/sh
+
+if test -n "${LIBCURL_DIR}" ; then
+  if test -z "$CURL_LIB_DIR" ; then
+     if test -r $LIBCURL_DIR/libcurl.dll ; then
+        CURL_LIB_DIR=$LIBCURL_DIR
+     else
+ 	echo "Cannot find libcurl.dll in $LIBCURL_DIR"
+        exit 1
+     fi
+  fi
+
+  if test -z "$CURL_INCLUDE_DIR" ; then
+     if test -r $LIBCURL_DIR/include/curl/curl.h ; then
+        CURL_INCLUDE_DIR=$LIBCURL_DIR/include
+     else
+ 	echo "Cannot find curl/curl.h in $LIBCURL_DIR/include"
+        exit 1
+     fi
+  fi
+fi
+
+if test -z "${CURL_LIB_DIR}" ; then
+  echo "Need to know where libcurl.dll is located"
+  echo "Set the environment variable CURL_LIB_DIR"
+  echo "or CURL_LIB"
+  exit 2
+fi
+
+mkdir $DPKG/libs
+cp $CURL_LIB_DIR/libcurl.dll $DPKG/libs
+cp $CURL_LIB_DIR/libeay32.dll $DPKG/libs
+cp $CURL_LIB_DIR/zlib1.dll $DPKG/libs
+cp $CURL_LIB_DIR/ssleay32.dll $DPKG/libs
+

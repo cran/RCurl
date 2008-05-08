@@ -5,6 +5,10 @@ function(prompt, len)
  scan(what = "", nmax = 1)
 }
 
+getURL("http://192.168.0.2/stat141/Winter04/Homework/Solutions",
+        passwdfunction = promptPassword)
+
+
 x = getURL("https://my.ucdavis.edu", userpwd = "",
                                      header = TRUE, verbose = TRUE,
                                      cookiefile = "/home/duncan/Rcookies",

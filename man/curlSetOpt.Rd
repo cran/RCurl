@@ -9,7 +9,7 @@
   \code{CURLHandle} object.
 }
 \usage{
-curlSetOpt(..., .opts = list(), curl = getCurlHandle())
+curlSetOpt(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,7 +18,19 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle())
   \item{.opts}{a named list or \code{CURLOptions} object identifying the
     curl options for the handle.}  
   \item{curl}{the \code{CURLHandle} object created earlier via
-   a call to \code{\link{getCurlHandle}} or \code{\link{dupCurlHandle}}}
+    a call to \code{\link{getCurlHandle}} or
+    \code{\link{dupCurlHandle}}}
+  \item{.encoding}{an integer or a string that explicitly identifies the
+    encoding of the content that is returned by the HTTP server in its
+    response to our query. The possible strings are
+    \sQuote{UTF-8} or \sQuote{ISO-8859-1}
+    and the integers should be specified symbolically
+    as  \code{CE_UTF8} and \code{CE_LATIN1}.
+    Note that, by default, the package attempts to process the header of
+    the HTTP response to determine the encoding. This argument is used
+    when such information is erroneous and the caller knows the correct
+    encoding.
+  }  
 }
 \value{
   An integer value giving the status of the return.

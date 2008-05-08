@@ -1,0 +1,22 @@
+# Set this variable (LOCAL) to wherever the include and lib directories are located
+# in which you copied the include/ and lib/ directories from the curl-7.12.0-ssl
+# distribution.
+# If you did this differently (i.e. not into a central location for all include files
+# and libraries for different development tools), then you can specify CURL_INCLUDE_DIR
+# and CURL_LIB_DIR directly.
+LOCAL=C:/cygwin/home/duncan/Downloads/libcurl
+
+CURL_INCLUDE_DIR=-I${LOCAL}/include
+CURL_LIB_DIR=-L${LOCAL}/lib
+
+PKG_CPPFLAGS=-Wall ${CURL_INCLUDE_DIR}  $(DEFINES)
+#-LD:/cygwin/usr/lib
+PKG_LIBS=-Lcurl  ${CURL_LIB_DIR} -lcurldll -leay32  -lssl -lcrypto -lgdi32 -lwinmm -lwsock32
+
+DEFINES=-DUSE_LOCAL_BAS64_ENCODING=1
+
+CURL_LIB_DIR=-L${LOCAL}
+PKG_CPPFLAGS=-Wall ${CURL_INCLUDE_DIR}  $(DEFINES)
+PKG_LIBS= ${CURL_LIB_DIR} -lcurl -lssleay32  -leay32  -lgdi32 -lwinmm -lwsock32
+# -lcrypto -lgdi32 -lwinmm -lwsock32
+

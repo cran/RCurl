@@ -7,6 +7,15 @@
 <h1></h1>
 
 <dl>
+ 
+  <dt>
+  <li>Use raw() to deal with binary content.</li>
+  <dd>
+
+  <dt>
+  <li> Free the multi curl handle.
+  <dd>
+      
   <dt>
       curlDupHandle might be very problematic
       by not copying its data.
@@ -79,13 +88,15 @@
   <dd> GccTranslationUnit.
 
       
-  <dt> Illustrate how to use an R connection with the
-      write callback for gathering text.
-  <dd>  xmlTreeParse() with a connection that the XML parser can call to get more text.
-
+     
   <dt> Recursive calls
   <dd> e.g. calls from within the callback to gather text
       to download other files.
+
+      <br>
+
+       Look at the asychronous downloads.
+       And also can do it directly if one nows the base URI
 
   <dt> Simplify the code for the options.
   <dd>
@@ -103,6 +114,20 @@
 <h2>Done</h2>
 <dl>
 
+  <dt> Illustrate how to use an R connection with the
+      write callback for gathering text.
+  <dd>  xmlTreeParse() with a connection that the XML parser can call to get more text.
+<br>
+    Done. See tests/xmlParse.xml
+
+  
+  <dt>
+  <li>C routines as handlers for the functions.</li> 
+  <dd> i.e. for the writefunction, pass a C routine and deal with
+    binary data coming down the pipe.
+      <br>
+     Done. Could be done more elegantly.
+  
   <dt> Tidy the package
   <dd> Make this a namespace and register the routines.
 
@@ -219,6 +244,7 @@
 
   <dt> HTTPS
   <dd>  "https://sourceforge.net/" works.
+<p>    Not anymore.
 
   
   <dt> Version information
@@ -266,6 +292,6 @@
 <address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Aug  4 04:48:24 PDT 2004
+Last modified: Fri May 12 16:29:11 PDT 2006
 <!-- hhmts end -->
 </body> </html>

@@ -68,23 +68,34 @@ basicTextGatherer =
   # The function that reads the text can do whatever it wants with it. This one simply
   # cumulates it and makes it available via a second function. 
   #
-function(txt = character())
+function(txt = character(), max = NA, value = NULL)
 {
   update = function(str) {
     txt <<-   c(txt, str)
-    nchar(str)
+    if(!is.na(max) && nchar(txt) >= max)
+      return(0)
+    
+    nchar(str, "bytes") # use bytes rather than chars as for UTF-8, etc. we may have fewer characters,
+                        # but the C code for libcurl works in bytes. If we report chars and < bytes,
+                        # libcurl terminates the download.
   }
 
   reset = function() {  txt <<- character() }
 
-  ans = list(update = update,
-             value = function(collapse="", ...) {
+  val = if(missing(value))
+            function(collapse="", ...) {
                          if(is.null(collapse))
                              return(txt)
                                   
                          paste(txt, collapse = collapse, ...)
-                      },
-              reset = reset)
+            }
+        else
+          function() value(txt)
+  
+
+  ans = list(update = update,
+             value = val,
+             reset = reset)
 
   class(ans) <- c("RCurlTextHandler", "RCurlCallbackFunction")
   
@@ -93,27 +104,58 @@ function(txt = character())
   ans
 }
 
-getURL =
-  #
-  # initializes a curl handle, populates its settings
-  #
-  #
-function(url, ..., write = basicTextGatherer(), curl = getCurlHandle())
-{
-#    write = getNativeSymbolInfo("R_curl_write_data", PACKAGE = "httpClient")$address
+basicHeaderGatherer =
+function(txt = character(), max = NA)  
+  basicTextGatherer(txt, max, parseHTTPHeader)
 
+
+
+getURL = getURI = 
+  #
+  # initializes a curl handle, populates its settingsc
+  #
+function(url, ..., .opts = list(), write = basicTextGatherer(), curl = getCurlHandle(),
+          async = length(url) > 1, .encoding = integer())
+{
+#    write = getNativeSymbolInfo("R_curl_write_data", PACKAGE = "RCurl")$address
+
+  url = as.character(url)
+  
+  if(async) {
+     if(missing(write))
+        write = multiTextGatherer(url)
+     return(getURIAsynchronous(url, ..., .opts = .opts, write = write, curl = curl))
+  }
+
+  if(length(url) > 1) {
+      # typically will go to async. But if async is explicitly set to FALSE
+      # then the caller wants to use a serialized sequence of requests and collect
+      # the results into a single string if write is specified and as a character vector
+      # of strings otherwise.
+    
+       # If write wasn't specified, then
+     dupWriter = FALSE
+     if(missing(write))
+       dupWriter = TRUE
+     return(sapply(url, function(u) {
+                           if(dupWriter)
+                               write = basicTextGatherer()
+                            getURI(u, ..., .opts = .opts, write = write, curl = curl, async = FALSE, .encoding = .encoding)
+                         }))
+  }
+  
   returnWriter = FALSE
   if(missing(write) || inherits(write, "RCurlCallbackFunction")) {
-    writeFun = write$update
+      writeFun = write$update
   } else {
       writeFun = write
       returnWriter = TRUE
   }
 
     # Don't set them, just compute them.
-  opts = curlOptions(URL = url, writefunction = writeFun, ...)
+  opts = curlOptions(URL = url, writefunction = writeFun, ..., .opts = .opts)
 
-  status = curlPerform(curl = curl, .opts = opts)
+  status = curlPerform(curl = curl, .opts = opts, .encoding = .encoding)
 
   if(returnWriter)
     return(write)
@@ -122,20 +164,38 @@ function(url, ..., write = basicTextGatherer(), curl = getCurlHandle())
 }
 
 curlPerform =
-function(..., .opts = list(), curl = getCurlHandle())
+function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
 {
   isProtected = missing(curl)
 
-  .opts = curlSetOpt(..., .opts = .opts, curl = NULL)
+  .encoding = getEncodingValue(.encoding)
+  
+  .opts = curlSetOpt(..., .opts = .opts, curl = NULL, .encoding = .encoding)
 
     # The 3rd argument - TRUE - is just so that we don't need to create it in the
     # C code to pass to R_curl_easy_setopt.
 
-  status = .Call("R_curl_easy_perform", curl, .opts,  isProtected, PACKAGE = "RCurl")
+  status = .Call("R_curl_easy_perform", curl, .opts,  isProtected, .encoding, PACKAGE = "RCurl")
 
   asCurlErrorCode(status)
 }  
 
+CE_NATIVE = 0L
+CE_UTF8 = 1L
+CE_LATIN1 = 2L
+CE_SYMBOL = 5L
+
+getEncodingValue =
+function(val)
+{
+ if(length(val) == 0)
+   return(val)
+
+ if(is.character(val))
+   switch(val, "UTF-8" =, "utf-8" = CE_UTF8, "ISO-8859-1" =, "iso-8859-1" = CE_LATIN1, CE_NATIVE)
+ else
+   as.integer(val)
+}
   
 
 curlSetOpt =
@@ -147,7 +207,7 @@ curlSetOpt =
   # when they set the options.
   # This could go as most people will call this having already created
   # the CURL object.
-function(..., .opts = list(), curl = getCurlHandle())
+function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
 {
  .opts = curlOptions(..., .opts = .opts)
 
@@ -159,14 +219,23 @@ function(..., .opts = list(), curl = getCurlHandle())
     if(length(names(tmp)) && length(grep(":", tmp)) != length(tmp))
       .opts[["httpheader"]] = paste(names(tmp), tmp, sep = ": ")
   }
+
+ .encoding = getEncodingValue(.encoding)
  
-  if(length(.opts)) {
+  if(length(.opts) || length(.encoding)) {
      optIds = mapCurlOptNames(names(.opts))
 
-          # Check the types
+          # Check the types and do coercion if necessary
+     idx = match(names(.opts), names(optionConverters))
+
+     if(!all(is.na(idx)))  {
+        i = names(.opts)[!is.na(idx)]
+        .opts[i] =  lapply(i, function(x)  
+                                  optionConverters[[x]](.opts[[x]]))
+     }
 
      if(!is.null(curl)) {
-       status = .Call("R_curl_easy_setopt", curl, .opts, optIds, FALSE, PACKAGE = "RCurl")
+       status = .Call("R_curl_easy_setopt", curl, .opts, optIds, FALSE, as.integer(.encoding), PACKAGE = "RCurl")
        return(curl)
      }
   } else
@@ -178,23 +247,27 @@ function(..., .opts = list(), curl = getCurlHandle())
  tmp
 }
 
+optionConverters =
+list("netrc" = function(x) asEnum(x, CurlNetrc, "NetrcEnum")
+    )
+
 
 getCurlHandle =
-function(..., .opts = NULL)
+function(..., .opts = NULL, .encoding = integer())
 {
  h = .Call("R_curl_easy_init", PACKAGE = "RCurl")
 
- curlSetOpt(..., .opts = .opts, curl = h)
+ curlSetOpt(..., .opts = .opts, curl = h, .encoding = .encoding)
  
  h
 }
 
 dupCurlHandle =
-function(curl, ..., .opts = NULL)
+function(curl, ..., .opts = NULL, .encoding = integer())
 {
  h = .Call("R_curl_easy_duphandle", curl, PACKAGE = "RCurl")
 
- curlSetOpt(..., .opts = .opts, curl = h)
+ curlSetOpt(..., .opts = .opts, curl = h, .encoding = .encoding)
 
  h
 }
