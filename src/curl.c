@@ -773,7 +773,7 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
 	UNPROTECT(2);
 
 	if(numRead < size*nmemb) {
-	    PROBLEM  "only read %d of the %d input bytes/characters", numRead, size*nmemb
+	    PROBLEM  "only read %d of the %d input bytes/characters", (int) numRead, (int) (size*nmemb)
    	    WARN;
 	}
 
@@ -1102,7 +1102,7 @@ SEXP
 getRStringsFromNullArray(const char * const *d)  
 {
   int i, n;
-  const char **p;
+  const char  * const *p;
   SEXP ans;
 
   for(p = d, n = 0; *p; p++, n++) ;
@@ -1249,8 +1249,6 @@ R_curlMultiPerform(SEXP m, SEXP repeat)
     fd_set read_fd_set,  write_fd_set, exc_fd_set;
     int max_fd = 0;
     int ctr = 0;
-
-    struct timeval tm = {0, 100};
 
     h = getMultiCURLPointerRObject(m);
 
