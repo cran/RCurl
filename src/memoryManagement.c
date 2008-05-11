@@ -140,7 +140,7 @@ RCurl_releaseManagerMemoryTickets(CURLOptionMemoryManager *mgr)
 	    } else if(ptr->type == R_OBJECT) {
      	          R_ReleaseObject((SEXP) ptr->data);
 	    } else
-  	       free(ptr->data);
+  	          free((void *) ptr->data);
 
 	    free(ptr);
 	    ptr = tmp;

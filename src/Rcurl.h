@@ -77,4 +77,7 @@ extern size_t Curl_base64_decode(const char *src, unsigned char **outptr);
 extern size_t Curl_base64_encode(const char *inp, size_t insize, char **outptr);
 #endif
 
+size_t R_Curl_base64_decode(const char *src, unsigned char **outptr);
+size_t R_Curl_base64_encode(const char *inp, size_t insize, char **outptr);
+
 #endif

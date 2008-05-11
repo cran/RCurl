@@ -38,7 +38,7 @@ R_base64_decode(SEXP r_text, SEXP asRaw)
   } else {
     r_ans = mkString(ans);
   }
-  if(len > -1)
+  if(ans && len > -1)
     free(ans);
 
   return(r_ans);

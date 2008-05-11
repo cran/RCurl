@@ -25,7 +25,6 @@
   Essentially, the data in objects of this class are for internal use;
   this is an opaque class in R.
  } 
-}
 \section{Objects from the Class}{
   The constructor function  \code{\link{getCurlMultiHandle}}
   is the only way to create meaningful instances of this class.
