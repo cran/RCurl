@@ -36,10 +36,10 @@ function (lines)
 
 getEncoding =
 function(x) {
-  val = gsub("Content-Type:.*;\\Wcharset=", "", x)
-  if(nchar(val) == nchar(x)) # See if there was any substitution done, i.e. a match.
+  val = gsub("Content-Type:.*;\\W*charset=", "", x)
+  if(all(nchar(val) == nchar(x))) # See if there was any substitution done, i.e. a match.
     return(NA)
-  val = gsub("\\\r\\\n", "", val)
+
 
   switch(val, "UTF-8" =, "utf-8" = 1L, "ISO-8859-1" = 2L, -1L)
 }
@@ -47,7 +47,7 @@ function(x) {
 findHTTPHeaderEncoding =
 function(str)
 {
-  els = strsplit(str, "\\r\\n")
+  els = strsplit(str, "\\\r\\\n")
   v = lapply(els, getEncoding)
 
   if(any(!is.na(v))) {
