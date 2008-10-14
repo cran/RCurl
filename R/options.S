@@ -15,6 +15,11 @@ function(...)
       warning("Duplicated curl options: ", paste(names(.args)[dups], collapse = ", "))
       .args = .args[!dup]
     }
+
+    if(length(names(.args)) == 0)
+      stop("curl options with no names")
+    else if(any(names(.args) == ""))
+        stop("unnamed curl option(s): ", .args[names(.args) == "" ])
     
     opts = mapCurlOptNames(names(.args))
 
@@ -142,6 +147,7 @@ function()
 mapCurlOptNames =
 function(ids, asNames = FALSE)
 {
+
    const = getCurlOptionsConstants()
    ids = tolower(ids)
     # Could use charmatch and differentiate between multiple matches
@@ -169,8 +175,11 @@ function(..., .opts = list())
       .els = .els[!dups]
   }
   
-  if(length(.els))
+  if(length(.els)) {
+      if(any(names(.els) == ""))
+         stop("unnamed curl option(s): ", .els[names(.els) == "" ])
       names(.els) <- mapCurlOptNames(names(.els), asNames = TRUE)
+  }
   else
     .els = list()
   

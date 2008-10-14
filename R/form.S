@@ -12,8 +12,10 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
     .params = list(...)
   }
 
-  if(length(.params) == 0)
-    warning("No inputs passed to form")
+  if(length(.params) == 0) 
+       warning("No inputs passed to form")
+  else if(missing(.opts))
+    testCurlOptionsInFormParameters(.params)
   
     # Convert the arguments into a URL string.
   els = sapply(names(.params), function(n) {
@@ -27,6 +29,16 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
    uri = paste(uri, args, sep="?")
 
    getURI(uri, .opts = .opts)
+}
+
+testCurlOptionsInFormParameters =
+function(.params)
+{
+  if(any( w <- names(.params) %in% listCurlOptions())) {
+    warning("Found possible curl options in form parameters: ", paste(names(.params)[w], collapse = ", "))
+    TRUE
+  } else
+    FALSE
 }
 
 
@@ -44,6 +56,7 @@ function(uri, ...,
 {
   isProtected = missing(curl)
   write = NULL
+  noCurlOptions = missing(.opts)
 
   if(!is.na(style)) {
       if(is.character(style)) {
@@ -61,6 +74,7 @@ function(uri, ...,
    # merge the two sources of inputs
   .params = merge(list(...), .params)
 
+  
   # Need to organize the types here into a structure.
 
  if(!"writefunction" %in% names(.opts)) {
@@ -88,8 +102,12 @@ function(uri, ...,
      .params = as.list(.params)
   
 
-  if(length(.params) == 0)
-    warning("No inputs passed to form")
+  if(length(.params) == 0) {
+    postfields = getCurlOptionsConstants()["postfields"]
+    if(!(postfields  %in% .opts$ids))
+      warning("No inputs passed to form")
+  } else if(noCurlOptions)
+    testCurlOptionsInFormParameters(.params)
   
   status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")
 

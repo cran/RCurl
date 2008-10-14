@@ -6,7 +6,58 @@
 <body>
 
 
+<h2>0.9-5</h2>
+
+<dl>
+
+  <dt>
+  <li> Added getBinaryURL() function as a convenience for downloading
+       binary files.  Binary content from POSTing or GETing forms
+       can be done by mimicing the few curl settings illustrated
+       in getBinaryURL(). 
+  <dd>
+  <dt>
+  <li> Slightly improved error messages when unnamed options are passed
+    to curlOptions().
+  <dd>
+
+  <dt>
+  <li> getForm() and postForm() now issue a warning if a curl option
+       appears in the parameters for the form.
+       This can be legitimate if the form happens to use a parameter
+       with the same name as a curl option (see listCurlOptions())
+      and the error message can be silenced by explicitly providing
+       a value for the .opts parameter in the call.
+       The value can be list() or some actual curl options;
+       the point is to indicate in the call that you have considered
+       the parameters and the curl options.
+  <dd>
+
+  <dt>
+  <li> The 'statusMessage' field of the HTTP header now contains
+       the entire error message rather than the first word.
+       Thanks to Valerie Obenchain for identifying the problem.
+      
+  <dd>
+
+  <dt>
+  <li>  Errors from HTTP requests now have their own class and use the
+        condition system in R (see tryCatch(), simpleError, etc.).
+        The names of these error classes come from the HTTP
+        specification and are gathered programmatically from the
+        specification document. (See inst/HTTPErrors/).
+        Unknown/non-matching error status values return a
+        GenericHTTPError class. The others return a vector of class
+        names containing a more specific class name (whose name is the
+        status number) and the more general "HTTPError" class name.
+      
+      
+     
+  <dd>
+</dl>
+
 <h2>0.9-4</h2>
+
 <dl>
   <dt>
   <li> Fix escaping in the split string  used in
@@ -294,6 +345,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Mon Jul 21 12:39:12 PDT 2008
+Last modified: Sat Sep 27 11:02:53 PDT 2008
 <!-- hhmts end -->
 </body> </html>
