@@ -37,3 +37,4 @@ export(fileUpload)
 
 
 export(findHTTPHeaderEncoding)
+export(getBinaryURL)

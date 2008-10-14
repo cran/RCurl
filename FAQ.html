@@ -119,8 +119,91 @@
   --feature </pre> If ssl doesn't appear there, you don't have support
   for it.  You should reinstall curl, having first installed SSL
   (e.g. <a href="http://www.openssl.org">openssl</a>).
-      
-     
+
+
+  <dt>
+  <li> I'm trying to use RCurl to do something in R that works
+      in a Web browser and I can even reproduce using the
+      command line program <b>curl</b>.
+      (That's a big help as we know we are both using libcurl!)
+      But when I do things in R, it fails. What's the problem
+      and how can I fix it?
+  <dd>
+      Well, there are too many potential reasons
+      and we would need to have more information about what
+      you are attempting to do and what the error messages are.
+      But for one, you might look at authentication
+      and activating Basic authentication, e.g
+      add 
+       <code>httpauth = 1L, # "basic"</code>
+      to the curl options.
+      <p>
+       But there is a general approach to trying to figure out how
+      to get R to do the same thing as a browser or <b>curl</b>
+      or <b>wget</b>.
+      One approach is to make certain that both R
+      and <b>curl</b> are giving us as much information as possible.
+      So make sure both have verbose switched on.
+      In R, this is a curl option <code>verbose = TRUE</code>
+      and for <b>curl</b>, is is the command line switch -v.
+      Then look at the header information both produce and see if
+      anything is obviously missing or different in the R version.
+      <p>
+      A different idea is somewhat advanced, but not very.
+      When the browser or <b>curl</b> makes a request,
+      it is sent across the network via your operating
+      system.
+      With the appropriate permissions on the computer,
+      we can use a program such as tcpdump or wireshark or ethereal
+      to "sniff" or capture the packets as they go across the network
+      device and then we can look at them.
+       We can do this for the <b>curl</b> or browser
+      and then for R and compare what is being sent.
+      This allows us to see the headers as we can with the
+      verbose options, but it also allows us to see the
+      content of the body of the request. This is only important
+      for POST requests.
+      <p>
+      We should also note that if you are using HTTPS, the body will
+      be encrypted and you won't be able to make any sense of it.
+      However, if the data in the post are not sensitive, you can
+      send it via HTTP - not HTTPS - and curl and the Web browser
+      will do the same thing and we will be able to see the contents.
+      The server will likely be confused and upset and give an error,
+      but we are trying  to determine the problem on the initial
+      client request so that is not a problem.
+      (It is a problem if we are trying to understand why R is not
+       handling the response correctly, but that's a different problem.)
+      <p>
+
+       How do we use tcpdump and ethereal?
+First, start tcpdump just before you run the R or <b>curl</b> command
+<pre>
+sudo /usr/sbin/tcpdump -s 1518 -i eth1 -w r_packets.tcp
+</pre>
+If you do this and wait too long, you will capture all the background
+packets that are flying through your network interface that have
+nothing to do with your problem. This is not a problem, but it makes
+it harder to find the packets which we want to examine.
+<p>
+So next, go back to R or <b>curl</b> and run the command.
+When this has completed, kill the tcpdump process, e.g
+Ctrl-C in the terminal in which it is running or kill with the
+relevant process id (see the <b>ps</b> command or the Mac activity
+monoitor.)
+Now run ethereal with the name of the file to which tcpdump serialized the
+packets
+<pre>
+ethereal r_packets.tcp
+</pre>
+And then you will get a window that looks something like
+<img src="ethereal.png"/>
+You  navigate the list at in the top panel to find the HTTP
+entry (#64 in our example).
+Click on that and the details of this TCP interaction are displayed
+in the lower panel. Then you can expand the elements by clicking
+on the lines that have an arrow on the left.
+And then you'll see the details of the header and the body.
 </dl>
 
 
@@ -129,6 +212,6 @@
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Mon Jan 28 09:46:25 NZDT 2008
+Last modified: Thu Sep 25 11:28:16 PDT 2008
 <!-- hhmts end -->
 </body> </html>

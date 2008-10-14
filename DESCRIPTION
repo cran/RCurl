@@ -1,5 +1,5 @@
 Package: RCurl
-Version: 0.9-4
+Version: 0.91-0
 Title: HTTP request interface
 Author: Duncan Temple Lang
 SystemRequirements: curl (version 7.12.0 or higher) http://curl.haxx.se
@@ -12,7 +12,8 @@ Description: The package allows one to compose HTTP requests to fetch URIs, post
      and extensive, supporting SSL/HTTPS, cookies, redirects, authentication, etc.
 License: BSD
 LazyLoad: true
-Depends: methods
+Depends: R (>= 2.7.0), methods
+Suggests: Rcompression
 URL: http://www.omegahat.org/RCurl
 Limitations: 
        One doesn't yet have full control over the contents of a POST form such as specifying
@@ -24,4 +25,4 @@ Note:  This will be used generally to communicate with HTTP servers and specific
 Check:  To run R CMD check, one really needs network access. It is an HTTP client!
         This can be problematic as a Web site may be down when you run
         but the real tests are important.
-Packaged: Mon Jul 21 12:39:44 2008; duncan
+Packaged: Tue Oct 14 06:19:15 2008; duncan

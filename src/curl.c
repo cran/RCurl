@@ -182,6 +182,10 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 		} else  if(opt == CURLOPT_WRITEDATA && TYPEOF(el) == EXTPTRSXP) {
 			status =  curl_easy_setopt(obj, opt, val);
 
+		} else  if(opt == CURLOPT_POSTFIELDS && TYPEOF(el) == RAWSXP) {
+			status =  curl_easy_setopt(obj, opt, val);
+			status =  curl_easy_setopt(obj, CURLOPT_POSTFIELDSIZE, Rf_length(el));
+
 		} else {
 		    switch(TYPEOF(el)) {
 		    case REALSXP:
@@ -591,6 +595,10 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    ptr = (void *) R_ExternalPtrAddr(el);
 		    isProtected = 1;
 	      break;
+	    case RAWSXP:
+		    ptr = (void *) RAW(el);
+		    isProtected = 1;
+	      break;
    	    default:
 		    PROBLEM "Unhandled case for curl_easy_setopt"
 		    ERROR;
@@ -790,10 +798,17 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
 void
 checkEncoding(char *buffer, size_t len, RWriteDataInfo *data)
 {
-	SEXP e;
+	SEXP e, ns_env, ns_name, fun;
 	int ans;
 	PROTECT(e = allocVector(LANGSXP, 2));
+#if 0
 	SETCAR(e, Rf_install("findHTTPHeaderEncoding"));
+#else
+	PROTECT(ns_name = mkString("RCurl"));
+	ns_env = R_FindNamespace(ns_name);
+	SETCAR(e, findVarInFrame(ns_env, Rf_install("findHTTPHeaderEncoding")));
+	UNPROTECT(1);
+#endif
 	SETCAR(CDR(e), ScalarString(mkCharLen(buffer, len)));
 	ans = INTEGER(Rf_eval(e, R_GlobalEnv))[0];
 
