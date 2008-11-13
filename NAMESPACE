@@ -1,4 +1,4 @@
-export(getURL, getURI, postForm, getForm)
+export(getURL, getURI, postForm, getForm, getURLContent)
 export(curlGlobalInit,curlVersion)
 export(curlOptions)
 export(getCurlInfoConstants, getCurlOptionsConstants, listCurlOptions)

@@ -69,6 +69,17 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(), .buf = binaryBuff
      read.csv(gzfile(tmp))
   }
 
+
+   # Working from the Content-Type in the header of the HTTP response.
+  h  = basicTextGatherer()
+  content = getBinaryURL(u, .opts = list(headerfunction = h$update))
+  header = parseHTTPHeader(h$value())
+  type = strsplit(header["Content-Type"], "/")[[1]]
+
+  if(type[2] \%in\% c("x-gzip", "gzip")) {
+    if(require(Rcompression)) 
+        x = gunzip(content)
+  }
 }
 \keyword{IO}
 \keyword{programming}

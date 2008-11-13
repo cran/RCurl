@@ -149,7 +149,6 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
                         curl_write_callback f;
 			f = (curl_write_callback) val;
 			status =  curl_easy_setopt(obj, CURLOPT_WRITEFUNCTION, f);
-
 		} else  if(opt == CURLOPT_DEBUGFUNCTION && TYPEOF(el) == CLOSXP) {
 			status =  curl_easy_setopt(obj, opt, &R_curl_debug_callback);
 			status =  curl_easy_setopt(obj, CURLOPT_DEBUGDATA, val);
@@ -708,6 +707,8 @@ R_curl_BinaryData_to_raw(SEXP r_ref)
   return(r_ans);
 }
 
+#define MAX(a, b)  ((a) < (b) ? (b) : (a))
+
 size_t 
 R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData)
 {
@@ -715,7 +716,7 @@ R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData
   int total = size*nmemb;
   data = (  RCurl_BinaryData *) userData;
   if(!data->data || (data->cursor +  total >= data->data + data->alloc_len )) {
-       data->alloc_len *= 2;
+       data->alloc_len = MAX( 2 * data->alloc_len, data->alloc_len + total);
        data->data = (unsigned char *) realloc(data->data, sizeof(unsigned char ) * data->alloc_len);
        if(!data->data) {
          PROBLEM "cannot allocate more space: %d bytes", data->alloc_len
