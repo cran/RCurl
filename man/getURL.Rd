@@ -1,24 +1,36 @@
 \name{getURL}
 \alias{getURL}
 \alias{getURI}
+\alias{getURLContent}
 \title{Download a URI}
 \description{
-  This function downloads one or more URIs (a.k.a. URLs).
+  These functions download one or more URIs (a.k.a. URLs).
   It uses libcurl under the hood to perform the request
   and retrieve the response.
   There are a myriad of options that can be specified using
   the \dots mechanism to control the creation and submission
   of the request and the processing of the response.
   
+  \code{getURLContent} has been added as a high-level function
+  like \code{getURL} and \code{getBinaryURL} but which 
+  determines the type of the content being downloaded
+  by looking at the resulting HTTP header's Content-Type
+  field. It uses this to determine whether the bytes
+  are binary or "text".
+
   The request supports any of the facilities within the
   version of libcurl that was installed.
   One can examine these via \code{\link{curlVersion}}.
+
+  \code{getURLContent} doesn't perform asynchronous or multiple
+  concurrent requests at present.
 }
 \usage{
 getURL(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
 getURI(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
+getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
 }
 \arguments{
   \item{url}{a string giving the URI}
@@ -83,6 +95,7 @@ getURI(url, ..., .opts = list(), write = basicTextGatherer(),
 
 
 \seealso{
+  \code{\link{getBinaryURL}}
   \code{\link{curlPerform}}
   \code{\link{curlOptions}}
 }
@@ -132,8 +145,15 @@ getURI(url, ..., .opts = list(), write = basicTextGatherer(),
 
 
    # Test the passwords.
-  x = getURL("http://www.omegahat.org/RCurl/testPassword/index.html",
-               userpwd = "bob:duncantl")
+  x = getURL("http://www.omegahat.org/RCurl/testPassword/index.html",  userpwd = "bob:duncantl")
+
+   # Catch an error because no authorization
+   # We catch the generic HTTPError, but we could catch the more specific "Unauthorized" error
+   # type.
+  x = tryCatch(getURLContent("http://www.omegahat.org/RCurl/testPassword/index.html"),
+               HTTPError = function(e) {
+                              cat("HTTP error: ", e$message, "\n")
+                           })
 
 \dontrun{
   #  Needs specific information from the cookie file on a per user basis
@@ -184,6 +204,20 @@ getURI(url, ..., .opts = list(), write = basicTextGatherer(),
   txt = getURI(uris, write = routine, async = FALSE)
   names(txt)
   nchar(txt)
+
+
+  # getURLContent() for text and binary
+ x = getURLContent("http://www.omegahat.org/RCurl/index.html")
+ class(x)
+
+ x = getURLContent("http://www.omegahat.org/RCurl/data.gz")
+ class(x)
+ attr(x, "Content-Type")
+
+ x = getURLContent("http://www.omegahat.org/Rcartogram/demo.jpg")
+ class(x)
+ attr(x, "Content-Type")
+
    
 }
 \keyword{IO}

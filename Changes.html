@@ -6,9 +6,21 @@
 <body>
 
 
-<h2>0.9-5</h2>
+<h2>0.92-0</h2>
 
 <dl>
+
+  <dt>
+  <li>  Added getURLContent() as a top-level function which handles
+        binary and text downloads by looking at the Content-Type field
+        of the header.
+  <dd>
+
+  <dt>
+  <li>  getURLContent() also raises errors for requests with a status in the "400"
+       class (e.g. 404 for Not Found) and the errors have (S3) classes that allow
+       them to be handled via tryCatch().
+  <dd>
 
   <dt>
   <li> Added getBinaryURL() function as a convenience for downloading
@@ -20,6 +32,9 @@
   <li> Slightly improved error messages when unnamed options are passed
     to curlOptions().
   <dd>
+
+  <dt>
+  <li> Fixed a bug in reading binary files when enlarging the "raw" buffer.
 
   <dt>
   <li> getForm() and postForm() now issue a warning if a curl option
