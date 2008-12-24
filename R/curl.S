@@ -272,6 +272,16 @@ function(curl, ..., .opts = NULL, .encoding = integer())
  h
 }
 
+setGeneric("reset",
+            function(x, ...)
+              standardGeneric("reset"))
+
+setMethod("reset", "CURLHandle",
+           function(x, ...) {
+               .Call("R_curl_easy_reset", x, PACKAGE = "RCurl")
+           })
+  
+
 
 curlEscape =
 function(urls)

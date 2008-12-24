@@ -105,6 +105,17 @@ R_curl_global_init(SEXP flag)
 #include <stdlib.h>
 
 SEXP
+R_curl_easy_reset(SEXP handle)
+{
+	CURL *obj;
+   	obj = getCURLPointerRObject(handle);
+	if(obj)
+	    curl_easy_reset(obj);
+
+	return(ScalarLogical( obj ? TRUE : FALSE));
+}
+
+SEXP
 R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP encoding)
 {
 	CURL *obj;
@@ -854,12 +865,13 @@ R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len, 
 
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 6, 0)
 	{
-          char * buf = (char *) malloc(len * sizeof(char));
+	  char * buf = (char *) malloc((len + 1)* sizeof(char));
 	  if(!buf) {
 	      PROBLEM "cannot allocate memory for string (%d bytes)", (int) len
  	      ERROR;
 	  }
 	  memcpy(buf, msg, len);	  
+          buf[len] = '\0';
 	  PROTECT(str = mkChar(buf));
 	  free(buf);
 	}
@@ -1374,3 +1386,4 @@ R_get_Cookies(SEXP handle, SEXP fileName)
    return(Rf_ScalarLogical(status));
 }
 #endif
+

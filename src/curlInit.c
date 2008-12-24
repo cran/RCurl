@@ -10,6 +10,7 @@ static R_CallMethodDef CallEntries[] = {
 
 	RegCallFun(R_curl_easy_init, 0),
 	RegCallFun(R_curl_easy_duphandle, 1),
+	RegCallFun(R_curl_easy_reset, 1),
 
 	RegCallFun(R_curl_easy_perform, 4),
 	RegCallFun(R_curl_easy_setopt, 5),
