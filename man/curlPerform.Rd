@@ -14,7 +14,7 @@
   For \code{curlMultiPerform}, one must add the relevant
   \code{\link{CURLHandle-class}} objects to the
   \code{\link{MultiCURLHandle-class}} objects
-  before issuing the call to \code{curlMultiPerform}.}
+  before issuing the call to \code{curlMultiPerform}.
 }
 \usage{
 curlPerform(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())

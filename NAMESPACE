@@ -42,3 +42,4 @@ export(getBinaryURL)
 export(reset)
 exportMethods('reset')
 
+export(ftpUpload)
