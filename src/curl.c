@@ -16,6 +16,7 @@ int R_curl_getpasswd(SEXP fun, char *prompt, char* buffer, int  buflen  );
 int R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len,  SEXP fun);
 int R_curl_progress_callback (SEXP fun, double total, double now, double uploadTotal, double uploadNow);
 CURLcode R_curl_ssl_ctx_callback(CURL *curl, void *sslctx, void *parm);
+size_t R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream);
 
 
 void * getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *handle);
@@ -196,6 +197,9 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 			status =  curl_easy_setopt(obj, opt, val);
 			status =  curl_easy_setopt(obj, CURLOPT_POSTFIELDSIZE, Rf_length(el));
 
+		} else if(opt == CURLOPT_READFUNCTION && TYPEOF(el) == CLOSXP) {
+			status =  curl_easy_setopt(obj, opt, &R_curl_read_callback);
+			status =  curl_easy_setopt(obj, CURLOPT_READDATA, val);
 		} else {
 		    switch(TYPEOF(el)) {
 		    case REALSXP:
@@ -227,6 +231,41 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 	return(makeCURLcodeRObject(status));
 }
 
+
+size_t 
+R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+    SEXP e, ans;
+    int errorOccurred;
+    size_t len;
+
+    PROTECT(e = allocVector(LANGSXP, 2));
+    SETCAR(e, (SEXP) stream);
+    SETCAR(CDR(e), ScalarReal( size * nmemb));
+    ans = Rf_eval(e, R_GlobalEnv) ;  /*, &errorOccurred); */
+
+    PROTECT(ans);
+    if(Rf_length(ans) != 0)  {
+
+	if(TYPEOF(ans) == RAWSXP) {
+	    len = Rf_length(ans);
+	    if(len > size * nmemb) {
+		PROBLEM  "the read function returned too much data (%d > %d)", len, size * nmemb
+		    ERROR;
+	    }
+	    memcpy(ptr, RAW(ans), len);
+	} else if(TYPEOF(ans) == STRSXP) {
+	    /* Deal with Encoding. */
+	    const char * str;
+	    str = CHAR(STRING_ELT(ans, 0));
+	    len = strlen(str);
+	    memcpy(ptr, str, len);
+	}
+    }
+
+    UNPROTECT(2);
+    return(len);
+}
 
 #include <R_ext/Arith.h>
 
@@ -564,7 +603,11 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 
 	switch(TYPEOF(el)) {
 	    case STRSXP:
-		    if(option == CURLOPT_HTTPHEADER) {
+		    if(option == CURLOPT_HTTPHEADER ||
+                       option == CURLOPT_QUOTE || 
+                       option == CURLOPT_PREQUOTE ||
+                       option == CURLOPT_POSTQUOTE) {
+
                                    /* struct curl_slist */
 			 ptr = (void *) Rcurl_set_header(curl, el, isProtected);
 			 isProtected = FALSE;

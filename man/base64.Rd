@@ -30,8 +30,8 @@ with a class named \code{base64}.
  If decode is \code{TRUE}, a simple string.
 }
 \references{
- \url{http://curl.haxx.se}{libcurl}
- \url{http://en.wikipedia.org/wiki/Base64}{Wikipedia's explanation of base 64 encoding}
+ libcurl - \url{http://curl.haxx.se}
+ Wikipedia's explanation of base 64 encoding - \url{http://en.wikipedia.org/wiki/Base64}
 }
 \author{Duncan Temple Lang}
 \note{
