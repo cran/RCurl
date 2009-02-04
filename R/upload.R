@@ -42,5 +42,5 @@ function(file, asText = inherits(file, "AsIs") || is.raw(file))
 
       function(size) {
          readBin(file, raw(), size)
-   }
+      }
 }

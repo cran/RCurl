@@ -1,10 +1,10 @@
-CURL_CONFIG=/usr/bin/curl-config
+CURL_CONFIG=/usr/local/bin/curl-config
 
 # CURL_CFLAGS=$(shell $(CURL_CONFIG) --cflags)
 # CURL_LIBS=$(shell $(CURL_CONFIG) --libs)
 
-CURL_CFLAGS=
-CURL_LIBS=-lcurl -lssl -lcrypto -lz
+CURL_CFLAGS=-I/usr/local/include
+CURL_LIBS=-L/usr/local/lib -lcurl -lssh2 -lssl -lcrypto -lldap -lz
 
 
 # -DRCURL_DEBUG_MEMORY
