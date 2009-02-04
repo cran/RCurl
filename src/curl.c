@@ -236,8 +236,7 @@ size_t
 R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 {
     SEXP e, ans;
-    int errorOccurred;
-    size_t len;
+    size_t len = 0;
 
     PROTECT(e = allocVector(LANGSXP, 2));
     SETCAR(e, (SEXP) stream);
@@ -253,6 +252,7 @@ R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 		PROBLEM  "the read function returned too much data (%d > %d)", len, size * nmemb
 		    ERROR;
 	    }
+
 	    memcpy(ptr, RAW(ans), len);
 	} else if(TYPEOF(ans) == STRSXP) {
 	    /* Deal with Encoding. */
@@ -261,7 +261,7 @@ R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 	    len = strlen(str);
 	    memcpy(ptr, str, len);
 	}
-    }
+    } 
 
     UNPROTECT(2);
     return(len);
