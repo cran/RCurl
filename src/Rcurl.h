@@ -16,8 +16,8 @@ typedef struct _RCurlMemory  RCurlMemory;
 
 struct _RCurlMemory {
 
-	CURL *curl;  /* the CURL object for which this data was allocated.*/
-	const void *data;  /* the data */
+	CURL *curl;         /* the CURL object for which this data was allocated.*/
+	const void *data;   /* the data */
 	CURLoption option;  /* the option, so we can tell what it was for.*/
 	
 	RCurl_OptValueType type;

@@ -4,7 +4,7 @@ getForm =
   # The ... here are for the arguments to the form, not the curl options.
   #
   #
-function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle())  
+function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(), .encoding = integer())  
 {
     # should we merge params with ....
     # for now just one or the other.  
@@ -28,7 +28,8 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
 
    uri = paste(uri, args, sep="?")
 
-   getURI(uri, .opts = .opts)
+#   getURI(uri, .opts = .opts, .encoding = .encoding)
+   getURLContent(uri, .opts = .opts, .encoding = .encoding)
 }
 
 testCurlOptionsInFormParameters =
@@ -52,13 +53,16 @@ postForm =
   #
 function(uri, ...,
          .params = list(), .opts = curlOptions(url = uri),
-         curl = getCurlHandle(), style = 'HTTPPOST')
+         curl = getCurlHandle(), style = 'HTTPPOST',
+         .encoding = integer())
 {
   isProtected = missing(curl)
   write = NULL
   noCurlOptions = missing(.opts)
 
   if(!is.na(style)) {
+      # The style of the post, i.e. HTTPPOST or regular POST,
+      # i.e. www-form-encoded or
       if(is.character(style)) {
         i = pmatch(tolower(style), tolower(names(PostStyles)))
         if(is.na(i))
@@ -74,19 +78,36 @@ function(uri, ...,
    # merge the two sources of inputs
   .params = merge(list(...), .params)
 
-  
-  # Need to organize the types here into a structure.
 
- if(!"writefunction" %in% names(.opts)) {
-   write = basicTextGatherer()
-   .opts[["writefunction"]] = write[[1]]
+   # Need to organize the types here into a structure.
+
+ hasOwnWrite = "writefunction" %in% names(.opts)
+
+ buf = NULL
+ header = basicTextGatherer()
+ if(!hasOwnWrite) {
+   # write = basicTextGatherer()
+   if(FALSE) {
+     .len = 5000L
+     write = basicTextGatherer()
+     .opts[["writefunction"]] = getNativeSymbolInfo("R_curl_write_binary_data")$address
+     buf = binaryBuffer(.len)
+     .opts[["file"]] = buf@ref
+     .opts[["headerfunction"]] = header$update
+   } else {
+     write = dynCurlReader(curl, verbose = TRUE)
+     # .opts[["writefunction"]] = write$update
+     .opts[["headerfunction"]] = write$update     
+   }
+
+#   .opts[["writefunction"]] = write$update
  }
 
   # Force the curlOptions to be resolved at this point, but not set.
+  optionNames = names(.opts)
 
-  .opts = curlSetOpt(url = uri, .opts = .opts, curl = NULL)
+  .opts = curlSetOpt(url = uri, .opts = .opts, curl = NULL, .encoding = .encoding)
 
-  
 #  curlOptions[["httpost"]] <- .params
 #  curlPerform(curl, .opts = curlOptions)
 
@@ -116,10 +137,12 @@ function(uri, ...,
      # curlSetOpt(httppost = FALSE, curl = curl)
      curlSetOpt(httpget = TRUE, curl = curl)
   }
-  
-  if(!is.null(write)) {
-    write[[2]]()
-  }
+
+  if(!is.null(buf)) {
+    processContent( as(buf, "raw"), header, .encoding)
+  } else  if(!is.null(write)) 
+    write$value()
+
   #XXX what if write is NULL - what do we return?
 }  
 

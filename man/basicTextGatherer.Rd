@@ -121,7 +121,8 @@ debugGatherer()
 
 
 \seealso{
-   \code{\link{getURL}}
+  \code{\link{getURL}}
+  \code{\link{dynCurlReader}}  
 }
 \examples{
   txt = getURL("http://www.omegahat.org/RCurl/index.html", write = basicTextGatherer())

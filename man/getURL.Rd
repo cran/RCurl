@@ -218,6 +218,14 @@ getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
  class(x)
  attr(x, "Content-Type")
 
+  # FTP
+  # Download the files within a directory.
+url = 'ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/'
+filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE)
+filenames = paste(url, strsplit(filenames, "\n")[[1]], sep = "")
+con = getCurlHandle( ftp.use.epsv = FALSE)
+contents = sapply(filenames[1:5], getURL, curl = con)
+names(contents) = filenames[1:length(contents)]
    
 }
 \keyword{IO}

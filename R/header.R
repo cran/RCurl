@@ -24,6 +24,8 @@ function(lines)
  if(st[["status"]] == 100) {
      # Have to worry about whether we just get a 100 and nothing else
      # and so lines[3] won't exist.
+   if((length(lines) - length(grep("^[[:space:]]*$", lines))) == 1)
+     return(st)
    status = lines[3]
    lines = lines[-(1:2)]
  }
@@ -35,9 +37,11 @@ function(lines)
    header = lines[-1]
    header <- read.dcf(textConnection(header))
  } else {
-   els <- sapply(lines, function(x) strsplit(x, ": *"))
-   header <- sapply(els, function(x) x[2]) #XX what if more than 2 els.
-   names(header) <- sapply(els, function(x) x[1]) 
+#   els <- sapply(lines, function(x) strsplit(x, ": *"))
+#   header <- sapply(els, function(x) paste(x[2]) #XX what if more than 2 els.
+#   names(header) <- sapply(els, function(x) x[1])
+   header = structure(sub("[^:]+: (.*)", "\\1", lines),
+                      names = sub("([^:]+):.*", "\\1", lines))
  }
 
  st = getStatus(status)
