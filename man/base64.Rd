@@ -16,7 +16,12 @@ base64(txt, encode = !inherits(txt, "base64"), mode = "character")
   \item{encode}{logical value indicating whether the desired action is to encode or decode the object.
    If \code{txt} has (S3) class \code{base64}, the default is to decode this.
   }
-  \item{mode}{a character string giving either }
+  \item{mode}{a character string which is either "raw" or "character".
+    This controls the type of vector that is returned.
+     If this is "raw", a raw vector is created.  Otherwise, a character
+     vector of length 1 is returned and its element is the text version
+     of the original data given in \code{txt}.
+     }
 }
 \details{
   This calls the routines in libcurl. These are not
@@ -111,12 +116,15 @@ We might extend this to work with raw objects.
   }
 
    # we'd like to be able to do
-   #  con = raw()
-   #  save(base64, x, con)
-   #  txt = base64Encode(con, "character")
+   #  con = rawConnection(raw(), 'r+')
+   #  save(base64, x, file = con)
+   #  txt = base64Encode(rawConnectionValue(con), "character")
    # ... write and read xml stuff
-   #  rda = base64Decode(xmlValue(doc), "raw")
-   #  load(rda, e)
+   #  val = xmlValue(doc)
+   #  rda = base64Decode(val, "raw")
+   #  e = new.env()
+   #  input = rawConnection(o, "r")
+   #  load(input, e)
 }
 \keyword{IO }
 \keyword{programming}

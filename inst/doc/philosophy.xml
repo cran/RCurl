@@ -2,7 +2,8 @@
 
 <article  xmlns:s="http://cm.bell-labs.com/stat/S4"
           xmlns:c="http://www.C.org"
-	  xmlns:html="http://www.w3.org/HTML4"
+          xmlns:r="http://www.r-project.org"
+          xmlns:html="http://www.w3.org/TR/html401"
 	  xmlns:curl="http://curl.haxx.se"
 >
 
@@ -1015,7 +1016,7 @@ Content-Type: text/xml; charset=utf-8
 libcurl should take care of the Content-Length field.
 
 The body is specified for the HTTP request using the <curl:opt>postfields</curl:opt> option.
-To do this using the <s:package>RCurl</s:package> package, we use
+To do this using the <r:pkg>RCurl</r:pkg> package, we use
 the following code.
 <s:code>
 <![CDATA[
@@ -1124,7 +1125,7 @@ etc.
 
 <section>
 <title>Alternatives</title>
-
+<para>
  Using libcurl is by no means the only
 approach to getting HTTP access in R.  Firstly, we have HTTP access in
 R via the facilities incorporated from libxml (nanohttp and nanoftp).
@@ -1132,8 +1133,9 @@ These are, as the names suggest, basic implementations of the protocols
 and do not provide all the bells and whistles we might need generally.
 Also, they are not customizable from within R. Specifically, we cannot
 add header fields, handle binary data, set the body of the request, etc.
+</para>
 
-<para/>
+<para>
 We can use R's socket connections and implement the details of HTTP
 ourselves.  There is a great deal of work in this as we have discussed
 before. Also, we currently don't have secure sockets (i.e. using SSL)
@@ -1144,7 +1146,7 @@ so that I could discover the nuances of HTTP.  It quickly gets
 overwhelming to handle all the details.  It is more tedious than
 technically challenging, especially when others have done it already
 in C libraries and done it well.  The code that I have is in an
-unreleased package named <s:package>httpClient</s:package>. If anyone is interested, please
+unreleased package named <r:pkg>httpClient</r:pkg>. If anyone is interested, please
 contact me.  Using R's sockets is also used in the <ulink
 url="http://cran.r-project.org/src/contrib/DESCRIPTIONS/httpRequest.html">httpRequest</ulink>
 package on CRAN.  This allows submitting forms and retrieving URIs.
@@ -1153,23 +1155,22 @@ implementation.  It doesn't escape characters, handle chunked
 responses, do redirects, support SSL, etc.  It is flexible but leaves
 a lot to the user to do to setup the request and process the response.
 RCurl inherits many, many good features for "free" from libcurl.
-
-<para/>
-
+</para>
+<para>
 libcurl is not the only C-level library that we could have used.
 Alternative libraries include <ulink
 url="http://www.w3.org/Library/">libwww</ulink> from the W3 group.  We
 <emphasis>may</emphasis> find that that is more suitable, but libcurl
 will definitely suffice for the present.
-
+</para>
 </section>
 
 <section>
 <title>Notes</title> 
-
+<para>
 libcurl can use <ulink url="ftp://athena-dist.mit.edu/pub/ATHENA/ares/">ares</ulink> for
 asynchronous DNS resolution.
-
+</para>
 </section>
 </section>
 
@@ -1179,13 +1180,13 @@ asynchronous DNS resolution.
 <biblioentry id="bib:odbAccess">
   <abbrev>odbAccess</abbrev>
   <authorgroup>
+    <author><firstname>Duncan</firstname><surname>Temple Lang</surname></author>
     <author><firstname>Sandrine</firstname><surname>Dudoit</surname></author>
     <author><firstname>Sunduz</firstname><surname>Keles</surname></author>
-    <author><firstname>Duncan</firstname><surname>Temple Lang</surname></author>
   </authorgroup>
 <!--   <copyright><year>2004</year></copyright> -->
-  <title>The odbAccess package: creating S functions from HTML forms.</title>
-  <ulink url="http://www.omegahat.org/odbAccess">odbAccess (coming soon)</ulink>
+  <title>The RHTMLForms package: creating S functions from HTML forms.</title>
+  <ulink url="http://www.omegahat.org/RHTMLForms">RHTMLForms</ulink>
 </biblioentry>
 
 

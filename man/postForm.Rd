@@ -12,8 +12,9 @@
 }
 \usage{
 postForm(uri, ..., .params = list(), .opts = curlOptions(url = uri),
-         curl = getCurlHandle(), style = 'HTTPPOST')
-getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle())
+         curl = getCurlHandle(), style = 'HTTPPOST', .encoding = integer())
+getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
+         .encoding = integer())
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,7 +44,11 @@ getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle())
     matching.  In the future, we will use
     enum values within R.
     The default is \code{multipart/form-data} for reasons of backward compatability.
-    }
+  }
+  \item{.encoding}{the encoding of the result, if it is known a priori.
+    This can be an integer between 0 and 4 or more appropriately a
+    string identifying the encoding as one of  "utf-8",
+    or "ISO-859-1".}
 }
 \details{
   Creating a new \code{CURLHandle} allows the C-level code
@@ -78,12 +83,13 @@ getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle())
 
 
    # Now looking at POST method for forms.
-  postForm("http://www.speakeasy.org/~cgires/perl_form.cgi",
-            "some_text" = "Duncan",
-            "choice" = "Ho",
-            "radbut" = "eep",
-            "box" = "box1, box2"
-          )
+ postForm("http://wwwx.cs.unc.edu/~jbs/aw-wwwp/docs/resources/perl/perl-cgi/programs/cgi_stdin.cgi",
+           name = "Bob", "checkedbox" = "spinich",
+           submitButton = "Now!",
+           textarea = "Some text to send",
+           selectitem = "The item",
+           radiobutton = "a", style = "POST")
+
 
   # Genetic database via the Web.
  x = postForm('http://www.wormbase.org/db/searches/advanced/dumper',

@@ -653,7 +653,7 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    isProtected = 1;
 	      break;
    	    default:
-		    PROBLEM "Unhandled case for curl_easy_setopt"
+		PROBLEM "Unhandled case for the value of curl_easy_setopt (R type = %d, option %d)", TYPEOF(el), option
 		    ERROR;
   	      break;
 	}
@@ -890,7 +890,7 @@ R_curl_write_header_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo
 size_t
 R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data)
 {
-	return(R_call_R_write_function(data->fun, buffer, size, nmemb, data, data->encoding));
+     return(R_call_R_write_function(data->fun, buffer, size, nmemb, data, data->encoding));
 }
 
 

@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
 <title>FAQ for RCurl</title>
+<link rel="stylesheet" href="../OmegaTech.css"/>
 </head>
 
 <body>
@@ -198,7 +199,7 @@ ethereal r_packets.tcp
 </pre>
 And then you will get a window that looks something like
 <img src="ethereal.png"/>
-You  navigate the list at in the top panel to find the HTTP
+You  navigate the list in the top panel to find the HTTP
 entry (#64 in our example).
 Click on that and the details of this TCP interaction are displayed
 in the lower panel. Then you can expand the elements by clicking
@@ -212,13 +213,84 @@ There are a variety of ways and tools to deal with this.
 Some are (in no particular order)
 <ul>
   <li> ssldump
-  <li> <a href="http://portswigger.net/suite/">Burp</a>
+  <li> <a href="http://portswigger.net/suite/">Burp</a> 
   <li> <a href="http://www.parosproxy.org">Paros Proxy</a>
   <li> fiddler (Windows)
   <li> WebScarab (Java)
   <li> Charles (commercial)
-  <li> HttpWatch
+  <li> HttpWatch (Windows only, Free and commercial)
 </ul>
+
+
+<dt>
+<li> I am trying to use the <code>verbose = TRUE</code>
+     option in curlPerform() or some of the other higher-level
+    functions,
+    but there is no output appearing on the console.
+    What's the problem?
+<dd>  You're on Windows using the R GUI, aren't you?
+    If so, chose the option in one of the menus that
+    controls whether output is buffered and unselect it,
+    i.e. so the output is <i>not</i> buffered.
+    That should do it.
+
+<dt>
+<li> I can't use scp or sftp within RCurl but the documentation
+    for curl  seems to suggest that it can. So why does RCurl not
+    support it?
+<dd> RCurl does support it, but the likely problem is that the
+    version of libcurl you have installed does not support it.
+    You can check what protocols your libcurl and hence RCurl
+    supports  via the command <code>curlVersion</code>.
+    If scp and sftp are not there, reinstall libcurl but with support
+    using libssh2.
+    You will need to have the libssh2 development libraries and headers installed before installing libcurl.
+    On some OSes, you will need to rebuild RCurl from source.
+
+
+<dt>
+<li> I am trying to download a file via FTP, but takes a very long time.
+  Any suggestions?
+<dd>
+  We saw this in a posting to  <a href="https://stat.ethz.ch/pipermail/r-help/2009-January/184633.html">R-help by Zack Holden</a>.
+ There the issue was passive mode.  When using R's own dwnload.file() function, an error was raised.
+ When using  RCurl's getURL(), the file was correctly downloaded, but it took a long time. There
+ was about 3 minutes of delay. This can be seen with
+<pre class="rcode">
+getURL('ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/13e19.txt', 
+        verbose = TRUE)
+</pre>
+One can see the request just wait for a long period of time and then eventually the contents
+of the file are displayed in the R session.
+<p>
+The fix for this is to avoid extended passive mode and  use the regular passive mode.
+This is controlled via the ftp.use.epsv option in calls to curlPerform()
+and we set this  to FALSE so that PASV is used rather than EPSV.
+<pre class="rcode">
+getURL('ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/13e19.txt', 
+        ftp.use.epsv = FALSE)
+</pre>
+
+
+<dt>
+<li> I want to download all the files in an FTP directory. How do I do it?
+<dd>
+
+First, we can get a list of all the file names with
+<pre class="rcode">
+url = 'ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/'
+filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE)
+filenames = paste(url, strsplit(filenames, "\n")[[1]], sep = "")
+</pre>
+Now we can download each of these in turn.
+It is advisable to create a curl handle just once and to set any options
+before downloading any of the files.
+<pre>
+con = getCurlHandle( ftp.use.epsv = FALSE)
+sapply(filenames, getURL, curl = con)
+</pre>
+
+
 </dl>
 
 
@@ -227,6 +299,6 @@ Some are (in no particular order)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Dec 24 15:44:13 PST 2008
+Last modified: Fri Mar  6 09:14:58 PST 2009
 <!-- hhmts end -->
 </body> </html>
