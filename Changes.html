@@ -5,6 +5,80 @@
 
 <body>
 
+<h2>0.97-3</h2>
+<dl>
+  <dt>
+  <li> dynCurlReader() discards the original content for the header
+       when it is a 100 status and so is ready to read the subsequent
+       header after the continuation.
+  <dd> Found by Steffen Durinck in biomaRt.
+</dl>
+      
+<h2>0.97-2</h2>
+<dl>
+  <dt>
+  <li> getURL() example involving listing files in an FTP directory
+      now handles newlines of the form \r\n on Windows. Thanks to
+      Brian Ripley.
+  <dd>
+
+  <dt>
+  <li> Further tweaks for different versions of libcurl and the generated code mappings.
+</dl>
+
+<h2>0.97-1</h2>
+
+ <dl>
+  <dt>
+  <li> Additional checks in the configuration for existence of specific enumeration constants to handle 
+      different versions of libcurl.
+  <dd>
+</dl>
+
+<h2>0.97-0</h2>
+
+ <dl>
+  <dt>
+  <li> Added configuration-time tests for the existence of newly added enumerations in the options
+       and corresponding #ifdef's within the code.   This handles different versions of libcurl
+       with different options.  The code in CodeGeneration/generate.R can deal with different
+       versions and programmatically create the code for the most recent version of libcurl
+       it sees with support for older versions.
+  <dd>
+ </dl>
+
+<h2>0.96-0</h2>
+
+<dl>
+  <dt>
+  <li> Updated the number of recognized curl options in <code>curlPerform</code>
+       and higher-level functions.
+  <dd>
+
+  <dt>
+  <li> getCurlInfo() can return certificate information and single linked
+       lists that are characters
+  <dd>
+
+  <dt>
+  <li>  Introduced getCurlOptionTypes()  which indicates the expected types of the 
+      different options.
+  <dd>
+
+  <dt>
+  <li> Added several C-level enumeration collections as R values.
+       These are not exported  as there are many of them.
+       They can be accessed with RCurl:::<i>name</i>, e.g.
+        <code>RCurl:::CURLPROXY_HTTP_1_0</code>
+  <dd> This involves bringing in Enumeration classes from RAutoGenRunTime.
+
+  <dt>
+  <li> Configuration tests for recently added libcurl options  in the
+       CURLOPT enumerations  and avoid them in compilation if they are not present.
+  <dd>
+</dl>
+
+
 
 <h2>0.95-1</h2>
 <dl>
@@ -421,6 +495,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Tue May 12 15:38:58 PDT 2009
+Last modified: Thu May 28 09:35:18 PDT 2009
 <!-- hhmts end -->
 </body> </html>

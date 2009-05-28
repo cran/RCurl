@@ -5,6 +5,10 @@
 #define CINIT(a,b,c) {#a, CURLOPT_##a}
 
 NameValue CurlOptionNames[] = {
+
+#if 1
+#include "CURLOptTable.h"
+#else
   CINIT(FILE, OBJECTPOINT, 1),
   CINIT(URL,  OBJECTPOINT, 2),
   CINIT(PORT, LONG, 3),
@@ -240,4 +244,10 @@ NameValue CurlOptionNames[] = {
   CINIT(FTP_SSL, LONG, 119),
   CINIT(POSTFIELDSIZE_LARGE, OFF_T, 120),
   CINIT(TCP_NODELAY, LONG, 121),
+
+    /* Collect certificate chain info and allow it to get retrievable with
+     CURLINFO_CERTINFO after the transfer is complete. (Unfortunately) only
+     working with OpenSSL-powered builds. */
+  CINIT(CERTINFO, LONG, 172),
+#endif
 };

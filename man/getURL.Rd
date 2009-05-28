@@ -221,8 +221,11 @@ getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
   # FTP
   # Download the files within a directory.
 url = 'ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/'
-filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE)
-filenames = paste(url, strsplit(filenames, "\n")[[1]], sep = "")
+filenames = getURL(url, ftp.use.epsv = FALSE, dirlistonly = TRUE)
+  # Deal with newlines as \n or \r\n. (BDR)
+  # Or alternatively, instruct libcurl to change \n's to \r\n's for us with crlf = TRUE
+  # filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE, crlf = TRUE)
+filenames = paste(url, strsplit(filenames, "\r*\n")[[1]], sep = "")
 con = getCurlHandle( ftp.use.epsv = FALSE)
 contents = sapply(filenames[1:5], getURL, curl = con)
 names(contents) = filenames[1:length(contents)]

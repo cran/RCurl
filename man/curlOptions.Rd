@@ -1,6 +1,7 @@
 \name{curlOptions}
 \alias{curlOptions}
 \alias{getCurlOptionsConstants}
+\alias{getCurlOptionTypes}
 \alias{listCurlOptions}
 \alias{mapCurlOptNames}
 \alias{[<-.CURLOptions}
@@ -46,6 +47,7 @@ getCurlOptionsConstants()
 \method{[}{CURLOptions}(x, i) <- value
 \method{[[}{CURLOptions}(x, i) <- value
 listCurlOptions()
+getCurlOptionTypes(opts = getCurlOptionsConstants())
 }
 %"[<-.CURLOptions"(x, i, value)
 \arguments{
@@ -59,6 +61,7 @@ listCurlOptions()
     These can be partial names matching elements in the set
    of known options. Other names will cause an error.}
   \item{value}{the values to assign to the options identified via \code{i}.}
+  \item{opts}{the options whose type description are of interest in the call.}
 }
 \details{
   These functions use \code{mapCurlOptNames}
@@ -75,6 +78,13 @@ listCurlOptions()
   values. These values are used in the C code and also each integer
   encodes the type of the argument expected by the C code
   for that option.
+
+  \code{getCurlOptionTypes} returns human-readable,
+  heuristic descriptions of the types expected for the different options.
+  These are integer/logical  corresponding to "long" in the RCurl documentation;
+  string/object pointer corresponding to "char *" or ;
+  function corresponding to a function/routine pointer;
+  large number corresponding to a \code{curl_off_t}.
 }
 
 \references{Curl homepage \url{http://curl.haxx.se}}

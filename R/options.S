@@ -35,6 +35,7 @@ function(...)
 
 if(FALSE) {
   # Try to get these using GccTranslationUnit.
+  # Yes. See CodeGeneration.
 CurlConstants =
  c(file = 1,
    writedata = 1,
@@ -144,18 +145,28 @@ function()
  x
 }  
 
-mapCurlOptNames =
-function(ids, asNames = FALSE)
+getCurlOptionTypes = 
+function(opts = getCurlOptionsConstants())
 {
+  typeName = c("integer/logical", "string/pointer", "function", "large number")
+  type = floor(opts / 10000)
+  structure(typeName[type + 1], names = names(opts))
+}
 
+
+mapCurlOptNames =
+function(ids, asNames = FALSE, error = FALSE)
+{
    const = getCurlOptionsConstants()
    ids = tolower(ids)
     # Could use charmatch and differentiate between multiple matches
     # e.g. head matching header and headerfunction.
    w = pmatch(ids, names(const))
 
-   if(any(is.na(w)))
-     stop("Unrecognized CURL options: ", paste(ids[is.na(w)], collapse = ", "))
+   if(any(is.na(w))) {
+     (if(error) stop else warning) ("Unrecognized CURL options: ", paste(ids[is.na(w)], collapse = ", "))
+     # w = w[!is.na(w)]
+   }
 
    if(asNames)
      return(names(const)[w])
@@ -167,6 +178,7 @@ function(ids, asNames = FALSE)
 curlOptions =
 function(..., .opts = list())
 {
+
   .els = rev(merge(list(...), .opts))
 
   dups = duplicated(names(.els))
@@ -179,9 +191,12 @@ function(..., .opts = list())
       if(any(names(.els) == ""))
          stop("unnamed curl option(s): ", .els[names(.els) == "" ])
       names(.els) <- mapCurlOptNames(names(.els), asNames = TRUE)
+
+     .els = .els[!is.na(names(.els))]
   }
   else
     .els = list()
+
   
   class(.els) = "CURLOptions"
 

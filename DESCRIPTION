@@ -1,6 +1,6 @@
 Package: RCurl
-Version: 0.95-1
-Title: HTTP request interface
+Version: 0.97-3
+Title: General network (HTTP/FTP/...) client interface for R
 Author: Duncan Temple Lang
 SystemRequirements: curl (version 7.12.0 or higher) http://curl.haxx.se
 Maintainer: Duncan Temple Lang <duncan@wald.ucdavis.edu>
@@ -16,7 +16,7 @@ Description: The package allows one to compose general HTTP requests
         cookies, redirects, authentication, etc.
 License: BSD
 LazyLoad: true
-Depends: R (>= 2.7.0), methods
+Depends: R (>= 2.7.0), methods, bitops
 Suggests: Rcompression
 URL: http://www.omegahat.org/RCurl
 Limitations: One doesn't yet have full control over the contents of a
@@ -29,6 +29,6 @@ Note: This will be used generally to communicate with HTTP servers and
 Check: To run R CMD check, one really needs network access. It is an
         HTTP client! This can be problematic as a Web site may be down
         when you run but the real tests are important.
-Packaged: Tue May 12 15:54:49 2009; duncan
+Packaged: Thu May 28 09:38:30 2009; duncan
 Repository: CRAN
-Date/Publication: 2009-05-18 10:35:20
+Date/Publication: 2009-05-28 18:30:37

@@ -97,6 +97,7 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA, value = NULL,
 
 
    # Character encoding example
+\dontrun{
   header = dynCurlReader()
   curlPerform(url = "http://www.razorvine.net/test/utf8form/formaccepter.sn",
                postfields = c(text = "ABC", outputencoding =  "UTF-8"),
@@ -104,6 +105,7 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA, value = NULL,
                writefunction = header$update, curl = header$curl())
   class( header$value() )
   Encoding( header$value() )
+}
 }
 \keyword{IO}
 \concept{binary}
