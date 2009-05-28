@@ -1,3 +1,4 @@
+
 export(getURL, getURI, postForm, getForm, getURLContent)
 export(curlGlobalInit,curlVersion)
 export(curlOptions)
@@ -46,3 +47,8 @@ export(ftpUpload)
 
 
 export(dynCurlReader)
+
+export(getCurlOptionTypes)
+exportPattern("HTTP_VERSION_.*")
+exportPattern("SSLVERSION_.*")
+

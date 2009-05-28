@@ -1,8 +1,10 @@
+#include <curl/curl.h>
 
 #define CURLINFO(a) {#a, CURLINFO_##a}
 
 NameValue CurlInfoNames[] = 
 {
+#if 0
         CURLINFO(EFFECTIVE_URL),
 	CURLINFO(RESPONSE_CODE ),
 	CURLINFO(TOTAL_TIME    ),
@@ -27,5 +29,8 @@ NameValue CurlInfoNames[] =
 	CURLINFO(HTTP_CONNECTCODE ),
 	CURLINFO(HTTPAUTH_AVAIL   ),
 	CURLINFO(PROXYAUTH_AVAIL  )
+#else
+#include "CURLINFOTable.h"
+#endif
 };
 

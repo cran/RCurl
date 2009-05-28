@@ -527,6 +527,46 @@ R_curl_escape(SEXP vals, SEXP escape)
 
 /****************************************************************/
 
+SEXP
+curlSListToR(struct curl_slist *l)
+{
+    int len = 0, i;
+    struct curl_slist *p = l;
+    SEXP ans;
+
+    while(p) {
+        if(p->data)
+   	   len ++;
+	p = p->next;
+    }
+    p = l;
+    PROTECT(ans = NEW_CHARACTER(len));
+    for(i = 0; i < len; i++, p = p->next) {
+        if(p->data)
+   	  SET_STRING_ELT(ans, i, mkChar(p->data));
+    }
+    UNPROTECT(1);
+    return(ans);
+}
+
+SEXP 
+curlCertInfoToR(struct curl_certinfo *certs)
+{
+#ifdef HAVE_CURLINFO_CERTINFO
+    SEXP ans;
+    int i;
+    PROTECT(ans = NEW_LIST(certs->num_of_certs));
+    for(i = 0; i < certs->num_of_certs; i++) {
+	SET_VECTOR_ELT(ans, i, curlSListToR(certs->certinfo[i]));
+    }
+    UNPROTECT(1);
+    return(ans);
+#else
+    PROBLEM "no suport for curl_certinfo in this version of libcurl. (Consider upgrading.)"
+	WARN;
+    return(R_NilValue);
+#endif
+}
 
 SEXP
 getCurlInfoElement(CURL *obj, CURLINFO id)
@@ -549,6 +589,22 @@ getCurlInfoElement(CURL *obj, CURLINFO id)
   	    case CURLINFO_LONG:
 		    curl_easy_getinfo(obj, id, &l);
 		    ans = ScalarReal((double) l);
+	      break;
+  	    case CURLINFO_SLIST:
+  	       {
+ 		    struct curl_slist *list = NULL;
+#ifdef HAVE_CURLINFO_CERTINFO
+		    if(id == CURLINFO_CERTINFO) {
+                        struct curl_certinfo *certs = NULL;
+       	 	        curl_easy_getinfo(obj, id, &certs);
+			ans = curlCertInfoToR(certs);
+		    } else 
+#endif
+                    {
+       	 	       curl_easy_getinfo(obj, id, &list);
+   		       ans = curlSListToR(list);
+		    }
+	       }
 	      break;
   	    default:
 		    PROBLEM "invalid getinfo option identifier"

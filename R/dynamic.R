@@ -9,13 +9,16 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     buf = NULL              # for a binary connection.
     update = function(str) {
 
+
 	if(length(header) == 0 && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
 	  header <<- c(txt, "")
           txt <<- character()
           http.header = parseHTTPHeader(c(header, str))
 
-          if(http.header[["status"]] == 100 && length(http.header) == 2)
+          if(http.header[["status"]] == 100) { # && length(http.header) == 2)
+               header <<- character()
                return(nchar(str, "bytes"))
+          }
 
           content.type = getContentType(http.header, TRUE)
 
@@ -28,7 +31,8 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           }
           
 
-	  if(verbose) cat("Setting option to read content-type", content.type[1], "character set", content.type["charset"], "\n")
+	  if(verbose)
+              cat("Setting option to read content-type", content.type[1], "character set", content.type["charset"], "\n")
 	  if(length(content.type) == 0 || isBinaryContent(, content.type)) {
              len = 5000
              buf <<- binaryBuffer(len)
