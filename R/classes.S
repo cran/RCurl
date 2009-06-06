@@ -9,3 +9,4 @@ if(TRUE) {
 
 
 
+setClass("CFILE", representation(ref = "externalptr"))

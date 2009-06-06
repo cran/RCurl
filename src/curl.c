@@ -17,6 +17,7 @@ int R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t l
 int R_curl_progress_callback (SEXP fun, double total, double now, double uploadTotal, double uploadNow);
 CURLcode R_curl_ssl_ctx_callback(CURL *curl, void *sslctx, void *parm);
 size_t R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream);
+size_t R_curl_read_file_callback(void *ptr, size_t size, size_t nmemb, void *stream);
 
 
 void * getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *handle);
@@ -200,6 +201,9 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 		} else if(opt == CURLOPT_READFUNCTION && TYPEOF(el) == CLOSXP) {
 			status =  curl_easy_setopt(obj, opt, &R_curl_read_callback);
 			status =  curl_easy_setopt(obj, CURLOPT_READDATA, val);
+		} else if(opt == CURLOPT_READDATA) {
+		    /* status = curl_easy_setopt(obj, CURLOPT_READFUNCTION, &R_curl_read_file_callback); */
+			status = curl_easy_setopt(obj, CURLOPT_READDATA, val);
 		} else {
 		    switch(TYPEOF(el)) {
 		    case REALSXP:
@@ -231,6 +235,34 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 	return(makeCURLcodeRObject(status));
 }
 
+SEXP
+R_openFile(SEXP r_filename, SEXP r_mode)
+{
+    const char *filename = CHAR(STRING_ELT(r_filename, 0));
+    const char *mode = CHAR(STRING_ELT(r_mode, 0));
+    FILE *ans;
+    SEXP r_ans, klass;
+
+    ans = fopen(filename, mode);
+    if(!ans) {
+	PROBLEM "Cannot open file %s", filename
+	    ERROR;
+    }
+    PROTECT(klass = MAKE_CLASS("CFILE"));
+    PROTECT(r_ans = NEW(klass));
+    SET_SLOT(r_ans, Rf_install("ref"), R_MakeExternalPtr(ans, Rf_install("FILE"), R_NilValue));
+    UNPROTECT(2);
+    return(r_ans);
+}
+
+size_t 
+R_curl_read_file_callback(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+    FILE *f = (FILE *) stream;
+    size_t num;
+    num = fread(ptr, size, nmemb, f);
+    return(num);
+}
 
 size_t 
 R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
