@@ -52,3 +52,6 @@ export(getCurlOptionTypes)
 exportPattern("HTTP_VERSION_.*")
 exportPattern("SSLVERSION_.*")
 
+exportClass("CFILE")
+export(CFILE)
+

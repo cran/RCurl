@@ -44,3 +44,11 @@ function(file, asText = inherits(file, "AsIs") || is.raw(file))
          readBin(file, raw(), size)
       }
 }
+
+
+CFILE = 
+function(filename, mode = "r")
+{
+   filename = path.expand(filename)
+   .Call("R_openFile", filename, as.character(mode))
+}
