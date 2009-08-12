@@ -4,7 +4,8 @@ getForm =
   # The ... here are for the arguments to the form, not the curl options.
   #
   #
-function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(), .encoding = integer())  
+function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(), .encoding = integer(), binary = NA,
+          .checkParams = TRUE)  
 {
     # should we merge params with ....
     # for now just one or the other.  
@@ -14,7 +15,7 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
 
   if(length(.params) == 0) 
        warning("No inputs passed to form")
-  else if(missing(.opts))
+  else if(missing(.opts) && .checkParams)
     testCurlOptionsInFormParameters(.params)
   
     # Convert the arguments into a URL string.
@@ -29,7 +30,7 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
    uri = paste(uri, args, sep="?")
 
 #   getURI(uri, .opts = .opts, .encoding = .encoding)
-   getURLContent(uri, .opts = .opts, .encoding = .encoding)
+   getURLContent(uri, .opts = .opts, .encoding = .encoding, binary = binary)
 }
 
 testCurlOptionsInFormParameters =
@@ -54,7 +55,7 @@ postForm =
 function(uri, ...,
          .params = list(), .opts = curlOptions(url = uri),
          curl = getCurlHandle(), style = 'HTTPPOST',
-         .encoding = integer())
+         .encoding = integer(), binary = NA, .checkParams = TRUE)
 {
   isProtected = missing(curl)
   write = NULL
@@ -95,7 +96,7 @@ function(uri, ...,
      .opts[["file"]] = buf@ref
      .opts[["headerfunction"]] = header$update
    } else {
-     write = dynCurlReader(curl, verbose = FALSE)
+     write = dynCurlReader(curl, verbose = FALSE, binary = binary)
      # .opts[["writefunction"]] = write$update
      .opts[["headerfunction"]] = write$update     
    }
@@ -127,7 +128,7 @@ function(uri, ...,
     postfields = getCurlOptionsConstants()["postfields"]
     if(!(postfields  %in% .opts$ids))
       warning("No inputs passed to form")
-  } else if(noCurlOptions)
+  } else if(noCurlOptions && .checkParams)
     testCurlOptionsInFormParameters(.params)
   
   status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")

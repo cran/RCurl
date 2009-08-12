@@ -12,9 +12,10 @@
 }
 \usage{
 postForm(uri, ..., .params = list(), .opts = curlOptions(url = uri),
-         curl = getCurlHandle(), style = 'HTTPPOST', .encoding = integer())
+         curl = getCurlHandle(), style = 'HTTPPOST',
+          .encoding = integer(), binary = NA, .checkParams = TRUE)
 getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
-         .encoding = integer())
+         .encoding = integer(), binary = NA, .checkParams = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -49,6 +50,19 @@ getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
     This can be an integer between 0 and 4 or more appropriately a
     string identifying the encoding as one of  "utf-8",
     or "ISO-859-1".}
+  \item{binary}{a logical value indicating whether the caller  knows
+    whether the resulting content is binary (\code{TRUE}) or not
+    (\code{FALSE}) or unknown (\code{NA}).
+    }  
+  \item{.checkParams}{a logical value that indicates whether we should perform a check/test
+   to identify if any of the arguments passed to the form correspond to Curl options.
+   This is useful to identify potential errors in specifying the Curl options in the
+   wrong place (in the way we would for \code{\link{curlPerform}}).
+   This check can lead to spurious warning messages if the form has parameters
+   with names that do conflict with Curl options. 
+   By specifying \code{FALSE} for this parameter, you can avoid this test
+   and hence any warnings. But make certain you know what you are doing.
+  }
 }
 \details{
   Creating a new \code{CURLHandle} allows the C-level code

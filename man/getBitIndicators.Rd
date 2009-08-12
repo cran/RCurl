@@ -39,7 +39,7 @@ setBitIndicators(vals, defs)
 
 
 \seealso{
- \code{The features field in \curl{curlVersion}.}
+ \code{The features field in \code{\link{curlVersion}}.}
 }
 \examples{
   getBitIndicators(7, c(A = 1, B = 2, C = 4))

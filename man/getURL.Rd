@@ -30,7 +30,9 @@ getURL(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
 getURI(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
-getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
+getURLContent(url, ..., curl = getCurlHandle(.opts), .encoding = NA,
+               binary = NA, .opts = list(...),
+               header = dynCurlReader(curl, binary = binary))
 }
 \arguments{
   \item{url}{a string giving the URI}
@@ -72,7 +74,19 @@ getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
     if one knows the encoding for the resulting response,
     specifying this avoids this slight overhead which is probably
     quite small relative to network latency and speed.
-  }  
+  }
+  \item{binary}{a logical value indicating whether the caller  knows
+    whether the resulting content is binary (\code{TRUE}) or not
+    (\code{FALSE}) or unknown (\code{NA}).
+  }
+  \item{header}{this is made available as a parameter of the function
+    to allow callers to construct different readers for processing
+    the header and body of the (HTTP) response.
+    Callers specifying this will typically only adjust the
+    call to \code{dynCurlReader}, e.g. to specify a
+    function for its \code{value} parameter to
+    control how the body is post-processed.
+   }
 }
 \details{
 
@@ -218,10 +232,19 @@ getURLContent(url, ..., curl = getCurlHandle(...), .encoding = NA)
  class(x)
  attr(x, "Content-Type")
 
+ curl = getCurlHandle()
+ dd = getURLContent("http://eeyore.ucdavis.edu/IO.pdf",
+                    curl = curl,
+                    header = dynCurlReader(curl, binary = TRUE,
+                                           value = function(x) {
+                                                    print(attributes(x)) 
+                                                    x}))
+
   # FTP
   # Download the files within a directory.
 url = 'ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/'
 filenames = getURL(url, ftp.use.epsv = FALSE, dirlistonly = TRUE)
+
   # Deal with newlines as \n or \r\n. (BDR)
   # Or alternatively, instruct libcurl to change \n's to \r\n's for us with crlf = TRUE
   # filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE, crlf = TRUE)
