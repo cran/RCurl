@@ -1,0 +1,25 @@
+CURLOptTable.h:132: error: 'CURLOPT_COOKIELIST' undeclared here (not in a function)
+CURLOptTable.h:133: error: 'CURLOPT_IGNORE_CONTENT_LENGTH' undeclared here (not in a function)
+CURLOptTable.h:134: error: 'CURLOPT_FTP_SKIP_PASV_IP' undeclared here (not in a function)
+CURLOptTable.h:135: error: 'CURLOPT_FTP_FILEMETHOD' undeclared here (not in a function)
+CURLOptTable.h:136: error: 'CURLOPT_LOCALPORT' undeclared here (not in a function)
+CURLOptTable.h:137: error: 'CURLOPT_LOCALPORTRANGE' undeclared here (not in a function)
+CURLOptTable.h:138: error: 'CURLOPT_CONNECT_ONLY' undeclared here (not in a function)
+CURLOptTable.h:139: error: 'CURLOPT_CONV_FROM_NETWORK_FUNCTION' undeclared here (not in a function)
+CURLOptTable.h:140: error: 'CURLOPT_CONV_TO_NETWORK_FUNCTION' undeclared here (not in a function)
+CURLOptTable.h:141: error: 'CURLOPT_CONV_FROM_UTF8_FUNCTION' undeclared here (not in a function)
+CURLOptTable.h:142: error: 'CURLOPT_MAX_SEND_SPEED_LARGE' undeclared here (not in a function)
+CURLOptTable.h:143: error: 'CURLOPT_MAX_RECV_SPEED_LARGE' undeclared here (not in a function)
+CURLOptTable.h:144: error: 'CURLOPT_FTP_ALTERNATIVE_TO_USER' undeclared here (not in a function)
+CURLOptTable.h:145: error: 'CURLOPT_SOCKOPTFUNCTION' undeclared here (not in a function)
+CURLOptTable.h:146: error: 'CURLOPT_SOCKOPTDATA' undeclared here (not in a function)
+CURLOptTable.h:147: error: 'CURLOPT_SSL_SESSIONID_CACHE' undeclared here (not in a function)
+In file included from CurlInfoEnums.h:33,
+                 from enums.c:80:
+CURLINFOTable.h:28: error: 'CURLINFO_COOKIELIST' undeclared here (not in a function)
+CURLINFOTable.h:28: error: initializer element is not constant
+CURLINFOTable.h:28: error: (near initialization for 'CurlInfoNames[27].val')
+CURLINFOTable.h:29: error: 'CURLINFO_LASTSOCKET' undeclared here (not in a function)
+CURLINFOTable.h:29: error: initializer element is not constant
+CURLINFOTable.h:29: error: (near initialization for 'CurlInfoNames[28].val')
+CURLINFOTable.h:30: error: 'CURLINFO_FTP_ENTRY_PATH' undeclared here (not in a function)

@@ -25,7 +25,8 @@
   
 }
 \usage{
-dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE)
+dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
+                value = NULL, verbose = FALSE, binary = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -52,6 +53,10 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA, value = NULL,
     progress and operations are written on the console as the
     header and body are processed.
   }
+  \item{binary}{a logical value indicating whether the caller  knows
+    whether the resulting content is binary (\code{TRUE}) or not
+    (\code{FALSE}) or unknown (\code{NA}).
+    }
 }
 \value{
   A list with 5 elements all of which are functions. These are

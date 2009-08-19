@@ -3,10 +3,13 @@ dynCurlReader =
 # Reads the header and then sets the appropriate writefunction
 # to harvest the body of the HTTP response.
 #
-function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE) 
+function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE,
+          binary = NA) 
 {
     header = character()    # for the header
     buf = NULL              # for a binary connection.
+    content.type = character()
+    
     update = function(str) {
 
 
@@ -20,8 +23,11 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
                return(nchar(str, "bytes"))
           }
 
-          content.type = getContentType(http.header, TRUE)
+          content.type <<- getContentType(http.header, TRUE)
 
+          if(is.na(binary))
+            binary = isBinaryContent(, content.type) 
+          
 
              # This happens when we get a "HTTP/1.1 100 Continue\r\n" and then
              # a blank line.  
@@ -33,7 +39,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
 
 	  if(verbose)
               cat("Setting option to read content-type", content.type[1], "character set", content.type["charset"], "\n")
-	  if(length(content.type) == 0 || isBinaryContent(, content.type)) {
+	  if(length(content.type) == 0 || binary) {
              len = 5000
              buf <<- binaryBuffer(len)
              if(verbose) cat("Reading binary data:", content.type, "\n")
@@ -55,17 +61,30 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     }
     val = if(missing(value))
              function(collapse = "", ...) {
-                if(!is.null(buf))
-                   return(as(buf, "raw"))
+                if(!is.null(buf)) {
+                   ans = as(buf, "raw")
+                   if(length(content.type))
+                      attr(ans, "Content-Type") = content.type
+                   return(ans)
+                }
                  
                 if (is.null(collapse)) 
                     return(txt)
-                paste(txt, collapse = collapse, ...)
+                ans = paste(txt, collapse = collapse, ...)
+                if(length(content.type))
+                      attr(ans, "Content-Type") = content.type
+                ans
              }
            else 
-             function() 
-                 value(if(!is.null(buf)) as(buf, "raw") 
-                       else txt)
+             function() {
+               tmp = if(!is.null(buf))
+                        as(buf, "raw") 
+                      else
+                        txt
+               if(length(content.type))
+                    attr(tmp, "Content-Type") = content.type               
+               value(tmp)
+             }
 
 
     ans = list(update = update, 

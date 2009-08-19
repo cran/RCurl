@@ -4,6 +4,7 @@
 \alias{&,BitwiseValue-method}
 \alias{&,BitwiseValue,BitwiseValue-method}
 \alias{[,EnumDef-method}
+\alias{[,EnumDef,ANY-method}
 \alias{coerce,BitwiseValue,numeric-method}
 \alias{curl_infotype-class}
 \alias{CURLcode-class}
@@ -52,7 +53,7 @@
 \alias{coerce,character,CURL_NETRC_OPTION-method}
 \alias{coerce,character,CURLFORMcode-method}
 \alias{coerce,character,curl_TimeCond-method}
-\alias{coerce,character,curl_closepolicy-method}> 
+\alias{coerce,character,curl_closepolicy-method} 
 \title{Classes and coercion methods for enumerations in libcurl}
 \description{These are classes and coercion methods
 for enumeration types in RCurl corresponding to symbolic

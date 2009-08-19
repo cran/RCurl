@@ -6,10 +6,13 @@ getURLContent =
   #  processContent(ans, header$header(), .encoding)
   # but now we use the dynamic reader.
   #
-function(url, ..., curl = getCurlHandle(...), .encoding = NA)
+function(url, ..., curl = getCurlHandle(.opts), .encoding = NA, binary = NA, .opts = list(...),
+         header = dynCurlReader(curl, binary = binary))
 {
-  header = dynCurlReader(curl)
-  curlPerform(url = url, headerfunction = header$update, curl = curl)
+  if(!missing(curl))
+     curlSetOpt(.opts = .opts, curl = curl)
+  
+  curlPerform(url = url, headerfunction = header$update, curl = curl, .opts = .opts)
   http.header = parseHTTPHeader(header$header())
   stop.if.HTTP.error(http.header)
   
@@ -81,11 +84,16 @@ function(header, full = FALSE)
              names = sapply(vals, function(x) if(length(x) > 1) x[1] else ""))
 }
 
+textContentTypes = c("html", "text", "xhtml", "plain", "xml", "x-latex", "css", "latex", "sgml", "postscript", "texinfo")
+
 isBinaryContent =
-function(header, type = getContentType(header)[1])
+function(header, type = getContentType(header)[1],
+          textTypes = getOption("text.content.types"))
 {
+   if(is.null(textTypes))
+     textTypes = textContentTypes
    type.els = strsplit(type, "/")[[1]]
-   if(any(type.els %in% c("html", "text", "xhtml", "plain", "xml")))
+   if(any(type.els %in% textContentTypes))
       return(FALSE)
 
    TRUE

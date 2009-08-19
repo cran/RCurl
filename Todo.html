@@ -8,6 +8,10 @@
 
 <dl>
 
+ <dt>
+ <li> Avoid repeatedly setting the same curl options in getURLContent(), initializing the curl option, etc.
+ <dd> Put a break point in the C code that sets the options and/or in the central R code.
+
   <dt>
   <li> getURLContent() and parsing the response WHEN THE REQUEST IS FTP!!
   <dd>
@@ -310,6 +314,6 @@
 <address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Jan 28 11:44:22 PST 2009
+Last modified: Sat Aug  1 10:44:17 PDT 2009
 <!-- hhmts end -->
 </body> </html>

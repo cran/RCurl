@@ -1,5 +1,5 @@
 Package: RCurl
-Version: 0.98-1
+Version: 1.0-0
 Title: General network (HTTP/FTP/...) client interface for R
 Author: Duncan Temple Lang
 SystemRequirements: curl (version 7.14.0 or higher) http://curl.haxx.se
@@ -29,6 +29,6 @@ Note: This will be used generally to communicate with HTTP servers and
 Check: To run R CMD check, one really needs network access. It is an
         HTTP client! This can be problematic as a Web site may be down
         when you run but the real tests are important.
-Packaged: 2009-06-06 16:59:53 UTC; duncan
+Packaged: 2009-08-12 13:00:33 UTC; duncan
 Repository: CRAN
-Date/Publication: 2009-06-07 14:00:31
+Date/Publication: 2009-08-19 09:16:45

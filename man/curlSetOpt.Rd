@@ -9,7 +9,8 @@
   \code{CURLHandle} object.
 }
 \usage{
-curlSetOpt(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
+curlSetOpt(..., .opts = list(), curl = getCurlHandle(),
+            .encoding = integer(), .forceHeaderNames = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,7 +31,13 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
     the HTTP response to determine the encoding. This argument is used
     when such information is erroneous and the caller knows the correct
     encoding.
-  }  
+  }
+  \item{.forceHeaderNames}{a logical value which if \code{TRUE}
+    allows the caller to explicitly indicate that the HTTPHEADER
+    option needs to have the names prefixed to the strings.
+    This removes any ambiguity caused by the presence of ':' in the
+    values  appearing to be the separator between the name and the value
+    of the \code{name: value} pairs of the HTTP header.}
 }
 \value{
   An integer value giving the status of the return.
@@ -46,7 +53,13 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
   \code{\link{dupCurlHandle}}  
 }
 \examples{
-
+curl = getCurlHandle()
+  # Note the header that extends across two lines with the second line
+  # prefixed with white space.
+curlSetOpt( .opts = list(httpheader = c(Date = "Wed, 1/2/2000 10:01:01",
+                         foo="abc\n    extra line"), verbose = TRUE),
+             curl = curl) 
+ans = getURL("http://www.omegahat.org", curl = curl)
 }
 \keyword{IO}
 

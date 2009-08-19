@@ -207,7 +207,7 @@ curlSetOpt =
   # when they set the options.
   # This could go as most people will call this having already created
   # the CURL object.
-function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
+function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .forceHeaderNames = FALSE)
 {
  .opts = curlOptions(..., .opts = .opts)
 
@@ -215,12 +215,14 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
     tmp  = .opts[["httpheader"]]
 
       # paste the name and value together if
-      # a) we have names, and b) not all entries have a :
-    if(length(names(tmp)) && length(grep(":", tmp)) != length(tmp))
-      .opts[["httpheader"]] = paste(names(tmp), tmp, sep = ": ")
+      # a) we have names, and b) not all entries have a : at the start.
+      # We have to be careful here. We got caught with a date having a :
+      # and there being only one element in the header.
+    if(length(names(tmp)) && (.forceHeaderNames || length(grep("^[^[:space:]]+:", tmp)) != length(tmp)))
+       .opts[["httpheader"]] = paste(names(tmp), tmp, sep = ": ")
   }
 
- .encoding = getEncodingValue(.encoding)
+  .encoding = getEncodingValue(.encoding)
  
   if(length(.opts) || length(.encoding)) {
      optIds = mapCurlOptNames(names(.opts))
@@ -242,9 +244,9 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
      optIds = integer()
 
  
- tmp = list(ids = optIds, values = .opts)
- class(tmp) <- "ResolvedCURLOptions"
- tmp
+  tmp = list(ids = optIds, values = .opts)
+  class(tmp) <- "ResolvedCURLOptions"
+  tmp
 }
 
 optionConverters =
