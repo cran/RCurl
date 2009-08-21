@@ -17,7 +17,7 @@
   and again, should be treated as an opaque data type.
 }
 \usage{
-getCurlHandle(..., .opts = NULL, .encoding = integer())
+getCurlHandle(..., .opts = NULL, .encoding = integer(), .defaults = getOption("RCurlOptions"))
 dupCurlHandle(curl, ..., .opts = NULL, .encoding = integer())
 getCurlMultiHandle()
 }
@@ -38,7 +38,10 @@ getCurlMultiHandle()
     the HTTP response to determine the encoding. This argument is used
     when such information is erroneous and the caller knows the correct
     encoding.
-  }  
+  }
+  \item{.defaults}{a collection of default values taken from R's
+    global/session options. This is a parameter so that one can override
+    it if necessary.}
 }
 \details{
   These functions create C-level data structures.
@@ -58,6 +61,13 @@ getCurlMultiHandle()
 }
 \examples{
 
+  options(RCurlOptions = list(verbose = TRUE,
+                              followlocation = TRUE,
+                              autoreferer = TRUE,
+                              nosignal = TRUE))
+  x = getURL("http://www.omegahat.org/RCurl")
+    # here we override one of these.
+  x = getURL("http://www.omegahat.org/RCurl", verbose = FALSE)
 }
 \keyword{IO}
 

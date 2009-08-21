@@ -30,7 +30,7 @@ getURL(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
 getURI(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
-getURLContent(url, ..., curl = getCurlHandle(.opts), .encoding = NA,
+getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                binary = NA, .opts = list(...),
                header = dynCurlReader(curl, binary = binary))
 }
@@ -151,9 +151,12 @@ getURLContent(url, ..., curl = getCurlHandle(.opts), .encoding = NA,
 
     # Arrange to read the header of the response from the HTTP server as
     # a separate "stream". Then we can break it into name-value
-    # pairs. (The first line is the 
+    # pairs. (The first line is the HTTP/1.1 200 Ok or 301 Moved Permanently
+    # status line)
   h = basicTextGatherer()
-  txt = getURL("http://www.omegahat.org/RCurl", header= TRUE, headerfunction = h[[1]], httpheader = c(Accept="text/html", Test=1), verbose = TRUE)
+  txt = getURL("http://www.omegahat.org/RCurl/index.html", header= TRUE, headerfunction = h$update, 
+                   httpheader = c(Accept="text/html", Test=1), verbose = TRUE) 
+print(paste(h$value(NULL)[-1], collapse=""))
   read.dcf(textConnection(paste(h$value(NULL)[-1], collapse="")))
 
 
