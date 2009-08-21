@@ -255,10 +255,16 @@ list("netrc" = function(x) asEnum(x, CurlNetrc, "NetrcEnum")
 
 
 getCurlHandle =
-function(..., .opts = NULL, .encoding = integer())
+function(..., .opts = NULL, .encoding = integer(),
+           .defaults = getOption("RCurlOptions"))
 {
  h = .Call("R_curl_easy_init", PACKAGE = "RCurl")
 
+ if(length(.defaults)) {
+   i = match(names(.defaults), names(.opts))
+   .opts[names(.defaults)[is.na(i)]] = .defaults[is.na(i)]
+ }
+ 
  curlSetOpt(..., .opts = .opts, curl = h, .encoding = .encoding)
  
  h

@@ -3,12 +3,13 @@ setClass("CurlOptions",
          representation(ids="integer",
                         values="list"))
 
-
-
 curlOptions =
-function(...)
+function(..., .opts = list())
 {
-    .args = rev(list(...))
+    .args = rev(list(...))  # Why rev()?
+   
+    if(length(.args) == 0)
+      return(NULL)
 
     dups = duplicated(names(.args))
     if(any(dups)) {
@@ -178,7 +179,6 @@ function(ids, asNames = FALSE, error = FALSE)
 curlOptions =
 function(..., .opts = list())
 {
-
   .els = rev(merge(list(...), .opts))
 
   dups = duplicated(names(.els))

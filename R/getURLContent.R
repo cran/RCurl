@@ -6,7 +6,7 @@ getURLContent =
   #  processContent(ans, header$header(), .encoding)
   # but now we use the dynamic reader.
   #
-function(url, ..., curl = getCurlHandle(.opts), .encoding = NA, binary = NA, .opts = list(...),
+function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary = NA, .opts = list(...),
          header = dynCurlReader(curl, binary = binary))
 {
   if(!missing(curl))
