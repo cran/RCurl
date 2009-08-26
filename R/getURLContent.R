@@ -84,7 +84,9 @@ function(header, full = FALSE)
              names = sapply(vals, function(x) if(length(x) > 1) x[1] else ""))
 }
 
-textContentTypes = c("html", "text", "xhtml", "plain", "xml", "x-latex", "css", "latex", "sgml", "postscript", "texinfo")
+# See http://www.iana.org/assignments/media-types/
+textContentTypes = c("html", "text", "xhtml", "plain", "xml", "x-latex", "css", "latex", "sgml", "postscript", "texinfo",
+                     "atom+xml")
 
 isBinaryContent =
 function(header, type = getContentType(header)[1],
@@ -93,7 +95,13 @@ function(header, type = getContentType(header)[1],
    if(is.null(textTypes))
      textTypes = textContentTypes
    type.els = strsplit(type, "/")[[1]]
+   if(type.els[1] == "text")
+     return(FALSE)
+   
    if(any(type.els %in% textContentTypes))
+      return(FALSE)
+
+   if(length(grep("\\+xml$", type.els)))
       return(FALSE)
 
    TRUE
