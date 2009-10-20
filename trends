@@ -1,0 +1,15 @@
+
+DQAAAIEAAABS-Wjvo3niGo98R7TP1DONQenfNDPehwf
+
+HSID ATjXBW22CZ0-wiJ6E
+SSID AjpcB7nV8ObDcho05
+SID DQAAAHEAAADmTj7bwDbAm8pphWWIIdRG2umrW6HYs4LhXypPEVs4ehp5lizwuGD2R9zSfEe6OLZ1PBbD0LgmIW6jNEP7D9dD1CFRSxigmtuCSOuJeY9giiOl1ENZrjtr0TUIiEhLy4NZZ_lh2HVeX-uanp5KnpzVrcnAD6-qgUo0MkzRbh992w
+
+
+cookie = "HSID=ATjXBW22CZ0-wiJ6E;SSID=AjpcB7nV8ObDcho05;SID=DQAAAHEAAADmTj7bwDbAm8pphWWIIdRG2umrW6HYs4LhXypPEVs4ehp5lizwuGD2R9zSfEe6OLZ1PBbD0LgmIW6jNEP7D9dD1CFRSxigmtuCSOuJeY9giiOl1ENZrjtr0TUIiEhLy4NZZ_lh2HVeX-uanp5KnpzVrcnAD6-qgUo0MkzRbh992w"
+
+txt = getURL("http://www.google.com/trends?q=coupon&sa=N", .opts = list(cookie = cookie))
+
+links = getNodeSet(htmlParse(txt), "//a")
+sapply(links, xmlValue)
+

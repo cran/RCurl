@@ -291,7 +291,81 @@ sapply(filenames, getURL, curl = con)
 </pre>
 
 
+<dt>
+<li> When I try to interact with a URL via https, I get an error of
+    the form
+<pre>
+Error in curlPerform(url = url, headerfunction = header$update, curl = curl,  : 
+  SSL certificate problem, verify that the CA cert is OK. Details:
+error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed    
+</pre>
+    What can I do?
+<dd>
+
+    <p>
+ Information about this came from
+    <a href="http://ademar.name/blog/2006/04/curl-ssl-certificate-problem-v.html">http://ademar.name/blog/2006/04/curl-ssl-certificate-problem-v.html</a>
+    </p>
+
+    <p>
+Basically, the remote server is sending us a certificate to say it is
+    who it says it is.
+    However, we have to trust that certificate.
+    We do this by providing information about a collection of trusted
+    signing authorites, e.g. Verisign, Entrust, Thawte
+    We can use the certificates from these agents from the Netscape
+    collection, available  via
+       <a
+    href="http://curl.netmirror.org/docs/caextract.html">http://curl.netmirror.org/docs/caextract.html</a>,
+    but you can find other collections.
+    We download this file or its equivalent.
+    Next we need to tell libcurl to use that file and where to find
+    it.
+    We do this with the cainfo option.
+<pre>
+x = getURLContent("https://www.google.com",
+                  cainfo = "/Users/duncan/cacert.pem")    
+</pre>
+    Note that we cannot use a ~ in the file path;
+    we have to expand it ourselves.
+<pre>
+x = getURLContent("https://www.google.com",
+                  cainfo = path.expand("~/cacert.pem"))
+</pre>    
+    </p>
+
+    <p>
+To avoid having to specify the location of the bundle
+in each call, you can place the file in a place
+that libcurl looks. This is usually the file
+  <b>/usr/local/share/curl/curl-ca-bundle.crt</b>
+If you have write permission for this directory, you can place
+    the files.    
+(The file must be present  before libcurl is configured and compiled.)
+
+</p>
+<p>    
+On some versions of UNIX, the certificates will also be found in
+    /usr/share/ssl/certs/ca-bundle.crt    
+    </p>
+    <p>
+    If you don't have a certificate from an appropriate signing agent,
+    you can suppress verifying the certificate with
+    the ssl.verifypeer option:
+<pre>
+x = getURLContent("https://www.google.com",
+                   ssl.verifypeer = FALSE)
+</pre>
+    This does risk a 'man in the middle' attack.
+    </p>
+
+    <!-- 
+    -->
+
 </dl>
+
+
+
 
 
 
@@ -299,6 +373,6 @@ sapply(filenames, getURL, curl = con)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Fri Mar  6 09:14:58 PST 2009
+Last modified: Sun Oct 11 13:08:33 PDT 2009
 <!-- hhmts end -->
 </body> </html>

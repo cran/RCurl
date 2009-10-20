@@ -1,0 +1,10 @@
+#duncantl
+#cAudQ7xg
+
+
+xx = getURL("http://www.omegahat.org", 
+             proxy = "http://www.lib.ucdavis.edu/proxy/pacserve",
+             proxyuserpwd = "duncantl:cAudQ7xg"
+#             proxyusername = "duncantl",
+#             proxypassword = "cAudQ7xg"
+  )

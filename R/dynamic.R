@@ -4,14 +4,13 @@ dynCurlReader =
 # to harvest the body of the HTTP response.
 #
 function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE,
-          binary = NA) 
+          binary = NA, baseURL = NA) 
 {
     header = character()    # for the header
     buf = NULL              # for a binary connection.
     content.type = character()
     
     update = function(str) {
-
 
 	if(length(header) == 0 && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
 	  header <<- c(txt, "")
@@ -39,7 +38,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
 
 	  if(verbose)
               cat("Setting option to read content-type", content.type[1], "character set", content.type["charset"], "\n")
-	  if(length(content.type) == 0 || binary) {
+	  if(length(content.type) == 0 || (is.na(binary) || binary)) {
              len = 5000
              buf <<- binaryBuffer(len)
              if(verbose) cat("Reading binary data:", content.type, "\n")
