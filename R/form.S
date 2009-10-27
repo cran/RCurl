@@ -29,8 +29,7 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
 
    uri = paste(uri, args, sep="?")
 
-#   getURI(uri, .opts = .opts, .encoding = .encoding)
-   getURLContent(uri, .opts = .opts, .encoding = .encoding, binary = binary)
+   getURLContent(uri, .opts = .opts, .encoding = .encoding, binary = binary, curl = curl)
 }
 
 testCurlOptionsInFormParameters =

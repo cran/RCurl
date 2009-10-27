@@ -7,21 +7,28 @@ getURLContent =
   # but now we use the dynamic reader.
   #
 function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary = NA, .opts = list(...),
-         header = dynCurlReader(curl, binary = binary))
+         header = dynCurlReader(curl, binary = binary),
+          isHTTP = length(grep('^[[:space:]]*http', url)) > 0)
 {
   if(!missing(curl))
      curlSetOpt(.opts = .opts, curl = curl)
   
   curlPerform(url = url, headerfunction = header$update, curl = curl, .opts = .opts)
-  http.header = parseHTTPHeader(header$header())
-  stop.if.HTTP.error(http.header)
+  if(isHTTP && length(header$header())) {
+    http.header = parseHTTPHeader(header$header())
+    stop.if.HTTP.error(http.header)
+  }
   
   header$value()
 }
 
 stop.if.HTTP.error = 
 function(http.header)
-{  
+{
+
+  if(length(http.header) == 0)
+    return(NA) # or TRUE
+  
   if( floor(as.integer(http.header[["status"]])/100) == 4) {
      klass =  RCurl:::getHTTPErrorClass(http.header[["status"]])
      err = simpleError(http.header[["statusMessage"]])
@@ -46,7 +53,8 @@ function(ans, header, .encoding = NA)
   stop.if.HTTP.error(http.header)  
 
   content.type = getContentType(http.header)
-  if(!isBinaryContent(, content.type)) {
+  binary = isBinaryContent(, content.type)
+  if(!(is.na(binary) || binary)) {
      ans = rawToChar(ans)
      if(length(.encoding)  == 0 || is.na(.encoding)) {
         charset = grep("charset", content.type, value = TRUE)
@@ -92,6 +100,9 @@ isBinaryContent =
 function(header, type = getContentType(header)[1],
           textTypes = getOption("text.content.types"))
 {
+   if(length(type) == 0)
+     return(NA)
+  
    if(is.null(textTypes))
      textTypes = textContentTypes
    type.els = strsplit(type, "/")[[1]]

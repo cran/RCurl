@@ -26,7 +26,7 @@
 }
 \usage{
 dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
-                value = NULL, verbose = FALSE, binary = NA)
+                value = NULL, verbose = FALSE, binary = NA, baseURL = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,7 +56,10 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
   \item{binary}{a logical value indicating whether the caller  knows
     whether the resulting content is binary (\code{TRUE}) or not
     (\code{FALSE}) or unknown (\code{NA}).
-    }
+  }
+  \item{baseURL}{the URL of the request which can be used to follow
+    links to other URLs that are described relative to this.
+  }
 }
 \value{
   A list with 5 elements all of which are functions. These are

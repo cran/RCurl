@@ -7,6 +7,13 @@
 <h1></h1>
 
 <dl>
+  <dt>
+  <li> Rather than looking at Content-Type, we also have to look at
+  Content-Encoding to see if it is gzip or something binary.
+  <dd>
+<pre>
+u = getURLContent('http://www.omegahat.org/SVGAnnotation/shape.svgz', .opts = list(verbose = TRUE))
+</pre>      
 
  <dt>
  <li> Avoid repeatedly setting the same curl options in getURLContent(), initializing the curl option, etc.
@@ -314,6 +321,6 @@
 <address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Sat Aug  1 10:44:17 PDT 2009
+Last modified: Tue Aug 25 12:55:10 PDT 2009
 <!-- hhmts end -->
 </body> </html>

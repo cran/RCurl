@@ -32,7 +32,8 @@ getURI(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
 getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                binary = NA, .opts = list(...),
-               header = dynCurlReader(curl, binary = binary))
+               header = dynCurlReader(curl, binary = binary),
+               isHTTP = length(grep('^[[:space:]]*http', url)) > 0)
 }
 \arguments{
   \item{url}{a string giving the URI}
@@ -86,7 +87,9 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     call to \code{dynCurlReader}, e.g. to specify a
     function for its \code{value} parameter to
     control how the body is post-processed.
-   }
+  }
+  \item{isHTTP}{a logical value that indicates whether the request an
+  HTTP request. This is used when determining how to process the response.}
 }
 \details{
 
