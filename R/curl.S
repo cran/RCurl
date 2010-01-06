@@ -303,3 +303,48 @@ function(urls)
 {
    .Call("R_curl_escape", as.character(urls), FALSE, PACKAGE = "RCurl")
 }   
+
+
+if(FALSE) {
+  tbls = readHTMLTable("http://en.wikipedia.org/wiki/Percent-encoding", stringsAsFactors = FALSE)
+  tt = tbls[[5]]
+  PercentCodes = structure(as.character(tt[2,]), names = as.character(tt[1,]))
+  cat(paste(sQuote(names(PercentCodes)), dQuote(PercentCodes), sep = " = ", collapse = ",\n\t"))  
+}
+PercentCodes = c(
+	'%' = "%25",  # this has to go first.  
+        '!' = "%21",
+	'*' = "%2A",
+	'"' = "%22",
+	'\'' = "%27",
+	'(' = "%28",
+	')' = "%29",
+	';' = "%3B",
+	':' = "%3A",
+	'@' = "%40",
+	'&' = "%26",
+	'=' = "%3D",
+	'+' = "%2B",
+	'$' = "%24",
+	',' = "%2C",
+	'/' = "%2F",
+	'?' = "%3F",
+	'#' = "%23",
+	'[' = "%5B",
+	']' = "%5D",
+        ' ' = '+')
+
+curlPercentEncode =
+function(x, amp = TRUE, codes = PercentCodes)
+{
+  if(!amp) {
+     i = match("&", names(codes))
+     if(!is.na(i))
+       codes = codes[ - i ]
+   }
+  
+  for(i in seq(along = codes))
+     x = gsub(names(codes)[i], codes[i], x, fixed = TRUE)
+  
+  x              
+}

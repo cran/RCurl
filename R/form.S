@@ -54,7 +54,8 @@ postForm =
 function(uri, ...,
          .params = list(), .opts = curlOptions(url = uri),
          curl = getCurlHandle(), style = 'HTTPPOST',
-         .encoding = integer(), binary = NA, .checkParams = TRUE)
+         .encoding = integer(), binary = NA, .checkParams = TRUE,
+         .contentEncodeFun = curlEscape) # Should probably be curlPercentEncode !
 {
   isProtected = missing(curl)
   write = NULL
@@ -116,7 +117,7 @@ function(uri, ...,
      .params = paste(
                   sapply(names(tmp),
                          function(id)
-                             paste(id, curlEscape(tmp[[id]]), sep = "=")),
+                             paste(id, .contentEncodeFun(tmp[[id]]), sep = "=")),
                   collapse = "&")
             
    } else

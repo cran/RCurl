@@ -8,7 +8,7 @@ export(getCurlHandle, dupCurlHandle)
 export(CurlFeatureBits, CurlGlobalBits, CurlNetrc)
 export(curlOptions)
 export(basicTextGatherer, debugGatherer, basicHeaderGatherer)
-export(curlEscape, curlUnescape)
+export(curlEscape, curlUnescape, curlPercentEncode)
 export(getBitIndicators, setBitIndicators)
 export(parseHTTPHeader)
 

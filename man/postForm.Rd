@@ -13,7 +13,8 @@
 \usage{
 postForm(uri, ..., .params = list(), .opts = curlOptions(url = uri),
          curl = getCurlHandle(), style = 'HTTPPOST',
-          .encoding = integer(), binary = NA, .checkParams = TRUE)
+          .encoding = integer(), binary = NA, .checkParams = TRUE,
+          .contentEncodeFun = curlEscape)
 getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
          .encoding = integer(), binary = NA, .checkParams = TRUE)
 }
@@ -62,7 +63,13 @@ getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
    with names that do conflict with Curl options. 
    By specifying \code{FALSE} for this parameter, you can avoid this test
    and hence any warnings. But make certain you know what you are doing.
-  }
+ }
+  \item{.contentEncodeFun}{a function which encodes strings in a
+    suitable manner.  For x-www-form-encoded submissions, this should 
+    most likely should be \code{curlPercentEncode} which maps spaces to
+  +, = to \%3D, etc.
+    We are leaving the default as \code{curlEscape} for now until we test whether applications
+    continue to work with the correct encoding.}
 }
 \details{
   Creating a new \code{CURLHandle} allows the C-level code
