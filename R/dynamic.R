@@ -9,19 +9,38 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     header = character()    # for the header
     buf = NULL              # for a binary connection.
     content.type = character()
-    
+
+    curHeaderStatus = -1
     update = function(str) {
 
-	if(length(header) == 0 && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
+	if((length(header) == 0 || curHeaderStatus %in% c(-1, 100)) && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
+              # Found the end of the header so wrapup the text and put it into the header variable
+          oldHeader = header
 	  header <<- c(txt, "")
           txt <<- character()
           http.header = parseHTTPHeader(c(header, str))
 
           if(http.header[["status"]] == 100) { # && length(http.header) == 2)
-               header <<- character()
-               return(nchar(str, "bytes"))
-          }
+               curHeaderStatus <<- 100
+                   # see if there are any attributes to keep other than status and statusMessage.
+               val.ids = setdiff(names(http.header), c("status", "statusMessage"))
 
+               if(length(val.ids))
+                 header <<- http.header[val.ids]
+               else
+                 header <<- character()
+
+               return(nchar(str, "bytes"))
+          } else
+             curHeaderStatus = http.header[["status"]]
+
+          if(length(oldHeader)) {
+              tmp = setdiff(names(oldHeader), names(header))
+              if(length(tmp))
+                 header[tmp] <<- oldHeader[tmp]
+          }          
+
+         
           content.type <<- getContentType(http.header, TRUE)
 
           if(is.na(binary))
@@ -52,6 +71,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           if (!is.na(max) && nchar(txt) >= max) 
               return(0)
         }
+
         nchar(str, "bytes")
     }
 

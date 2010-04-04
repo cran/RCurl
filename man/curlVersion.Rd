@@ -11,10 +11,11 @@
 curlVersion(id = 0)
 }
 \arguments{
-  \item{id}{}
-}
-\details{
-
+  \item{id}{an integer value between 0 and 3 inclusive.
+      The idea is that one specifies the identifier for the version of
+      interest.
+      In fact, all values seem to yield the same result.
+     }
 }
 \value{
   A list

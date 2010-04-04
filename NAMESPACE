@@ -57,3 +57,5 @@ export(CFILE)
 
 
 export(scp)
+
+export(guessMIMEType)

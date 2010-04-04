@@ -22,16 +22,20 @@ function(lines)
    #       \r\n
  st = getStatus(status)
  if(st[["status"]] == 100) {
+
      # Have to worry about whether we just get a 100 and nothing else
      # and so lines[3] won't exist.
    if((length(lines) - length(grep("^[[:space:]]*$", lines))) == 1)
      return(st)
-   status = lines[3]
-   lines = lines[-(1:2)]
+     # We seem to jump to the 3 rd line as the real status
+     # and discard the first two lines. Is this the Expect.
+#   status = lines[3]
+#   lines = lines[-(1:2)]
  }
  
- lines = lines[-c(1, length(lines))]
- lines = gsub("\r\n$","", lines)  # was \r\n\0$
+ lines = lines[-1]
+ lines = gsub("\r\n$", "", lines)  # was \r\n\0$
+ lines = lines[ lines != "" ] 
 
  if(FALSE) { # Doesn't behave. Duplicates!
    header = lines[-1]
@@ -44,7 +48,7 @@ function(lines)
                       names = sub("([^:]+):.*", "\\1", lines))
  }
 
- st = getStatus(status)
+# st = getStatus(status)
  header[["status"]] = st[["status"]]
  header[["statusMessage"]] = st[["message"]] 
  

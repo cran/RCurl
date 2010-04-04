@@ -7,6 +7,15 @@
 <h1></h1>
 
 <dl>
+
+
+  <dt>
+  <li>
+      In HTTP 300 replies, where we follow the location, we can end up
+    with the wrong Content-Type. Does libcurl give us the new header?
+  <dd>  See tests/airports.R in RHTMLForms/
+  
+  
   <dt>
   <li> Rather than looking at Content-Type, we also have to look at
   Content-Encoding to see if it is gzip or something binary.
@@ -321,6 +330,6 @@ u = getURLContent('http://www.omegahat.org/SVGAnnotation/shape.svgz', .opts = li
 <address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Tue Aug 25 12:55:10 PDT 2009
+Last modified: Thu Apr  1 09:53:54 PDT 2010
 <!-- hhmts end -->
 </body> </html>

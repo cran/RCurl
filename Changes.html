@@ -5,6 +5,29 @@
 
 <body>
 
+<h2>1.4-0</h2>
+<dl>
+
+
+  <dt>
+  <li> Minor but important <i>experimental</i> changes to the way the dynamic reader
+       process "HTTP 100 Continue" responses and gathering the header
+       from the actual call.
+  <dd>  Still needs mor refinement, but this should be an improvement.
+  
+  <dt>
+  <li> Added mimeTypeExtensions and guessMIMEType() function.
+  <dd> These are useful for mapping a file extension to the common
+       MIME type, valuable when uploading/including content in a POST request.
+</dl>
+
+<h2>1.3-2</h2>
+<dl>
+  <dt>
+  <li> Minor changes to parsing of HTTP header for 100 "continue" replies.
+  <dd>
+</dl>
+
 <h2>1.3-1</h2>
 
 <dl>
@@ -615,6 +638,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Sat Oct 31 09:50:55 PDT 2009
+Last modified: Thu Apr  1 09:43:27 PDT 2010
 <!-- hhmts end -->
 </body> </html>
