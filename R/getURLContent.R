@@ -7,7 +7,7 @@ getURLContent =
   # but now we use the dynamic reader.
   #
 function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary = NA, .opts = list(...),
-         header = dynCurlReader(curl, binary = binary),
+         header = dynCurlReader(curl, binary = binary, baseURL = url),
           isHTTP = length(grep('^[[:space:]]*http', url)) > 0)
 {
   if(!missing(curl))
