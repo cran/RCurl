@@ -11,9 +11,20 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     content.type = character()
 
     curHeaderStatus = -1
+    inBody = FALSE          # whether we are collecting content for the body or still working on the header
+    if(verbose)
+       cat("New  call to dynCurlReader:", baseURL, "\n")
+
     update = function(str) {
 
-	if((length(header) == 0 || curHeaderStatus %in% c(-1, 100)) && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
+        if(verbose)
+           cat("inBody? ", inBody, ", num bytes", nchar(str, "bytes"), "\n", sep = "")
+
+   
+#(length(header) == 0 || curHeaderStatus %in% c(-1, 100))
+                                                           # do we want a \\\n at the end of the string to avoid
+                                                           # matching lines with white space in the body.
+	if(!inBody && (length(str) == 0 || length(grep("^[[:space:]]+$", str)))) {
               # Found the end of the header so wrapup the text and put it into the header variable
           oldHeader = header
 	  header <<- c(txt, "")
@@ -51,6 +62,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
              # a blank line.  
           if(is.na(http.header["status"])) {
              header <<- character()
+             inBody <<- FALSE
              return( nchar(str, "bytes") )
           }
           
@@ -66,6 +78,11 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           } else {
              curlSetOpt(writefunction = update, .encoding = content.type["charset"], curl = curl)
           }
+
+          inBody <<- TRUE
+          if(verbose)
+    	     print(header)
+
         } else {
           txt <<- c(txt, str)
           if (!is.na(max) && nchar(txt) >= max) 
@@ -78,6 +95,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     reset = function() {
         txt <<- character()
     }
+
     val = if(missing(value))
              function(collapse = "", ...) {
                 if(!is.null(buf)) {

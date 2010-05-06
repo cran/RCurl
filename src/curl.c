@@ -7,6 +7,8 @@ static char RCurlErrorBuffer[1000] = "<not set>";
 
 #define R_CURL_CHECK_ERROR(status, handle) 	if(status != CURLE_OK) getCurlError(handle, 1);
 
+#define MIN(a,b) ((a) < (b) ? (a)  : (b))
+
 
 /* Callback routines that can be used to call R functions as handlers.  */
 size_t R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *);
@@ -18,7 +20,13 @@ int R_curl_progress_callback (SEXP fun, double total, double now, double uploadT
 CURLcode R_curl_ssl_ctx_callback(CURL *curl, void *sslctx, void *parm);
 size_t R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream);
 size_t R_curl_read_file_callback(void *ptr, size_t size, size_t nmemb, void *stream);
-
+size_t R_curl_read_buffer_callback(void *ptr, size_t size, size_t nmemb, void *stream);
+typedef struct BufInfo {
+    size_t length;
+    size_t pos;
+    void *buf;
+    void *cur;
+} BufInfo;
 
 void * getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *handle);
 SEXP makeCURLcodeRObject(CURLcode val);
@@ -201,6 +209,14 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 		} else if(opt == CURLOPT_READFUNCTION && TYPEOF(el) == CLOSXP) {
 			status =  curl_easy_setopt(obj, opt, &R_curl_read_callback);
 			status =  curl_easy_setopt(obj, CURLOPT_READDATA, val);
+		} else if(opt == CURLOPT_READFUNCTION && TYPEOF(el) == RAWSXP) {
+		        BufInfo *buf = (BufInfo *) malloc(sizeof(BufInfo));
+			status =  curl_easy_setopt(obj, opt, &R_curl_read_buffer_callback);
+			buf->length = Rf_length(el);
+			buf->pos = 0;
+			buf->buf = RAW(el);
+			buf->cur = buf->buf;
+			status =  curl_easy_setopt(obj, CURLOPT_READDATA, buf);
 		} else if(opt == CURLOPT_READDATA) {
 		    /* status = curl_easy_setopt(obj, CURLOPT_READFUNCTION, &R_curl_read_file_callback); */
 			status = curl_easy_setopt(obj, CURLOPT_READDATA, val);
@@ -253,6 +269,23 @@ R_openFile(SEXP r_filename, SEXP r_mode)
     SET_SLOT(r_ans, Rf_install("ref"), R_MakeExternalPtr(ans, Rf_install("FILE"), R_NilValue));
     UNPROTECT(2);
     return(r_ans);
+}
+
+size_t 
+R_curl_read_buffer_callback(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+    BufInfo *buf = (BufInfo *) stream;
+    size_t numBytes;
+
+    if(buf->pos >= buf->length)
+	return(0);
+
+    numBytes = MIN(size * nmemb, buf->length - buf->pos + 1);
+    memcpy(ptr, buf->cur, numBytes);
+    buf->cur += numBytes;
+    buf->pos += numBytes;
+
+    return(numBytes);
 }
 
 size_t 

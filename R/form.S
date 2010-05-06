@@ -96,7 +96,7 @@ function(uri, ...,
      .opts[["file"]] = buf@ref
      .opts[["headerfunction"]] = header$update
    } else {
-     write = dynCurlReader(curl, verbose = FALSE, binary = binary)
+     write = dynCurlReader(curl, verbose = FALSE, binary = binary, baseURL = uri)
      # .opts[["writefunction"]] = write$update
      .opts[["headerfunction"]] = write$update     
    }
