@@ -36,7 +36,9 @@ function()
                               headerIn = character(),
                               headerOut = character(),
                               dataIn = character(),
-                              dataOut = character())
+                              dataOut = character(),
+                              sslDataIn = character(),
+                              sslDataOut = character())
                      }
 
   ans = list(update = update,
