@@ -157,7 +157,7 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 		opt = INTEGER(opts)[i];
 		el = VECTOR_ELT(values, i);
   		   /* Turn the R value into something we can use in libcurl. */
-		val = getCurlPointerForData(el, opt, LOGICAL(isProtected)[0], obj);
+		val = getCurlPointerForData(el, opt, LOGICAL(isProtected)[ i % n ], obj);
 
                 if(opt == CURLOPT_WRITEFUNCTION && TYPEOF(el) == CLOSXP) {
 			data->fun = val; useData++;
@@ -314,7 +314,7 @@ R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 	if(TYPEOF(ans) == RAWSXP) {
 	    len = Rf_length(ans);
 	    if(len > size * nmemb) {
-		PROBLEM  "the read function returned too much data (%d > %d)", len, size * nmemb
+		PROBLEM  "the read function returned too much data (%lf > %lf)", (double) len, (double) (size * nmemb)
 		    ERROR;
 	    }
 
@@ -365,11 +365,12 @@ R_post_form(SEXP handle, SEXP opts, SEXP params, SEXP isProtected, SEXP r_style)
 	} else {
 	    const char *body;
 	    body = CHAR(STRING_ELT(params, 0));
-	    curl_easy_setopt(obj, CURLOPT_POSTFIELDS, body);
+	    if(body && body[0])
+		curl_easy_setopt(obj, CURLOPT_POSTFIELDS, body);
 	}
 
 	if(GET_LENGTH(opts)) 
-		R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected, R_NilValue);
+	   R_curl_easy_setopt(handle, VECTOR_ELT(opts, 1), VECTOR_ELT(opts, 0), isProtected, R_NilValue);
 
 	status = curl_easy_perform(obj);
 	
@@ -722,6 +723,10 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 	void *ptr = NULL;
 	int i, n;
 
+
+	if(el == R_NilValue)
+	    return(ptr);
+
 	switch(TYPEOF(el)) {
 	    case STRSXP:
 		    if(option == CURLOPT_HTTPHEADER ||
@@ -748,8 +753,9 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    }
   	      break;
   	    case CLOSXP:
-		    if(!isProtected)
-		       R_PreserveObject(el);
+  		    if(!isProtected) {
+			R_PreserveObject(el);
+		    }
 		    ptr = (void *) el;
   	      break;
 
@@ -1141,13 +1147,23 @@ R_finalizeCurlHandle(SEXP h)
    CURL *curl = getCURLPointerRObject(h);
 
    if(curl) {
-     /* fprintf(stderr, "Clearing %p\n", (void *)curl);fflush(stderr);  */
+#ifdef RCURL_DEBUG_MEMORY
+     fprintf(stderr, "Clearing %p\n", (void *)curl);fflush(stderr);  
+#endif
 
      CURLOptionMemoryManager *mgr = RCurl_getMemoryManager(curl);
      curl_easy_cleanup(curl);
      RCurl_releaseManagerMemoryTickets(mgr); 
    }
 }
+
+SEXP
+R_test_finalizeCurlHandle(SEXP h)
+{
+    R_finalizeCurlHandle(h);
+    return(ScalarLogical(TRUE));
+}
+
 
 SEXP
 makeCURLPointerRObject(CURL *obj, int addFinalizer)
@@ -1170,8 +1186,12 @@ makeCURLPointerRObject(CURL *obj, int addFinalizer)
 	PROTECT(ans = NEW(klass));
 	PROTECT(ref = R_MakeExternalPtr((void *) obj, Rf_install("CURLHandle"), R_NilValue));
 
-	if(addFinalizer)
+	if(addFinalizer) {
+#ifdef RCURL_DEBUG_MEMORY
+	    fprintf(stderr, "adding finalizer to curl object %p\n", obj);fflush(stderr);
+#endif
 	    R_RegisterCFinalizer(ref, R_finalizeCurlHandle);
+	}
 	ans = SET_SLOT(ans, Rf_install("ref"), ref);
 
 	UNPROTECT(3);
@@ -1550,4 +1570,16 @@ R_get_Cookies(SEXP handle, SEXP fileName)
    return(Rf_ScalarLogical(status));
 }
 #endif
+
+
+
+
+SEXP
+R_global_releaseObject(SEXP obj)
+{
+    fprintf(stderr, "releasing %p\n", obj);
+    Rf_PrintValue(obj);
+    R_ReleaseObject(obj);
+    return(R_NilValue);
+}
 

@@ -5,8 +5,14 @@ ftpUpload =
 function(what, to, asText = inherits(what, "AsIs") || is.raw(what),
           ..., curl = getCurlHandle())
 {
+  if(!asText && !inherits(what, "connection")) {
+    file = file(what, "rb")
+    on.exit(close(file))
+  } else
+     file = what
+  
   curlPerform(url = to, upload = TRUE,
-              readfunction = uploadFunctionHandler(what, asText), ..., curl = curl)
+              readfunction = uploadFunctionHandler(file, asText), ..., curl = curl)
 }
 
 uploadFunctionHandler =
@@ -17,8 +23,6 @@ uploadFunctionHandler =
   #
 function(file, asText = inherits(file, "AsIs") || is.raw(file))
 {
-  if(!asText && !inherits(file, "connection"))
-    file = file(file, "rb")
 
   if(asText) {
       pos = 1

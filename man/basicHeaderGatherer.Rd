@@ -14,7 +14,7 @@
 }
 \usage{
 basicHeaderGatherer(txt = character(), max = NA)
-parseHTTPHeader(lines)
+parseHTTPHeader(lines, multi = TRUE)
 }
 \arguments{
   \item{txt}{any initial text that we want included with the header.
@@ -24,7 +24,15 @@ parseHTTPHeader(lines)
       \code{\link{basicTextGatherer}}}
    \item{lines}{ the text as a character vector from the response header
      that
-     \code{parseHTTPHeader} will convert to a status and name-value pairs.} 
+     \code{parseHTTPHeader} will convert to a status and name-value
+     pairs.} 
+   \item{multi}{a logical value controlling whether we check for
+     multiple HTTP headers in the lines of text. This is caused
+     by a Continue being concatenated with the actual response.
+     When this is \code{TRUE}, we look for the lines
+     that start an HTTP header, e.g. \code{HTTP 200 ...},
+     and we use the content from the last of these.
+    }
 }
 \value{
   The return value is the same as \code{\link{basicTextGatherer}},

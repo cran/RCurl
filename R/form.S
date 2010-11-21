@@ -61,6 +61,7 @@ function(uri, ...,
   write = NULL
   noCurlOptions = missing(.opts)
 
+
   if(!is.na(style)) {
       # The style of the post, i.e. HTTPPOST or regular POST,
       # i.e. www-form-encoded or
@@ -87,26 +88,21 @@ function(uri, ...,
  buf = NULL
  header = basicTextGatherer()
  if(!hasOwnWrite) {
-   # write = basicTextGatherer()
-   if(FALSE) {
-     .len = 5000L
-     write = basicTextGatherer()
-     .opts[["writefunction"]] = getNativeSymbolInfo("R_curl_write_binary_data")$address
-     buf = binaryBuffer(.len)
-     .opts[["file"]] = buf@ref
-     .opts[["headerfunction"]] = header$update
-   } else {
      write = dynCurlReader(curl, verbose = FALSE, binary = binary, baseURL = uri)
-     # .opts[["writefunction"]] = write$update
-     .opts[["headerfunction"]] = write$update     
-   }
+          # Defer the setting of the writefunction until we need to set it
+          # When we finish with the header, we'll set the writefunction.
+          # .opts[["writefunction"]] = write$update
+     .opts[["headerfunction"]] = write$update
+
+   on.exit(cleanupDynReader(NULL, curl))   
+   isProtected = rep(isProtected, length(.opts))
+   isProtected[length(isProtected)] = TRUE   
 
 #   .opts[["writefunction"]] = write$update
- }
+   }
 
-  # Force the curlOptions to be resolved at this point, but not set.
+  # Force the curlOptions to be resolved at this point, but not set. So pass curl = NULL
   optionNames = names(.opts)
-
   .opts = curlSetOpt(url = uri, .opts = .opts, curl = NULL, .encoding = .encoding)
 
 #  curlOptions[["httpost"]] <- .params
@@ -133,7 +129,7 @@ function(uri, ...,
   
   status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")
 
-  if(!isProtected) {
+  if(any(!isProtected)) {
      # Reset the httppost field to NULL so we can release the values.
      # curlSetOpt(httppost = FALSE, curl = curl)
      curlSetOpt(httpget = TRUE, curl = curl)
@@ -147,6 +143,15 @@ function(uri, ...,
   #XXX what if write is NULL - what do we return?
 }  
 
+
+cleanupDynReader =
+function(fun, curl)
+{
+   curlSetOpt(writefunction = NULL, curl = curl)
+   if(!is.null(fun))
+      .Call("R_global_releaseObject", fun)
+   TRUE
+}
 
 
 fileUpload =
