@@ -209,7 +209,8 @@ curlSetOpt =
   # when they set the options.
   # This could go as most people will call this having already created
   # the CURL object.
-function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .forceHeaderNames = FALSE)
+function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .forceHeaderNames = FALSE,
+         .isProtected = FALSE)
 {
  .opts = curlOptions(..., .opts = .opts)
 
@@ -239,7 +240,8 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .fo
      }
 
      if(!is.null(curl)) {
-       status = .Call("R_curl_easy_setopt", curl, .opts, optIds, FALSE, as.integer(.encoding), PACKAGE = "RCurl")
+       .isProtected = rep(.isProtected, length(.opts))
+       status = .Call("R_curl_easy_setopt", curl, .opts, optIds, .isProtected, as.integer(.encoding), PACKAGE = "RCurl")
        return(curl)
      }
   } else

@@ -1,21 +1,24 @@
 parseHTTPHeader =
   #
-  # 
-  #
   # Reads the lines from the HTTP response 
   # header and converts them into a
   # name=value  collection as a character vector.
   #
   # returns a named list of the fields. Allows duplicates.
-function(lines)
+function(lines, multi = TRUE)
 {
  if(length(lines) < 1)
    return(NULL)
 
  if(length(lines) == 1)
     lines = strsplit(lines, "\r\n")[[1]]
- 
- status = lines[1]
+
+ if(multi) {
+    i = grep("^HTTP", lines)
+    status = lines[max(i)]
+    lines = lines[seq(max(i), length(lines))]
+ } else
+    status = lines[1]
 
    # Get the status and if it is 100, then throw away the first 2 lines
    #  e.g. HTTP/1.1 100 Continue

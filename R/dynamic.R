@@ -19,7 +19,6 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
 
         if(verbose)
            cat("inBody? ", inBody, ", num bytes", nchar(str, "bytes"), "\n", sep = "")
-
    
 #(length(header) == 0 || curHeaderStatus %in% c(-1, 100))
                                                            # do we want a \\\n at the end of the string to avoid
@@ -34,7 +33,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           if(http.header[["status"]] == 100) { # && length(http.header) == 2)
                curHeaderStatus <<- 100
                    # see if there are any attributes to keep other than status and statusMessage.
-               val.ids = setdiff(names(http.header), c("status", "statusMessage"))
+               val.ids = setdiff(names(http.header), c("status", "statusMessage", "message"))  # ?? should we add "message"
 
                if(length(val.ids))
                  header <<- http.header[val.ids]
@@ -74,9 +73,10 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
              buf <<- binaryBuffer(len)
              if(verbose) cat("Reading binary data:", content.type, "\n")
              curlSetOpt(writefunction = getNativeSymbolInfo("R_curl_write_binary_data")$address,
-                        file = buf@ref, curl = curl)      
+                        file = buf@ref, curl = curl, .isProtected = c(TRUE, FALSE))
           } else {
-             curlSetOpt(writefunction = update, .encoding = content.type["charset"], curl = curl)
+             curlSetOpt(writefunction = update, .encoding = content.type["charset"], curl = curl,
+                          .isProtected = TRUE)
           }
 
           inBody <<- TRUE

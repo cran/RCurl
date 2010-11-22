@@ -10,7 +10,8 @@
 }
 \usage{
 curlSetOpt(..., .opts = list(), curl = getCurlHandle(),
-            .encoding = integer(), .forceHeaderNames = FALSE)
+            .encoding = integer(), .forceHeaderNames = FALSE,
+             .isProtected = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +39,16 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle(),
     This removes any ambiguity caused by the presence of ':' in the
     values  appearing to be the separator between the name and the value
     of the \code{name: value} pairs of the HTTP header.}
+  \item{.isProtected}{
+   a logical vector (or value that is repeated) specifying which 
+   of the values in \dots and \code{.opts} needs to be explicitly
+   protected from garbage collection or not.
+   The basic idea is that we specify \code{FALSE} if
+   the value being set for the curl option may be garbage collected
+   before the \code{curl} handle is garbage collected.  This would leave 
+   the \code{curl} object in an inconsistent state, referring to an R
+   object (i.e. an R function), which may be used after the R object has been garbage collected. 
+  }
 }
 \value{
   An integer value giving the status of the return.
