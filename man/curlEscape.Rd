@@ -16,7 +16,7 @@
 \usage{
 curlEscape(urls)
 curlUnescape(urls)
-curlPercentEncode(x, amp = TRUE, codes = PercentCodes)
+curlPercentEncode(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,6 +28,9 @@ curlPercentEncode(x, amp = TRUE, codes = PercentCodes)
   \item{codes}{the named character vector giving the encoding map. The
     names are the characters we encode, the values are what we encode them
     as.}
+  \item{post.amp}{a logical value controlling whether the resulting
+  string is further processed to escape the percent (\%) prefixes with
+  the code for percent, i.e. \%25.}
 }
 \details{
   This calls \code{curl_escape} or \code{curl_unescape} in the libcurl library.

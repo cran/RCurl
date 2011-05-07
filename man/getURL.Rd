@@ -239,7 +239,7 @@ print(paste(h$value(NULL)[-1], collapse=""))
  attr(x, "Content-Type")
 
  curl = getCurlHandle()
- dd = getURLContent("http://eeyore.ucdavis.edu/IO.pdf",
+ dd = getURLContent("http://www.omegahat.org/RJSONIO/RJSONIO.pdf",
                     curl = curl,
                     header = dynCurlReader(curl, binary = TRUE,
                                            value = function(x) {

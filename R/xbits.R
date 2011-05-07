@@ -6,8 +6,17 @@ function(val, defValues, className, prefix = NA)
     if(!is.na(prefix) && any(is.na(i))) {
       i[is.na(i)] = pmatch(paste(prefix, val[i], sep = ""), names(defValues))
     }
-  } else
+  } else {
+        # check for a single scalar value
     i = match(val, defValues)
+        # we didn't get a match, check for a combination
+    if(any(is.na(i))) {
+       tmp = sapply(defValues, function(x) bitAnd(val, x))
+       i = which(tmp != 0)
+       if(length(i) == 0)
+          stop("can't match ", val, " to elements of bitwise enumeration: ", paste(names(defValues), collapse = ", "))
+    }
+  }
 
   if(any(is.na(i)))
     stop("unmatched name(s) ", val[is.na(i)])
@@ -35,20 +44,44 @@ BitwiseValue =
   #
 function(val, name = names(val),
          class = if(is(val, "BitwiseValue")) class(val) else "BitwiseValue",
-         asVector = TRUE, S3 = FALSE)
+         asVector = TRUE, S3 = FALSE,
+         defValues = getEnumValues(class, name))
 {
   if(length(val) > 1 &&  !asVector) {
-    lapply(seq(along = val), function(i) BitwiseValue(val[i], name[i], class))
+      lapply(seq(along = val), function(i) BitwiseValue(val[i], name[i], class))
   } else {
     if(FALSE && S3) {
       ans = structure(val, names = name, class = unique(c(class, "BitwiseValue")))
     } else {
+      if(is(val, "character")) {
+         if(missing(name))
+           name = val
+
+         i = match(val, names(defValues))
+         if(any(is.na(i)))
+           raiseEnumError(val, defValues, TRUE, FALSE, index = i)
+         
+         val = defValues[i]
+      }
+      
       ans =  new(class, val)
       names(ans) = name
     }
     ans
   }
-}  
+}
+
+getEnumValues =
+function(class = NA, ids = character())
+{
+  if(!is.na(class)) {
+     var = sprintf("%sValues", class)
+     if(exists(var))
+       return(get(var))
+  }
+
+  structure(sapply(ids, get), names = ids)
+}
 
 
 setAs("BitwiseValue", "numeric",
