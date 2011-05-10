@@ -10,7 +10,8 @@ function(name, multiple = FALSE)
 
 
 otherMIMETypes = c("r" = "text/R-code", # perhaps x-application/r-code
-                   "svg" = "image/svg+xml")
+                   "svg" = "image/svg+xml",
+                   "json" = "application/json")
 
 guessMIMEType =
   #

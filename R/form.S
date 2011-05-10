@@ -113,7 +113,7 @@ function(uri, ...,
      .params = paste(
                   sapply(names(tmp),
                          function(id)
-                             paste(id, .contentEncodeFun(tmp[[id]]), sep = "=")),
+                             paste(id, if(is(tmp[[id]], "AsIs")) tmp[[id]] else .contentEncodeFun(tmp[[id]]), sep = "=")),
                   collapse = "&")
             
    } else
@@ -123,7 +123,7 @@ function(uri, ...,
   if(length(.params) == 0) {
     postfields = getCurlOptionsConstants()["postfields"]
     if(!(postfields  %in% .opts$ids))
-      warning("No inputs passed to form")
+       warning("No inputs passed to form")
   } else if(noCurlOptions && .checkParams)
     testCurlOptionsInFormParameters(.params)
   

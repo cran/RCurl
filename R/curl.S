@@ -336,10 +336,10 @@ PercentCodes = c(
 	'#' = "%23",
 	'[' = "%5B",
 	']' = "%5D",
-        ' ' = '+')
+        ' ' = '%20')
 
 curlPercentEncode =
-function(x, amp = TRUE, codes = PercentCodes)
+function(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
 {
   if(!amp) {
      i = match("&", names(codes))
@@ -347,8 +347,24 @@ function(x, amp = TRUE, codes = PercentCodes)
        codes = codes[ - i ]
    }
   
-  for(i in seq(along = codes))
+  for(i in seq(along = codes)) {
      x = gsub(names(codes)[i], codes[i], x, fixed = TRUE)
-  
+  }
+
+  if(post.amp)
+     x = gsub("%", "%25", x, fixed = TRUE)
   x              
+}
+
+esc =
+  #
+  # An alternative approach.
+  #
+function(x, codes = RCurl:::PercentCodes)
+{
+  els = strsplit(x, "")[[1]]
+  i =  match(els, names(codes), 0L)
+  
+  els[ i != 0 ] = codes[ i ]
+  paste(els, collapse = "")
 }

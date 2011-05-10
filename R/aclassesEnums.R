@@ -97,15 +97,14 @@ makeSymbolicVariables =
   #
 function(def, className = class(def), where = globalenv())
 {
-  sapply(names(def),
+  invisible(sapply(names(def),
           function(i) {
             if(is(def, "BitwiseValue"))
               el = BitwiseValue(def[i], i, class =  className)
             else
               el = def[i]
             assign(i, el, where)
-          })
-
+          }))
 }  
 
 cumBitOr = bitlist =
@@ -164,31 +163,7 @@ function(val, values, class = values@EnumName, fromString = NA,
      i = match(val, values)
 
   if(any(is.na(i))) {
-      # see if we can find values that were close to the ones the user gave us incorrectly.
-    if(fromString) {
-      possibles = names(values)[m <- agrep(val[is.na(i)], names(values))]
-    } else {
-      possibles = values[ m <- agrep(as.character(val), as.character(values)) ] 
-    }
-    if(length(possibles)) {
-      txt = paste("\n\tPerhaps you meant",  if(length(possibles) > 1) "one of", paste(possibles, collapse = ", "))
-      txt = paste("No such value(s) ", val[is.na(i)], " in ", paste(names(values), collapse = ", "), txt, sep = "")
-
-      msg = list(message = txt, call = NULL,
-                 possibleValues = possibles,
-                 class = class)
-
-      if(fixCloseMatches && all(!is.na(m))) {
-        class(msg) =  c("EnumCoercionWarning", "warning", "condition")                
-        warning(msg)
-        i[is.na(i)] = m
-      } else {
-        class(msg) =  c("EnumCoercionError", "error", "condition")
-        stop(msg)
-      }
-    }
-    else 
-      stop("No such value(s) ", val[is.na(i)], " in ", paste(names(values), collapse = ", "))
+      i = raiseEnumError(val, values, fromString, fixCloseMatches, index = i)
   }
 
   if(S3) {
@@ -215,3 +190,36 @@ function(name, val, class = "EnumValue", S3 = FALSE)
   
   ans
 }  
+
+
+raiseEnumError =
+function(val, values, fromString = is(fromString, "character"), fixCloseMatches = TRUE,
+          index = match(val, if(fromString) names(values) else values))
+{
+        # see if we can find values that were close to the ones the user gave us incorrectly.
+    if(fromString) {
+      possibles = names(values)[m <- agrep(val[is.na(index)], names(values))]
+    } else {
+      possibles = values[ m <- agrep(as.character(val), as.character(values)) ] 
+    }
+    if(length(possibles)) {
+      txt = paste("\n\tPerhaps you meant",  if(length(possibles) > 1) "one of", paste(possibles, collapse = ", "))
+      txt = paste("No such value(s) ", val[is.na(index)], " in ", paste(names(values), collapse = ", "), txt, sep = "")
+
+      msg = list(message = txt, call = NULL,
+                 possibleValues = possibles,
+                 class = class)
+
+      if(fixCloseMatches && all(!is.na(m))) {
+        class(msg) =  c("EnumCoercionWarning", "warning", "condition")                
+        warning(msg)
+        index[is.na(index)] = m
+        return(index)
+      } else {
+        class(msg) =  c("EnumCoercionError", "error", "condition")
+        stop(msg)
+      }
+    }
+    else 
+      stop("No such value(s) ", val[is.na(index)], " in ", paste(names(values), collapse = ", "))
+}

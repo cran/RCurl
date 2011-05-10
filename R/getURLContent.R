@@ -93,13 +93,28 @@ function(header, full = FALSE)
 }
 
 # See http://www.iana.org/assignments/media-types/
-textContentTypes = c("html", "text", "xhtml", "plain", "xml", "x-latex", "css", "latex", "sgml", "postscript", "texinfo",
-                     "atom+xml")
+textContentTypes = c("html", "text", "xhtml", "plain", "xml", "x-latex", "css", "latex",
+                     "sgml", "postscript", "texinfo", "ecmascript", "javascript",
+                     "atom+xml", "json")
 
 isBinaryContent =
+  #
+  #  type can be given as a list intended to be separate  header elements
+  #  e.g. Content-Type, Content-Encoding, etc.
+  #  Each can be a vector.
+  #
 function(header, type = getContentType(header)[1],
           textTypes = getOption("text.content.types"))
 {
+   if(is.list(type) && length(type) > 1) {
+     last <- TRUE
+     for(i in type) {
+        if(!is.na(i) && (last <- isBinaryContent(, i, textTypes)))
+          return(TRUE)
+     }
+     return(FALSE)
+   }
+  
    if(length(type) == 0)
      return(NA)
   
