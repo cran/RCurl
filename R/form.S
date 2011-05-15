@@ -83,7 +83,7 @@ function(uri, ...,
 
    # Need to organize the types here into a structure.
 
- hasOwnWrite = "writefunction" %in% names(.opts)
+ hasOwnWrite = !any(c("writefunction", "headerfunction") %in% names(.opts))
 
  buf = NULL
  header = basicTextGatherer()
