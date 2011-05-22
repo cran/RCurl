@@ -19,11 +19,11 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
     testCurlOptionsInFormParameters(.params)
   
     # Convert the arguments into a URL string.
-  els = sapply(names(.params), function(n) {
+  els = mapply(function(id, val) {
                               # turn name=c("a", "b") into
                               #  name=a&name=b
-                                paste(n, curlEscape(.params[[n]]), sep="=", collapse="&")
-                               })
+                                paste(id, curlEscape(val), sep="=", collapse="&")
+               }, names(.params), .params)
 
    args = paste(els, collapse="&")
 
@@ -83,7 +83,7 @@ function(uri, ...,
 
    # Need to organize the types here into a structure.
 
- hasOwnWrite = !any(c("writefunction", "headerfunction") %in% names(.opts))
+ hasOwnWrite = any(c("writefunction", "headerfunction") %in% names(.opts))
 
  buf = NULL
  header = basicTextGatherer()

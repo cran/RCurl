@@ -42,7 +42,7 @@ f = CFILE(filename)
 curlPerform(url = "http://s3.amazonaws.com/RRupload/duncan2",
               upload = TRUE,
               readdata = f@ref,
-              infilesize = file.info("tests/amazon3.R")[1, "size"])
+              infilesize = file.info(filename)[1, "size"])
 }
 }
 \keyword{IO}

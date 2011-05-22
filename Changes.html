@@ -5,8 +5,39 @@
 
 <body>
 
+<h2>1.6-4</h2>
+<dl>
+  <dt>
+  <li> Fix for uploading data from memory in PUT or POST with the
+      readfunction option. There was an off by one error that caused
+      an extra byte to be upload in some/most circumstances.
+  <dd>
 
-<h2>1.6-0</h2>
+  <dt>
+  <li> Workaround in C code underlying getURIAsynchronous()  that fails on
+       Fedora 14 with libcurl 7.21.*
+  <dd> See http://lists.gnu.org/archive/html/gnash-dev/2010-08/msg00156.html
+</dl>
+
+<h2>1.6-3</h2>
+<dl>
+  <dt>
+  <li> getForm() now correctly processes multiple instances of a
+      form parameter with the same name rather than using the value of
+      the first  version, e.g. arg1 = 'bob', arg1 = 'jane'.
+      Found by  Richard Cotton.
+  <dd>
+</dl>
+
+<h2>1.6-2</h2>
+<dl>
+  <dt>
+  <li> Correction of bug fix in 1.6-1 to ensure results are
+      returned. 
+  <dd>
+</dl>
+
+<h2>1.6-1</h2>
 <dl>
   <dt>
   <li> Changed postForm() to not register a headerfunction if either
@@ -730,6 +761,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Sat May 14 07:41:33 PDT 2011
+Last modified: Sat May 21 10:25:28 PDT 2011
 <!-- hhmts end -->
 </body> </html>

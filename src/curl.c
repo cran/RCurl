@@ -280,7 +280,7 @@ R_curl_read_buffer_callback(void *ptr, size_t size, size_t nmemb, void *stream)
     if(buf->pos >= buf->length)
 	return(0);
 
-    numBytes = MIN(size * nmemb, buf->length - buf->pos + 1);
+    numBytes = MIN(size * nmemb, buf->length - buf->pos); /* used to have +1 */
     memcpy(ptr, buf->cur, numBytes);
     buf->cur += numBytes;
     buf->pos += numBytes;
@@ -1479,7 +1479,7 @@ R_curlMultiPerform(SEXP m, SEXP repeat)
 				 &exc_fd_set,
 				 &max_fd);
 
-        if(state != CURLM_OK || max_fd == -1) {
+        if(state != CURLM_OK /* || max_fd == -1 */) {
            PROBLEM "curl_multi_fdset"
            ERROR;
 	}
