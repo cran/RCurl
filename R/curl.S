@@ -336,7 +336,9 @@ PercentCodes = c(
 	'#' = "%23",
 	'[' = "%5B",
 	']' = "%5D",
-        ' ' = '%20')
+        ' ' = '%20',
+        '\r' = '%0D',
+        '\n' = '%OA')
 
 curlPercentEncode =
 function(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
