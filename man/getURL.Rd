@@ -256,7 +256,10 @@ filenames = getURL(url, ftp.use.epsv = FALSE, dirlistonly = TRUE)
   # filenames = getURL(url, ftp.use.epsv = FALSE, ftplistonly = TRUE, crlf = TRUE)
 filenames = paste(url, strsplit(filenames, "\r*\n")[[1]], sep = "")
 con = getCurlHandle( ftp.use.epsv = FALSE)
-contents = sapply(filenames[1:5], getURL, curl = con)
+  # there is a slight possibility that some of the files that are
+  # returned in the directory listing and in filenames will disappear
+  # when we go back to get them. So we use a try() in the call getURL.
+contents = sapply(filenames[1:5], function(x) try(getURL(x, curl = con)))
 names(contents) = filenames[1:length(contents)]
    
 }
