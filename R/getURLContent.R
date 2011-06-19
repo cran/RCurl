@@ -55,7 +55,7 @@ function(ans, header, .encoding = NA)
   stop.if.HTTP.error(http.header)  
 
   content.type = getContentType(http.header)
-  binary = isBinaryContent(, content.type)
+  binary = isBinaryContent(http.header, content.type)
   if(!(is.na(binary) || binary)) {
      ans = rawToChar(ans)
      if(length(.encoding)  == 0 || is.na(.encoding)) {
@@ -111,10 +111,10 @@ function(header, type = getContentType(header)[1],
    if(is.list(type) && length(type) > 1) {
      last <- TRUE
      for(i in type) {
-        if(!is.na(i) && (last <- isBinaryContent(, i, textTypes)))
+        if(length(i) && !is.na(i) && (last <- isBinaryContent(header, i, textTypes)))
           return(TRUE)
      }
-     return(FALSE)
+     return(last)
    }
   
    if(length(type) == 0)

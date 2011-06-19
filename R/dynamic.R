@@ -54,7 +54,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           content.type <<- getContentType(http.header, TRUE)
 
           if(is.na(binary))
-            binary = isBinaryContent(, list(http.header["Content-Encoding"], content.type) )
+            binary = isBinaryContent(http.header, list(http.header["Content-Encoding"], content.type) )
           
 
              # This happens when we get a "HTTP/1.1 100 Continue\r\n" and then
