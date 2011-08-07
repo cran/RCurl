@@ -8,6 +8,19 @@
 
 <dl>
 
+<dt>
+potential problem with httpheader in RCurl
+when only one element in the vector. name seems to disappear.
+<code>
+curlPerform(url = "http://www.chemspider.com/MassSpecAPI.asmx", post = TRUE, postfields = body, verbose = TRUE, .opts = list(httpheader = c(SOAPAction = '"http://www.chemspider.com/GetExtendedCompoundInfo"', Accept = "text/xml")))
+</code>
+<code>
+curlPerform(url = "http://www.chemspider.com/MassSpecAPI.asmx", post = TRUE, postfields = body, verbose = TRUE, .opts = list(httpheader = c(SOAPAction = '"http://www.chemspider.com/GetExtendedCompoundInfo"')))
+</code>
+
+ <dd>
+
+
 
   <dt>
   <li>
@@ -330,6 +343,6 @@ u = getURLContent('http://www.omegahat.org/SVGAnnotation/shape.svgz', .opts = li
 <address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Thu Apr  1 09:53:54 PDT 2010
+Last modified: Fri Aug  5 12:40:50 PDT 2011
 <!-- hhmts end -->
 </body> </html>

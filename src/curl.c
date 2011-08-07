@@ -146,7 +146,7 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 
 	data = (RWriteDataInfo *) calloc(1, sizeof(RWriteDataInfo));
 	data->encoding = CE_LATIN1;
-	if(Rf_length(encoding)) {
+	if(Rf_length(encoding) && INTEGER(encoding)[0] != NA_INTEGER ) {
  	    data->encoding =  INTEGER(encoding)[0];
 	    data->encodingSetByUser = 1;
 	} 
@@ -996,15 +996,16 @@ checkEncoding(char *buffer, size_t len, RWriteDataInfo *data)
 
 	UNPROTECT(1);
 	
-	if(ans != -1)
+	if(ans != -1) {
 	    data->encoding = ans;
+	}
 }
 
 
 size_t
 R_curl_write_header_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data)
 {
-    if(data->nobody == 0 && data->encodingSetByUser == 0)
+    if(data->nobody == 0 && data->encodingSetByUser == 0) 
         checkEncoding(buffer, nmemb*size, data);
 
     if(data->headerFun) {
