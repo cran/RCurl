@@ -94,6 +94,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
 
     reset = function() {
         txt <<- character()
+        header <<- character()
     }
 
     val = if(missing(value))

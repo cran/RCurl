@@ -221,7 +221,9 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .fo
       # a) we have names, and b) not all entries have a : at the start.
       # We have to be careful here. We got caught with a date having a :
       # and there being only one element in the header.
-    if(length(names(tmp)) && (.forceHeaderNames || length(grep("^[^[:space:]]+:", tmp)) != length(tmp)))
+      # Also tripped up if a header entry is http:... or ftp:...  since the : gets caught, but only
+      # if there is one.
+    if(length(names(tmp)) && (.forceHeaderNames || (length( grep("^[^[:space:]]+:", gsub("(ftp|http):", "", tmp))) != length(tmp))))
        .opts[["httpheader"]] = paste(names(tmp), tmp, sep = ": ")
   }
 
