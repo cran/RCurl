@@ -26,7 +26,8 @@
 }
 \usage{
 dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
-                value = NULL, verbose = FALSE, binary = NA, baseURL = NA)
+              value = NULL, verbose = FALSE, binary = NA, baseURL = NA,
+              isHTTP = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -60,6 +61,10 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
   \item{baseURL}{the URL of the request which can be used to follow
     links to other URLs that are described relative to this.
   }
+  \item{isHTTP}{a logical value indicating whether the request/download uses
+   HTTP or not. If this is \code{NA}, we determine this when the header
+   is received.  If the caller knows this is an FTP or other request,
+   they can specify this when creating the reader.}
 }
 \value{
   A list with 5 elements all of which are functions. These are

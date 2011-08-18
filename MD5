@@ -1,9 +1,9 @@
-12d10282b604e7f5544701bc8c192409 *Changes.html
+91974afbd026c77f95c2001bb996568f *Changes.html
 9d9866976d2f936d3390b98b2841d11e *CodeGeneration/enum.c
 1857e7ebca5c79bc818cb8486bdb6d2c *CodeGeneration/enum.c.t00.tu
 d580afffeeb956bc94f140041771156f *CodeGeneration/generate.R
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
-935e2f0dec1dd3f635f99dc2b2bf6b63 *DESCRIPTION
+c58ec94677c3365c84d38890ae84cf23 *DESCRIPTION
 aae4f28ae239569780facc5b799831fa *FAQ.html
 2f6f4dc1cb9afccf3c7c430fd4e8036e *NAMESPACE
 9756e0a829938cd57aaa5bdc7d8e3ebb *R/aclassesEnums.R
@@ -13,9 +13,9 @@ aff70c0e60cd1ad0f30f7740879d679d *R/binary.S
 5e427a2444939eab28ec2191bf9653eb *R/curl.S
 0b1ee266223233929abdbbf49e8e0d08 *R/curlEnums.R
 2775179e15585f553fdb561ecbe11d8b *R/curlInfo.S
-85ce7a07cb078d30298660ee1fe5e459 *R/dynamic.R
+9c0340eda617680fa49092cd6e305b89 *R/dynamic.R
 92f0e04db1c84a7b82a020220fc45c85 *R/form.S
-1c4d070ab7d7e155a8402fad9749f9a4 *R/getURLContent.R
+3c9fd7e5c4ea4b1771ab1890ded39570 *R/getURLContent.R
 0fe57cfd392052fc9f765e35e92dc355 *R/header.R
 09fd8b385e2e06250b78c831cd25dd24 *R/httpError.R
 4a750157a238c60c8ce234b493b653ea *R/httpErrors.R
@@ -112,7 +112,7 @@ fbfd511c5bbccb7001cc391e88fada05 *man/curlGlobalInit.Rd
 693e910e951afbf0eabb4cf27d3c7f6e *man/curlPerform.Rd
 85c0ab0e26890a368985ceebf5f35e20 *man/curlSetOpt.Rd
 a0daae1e8f5de3fd33936bf308a45b4f *man/curlVersion.Rd
-0e8ff68f7dd7c2546ade8367ca942e5d *man/dynCurlReader.Rd
+db07937e870f5bfece291348332dd83d *man/dynCurlReader.Rd
 fa1fd0863aedf7e3a66e73f66044475e *man/enums.Rd
 0382721d357c7e794ad0b0cf91dd573e *man/fileUpload.Rd
 929db5b50da92d52507498985c3c622e *man/findHTTPHeaderEncoding.Rd
@@ -122,7 +122,7 @@ bad9217462a07b62682dc32167963a1e *man/getBinaryURL.Rd
 1574259210cdc6e156cf509fd252f527 *man/getCurlHandle.Rd
 792ab825076b881f6c4e58af3758f3de *man/getCurlInfo.Rd
 bb3934e5c40d8e0279fdce28a4d5b6a7 *man/getURIAsynchronous.Rd
-84a17ed5ea80e2bf2f99de6cedcb253b *man/getURL.Rd
+cc845eb2047b995a001fd3434b6d16ce *man/getURL.Rd
 4b20a6920f8cf6832a4aa3673da01ef6 *man/guessMIMEType.Rd
 c4cf55c01b0b09d2d7ac147479428837 *man/merge.list.Rd
 99717893fe3dc9c913828b75a741678c *man/mimeTypeExtensions.Rd
@@ -138,7 +138,7 @@ dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
 6061d84e4f9bcaa63817ab7a8abc9031 *src/Makevars
 5c734d851758c9065cd0832030641c23 *src/Makevars.in
 7d1c72bba4427e18c5826ffe10a760d9 *src/Makevars.win
-d116992f19b4469f9055672cd03f9ace *src/Rcurl.h
+14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
 29131fea6cf93af5dfe4455f79b49faa *src/base64.c
 320aea1c31a940c269b1fd03c1c95c00 *src/curl.c
 d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c

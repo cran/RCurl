@@ -32,7 +32,8 @@ getURI(url, ..., .opts = list(), write = basicTextGatherer(),
          curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
 getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                binary = NA, .opts = list(...),
-               header = dynCurlReader(curl, binary = binary, baseURL = url),
+               header = dynCurlReader(curl, binary = binary,
+                                        baseURL = url, isHTTP = isHTTP),
                isHTTP = length(grep('^[[:space:]]*http', url)) > 0)
 }
 \arguments{
