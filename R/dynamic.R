@@ -4,7 +4,7 @@ dynCurlReader =
 # to harvest the body of the HTTP response.
 #
 function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE,
-          binary = NA, baseURL = NA) 
+          binary = NA, baseURL = NA, isHTTP = NA) 
 {
     header = character()    # for the header
     buf = NULL              # for a binary connection.
@@ -28,6 +28,10 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
           oldHeader = header
 	  header <<- c(txt, "")
           txt <<- character()
+          if(is.na(isHTTP)) 
+            isHTTP <<- length(grep("HTTP", header)) > 0
+
+      if(isHTTP) {
           http.header = parseHTTPHeader(c(header, str))
 
           if(http.header[["status"]] == 100) { # && length(http.header) == 2)
@@ -64,7 +68,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
              inBody <<- FALSE
              return( nchar(str, "bytes") )
           }
-          
+       }          
 
 	  if(verbose)
               cat("Setting option to read content-type", content.type[1], "character set", content.type["charset"], "\n")
