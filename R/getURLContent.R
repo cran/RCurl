@@ -12,10 +12,14 @@ function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary =
 {
   if(!missing(curl))
      curlSetOpt(.opts = .opts, curl = curl)
-  if(!'headerfunction' %in% names(.opts))
-    .opts$headerfunction = header$update
+  if(!'headerfunction' %in% names(.opts)) {
+    # .opts$headerfunction = header$update
+     protect = missing(header)
+     curlSetOpt(curl = curl, .isProtected = protect, headerfunction = header$update)
+   }
   
   curlPerform(url = url, curl = curl, .opts = .opts)
+  
   if(isHTTP && length(header$header())) {
     http.header = parseHTTPHeader(header$header())
     stop.if.HTTP.error(http.header)

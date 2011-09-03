@@ -1,10 +1,10 @@
-91974afbd026c77f95c2001bb996568f *Changes.html
+bab9390e751ea6ebe0577ff528541795 *Changes.html
 9d9866976d2f936d3390b98b2841d11e *CodeGeneration/enum.c
 1857e7ebca5c79bc818cb8486bdb6d2c *CodeGeneration/enum.c.t00.tu
 d580afffeeb956bc94f140041771156f *CodeGeneration/generate.R
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
-c58ec94677c3365c84d38890ae84cf23 *DESCRIPTION
-aae4f28ae239569780facc5b799831fa *FAQ.html
+fd17c3a53147f05b805d654c1255ceae *DESCRIPTION
+80188c6dcc47bdf071e9075d5bee05c5 *FAQ.html
 2f6f4dc1cb9afccf3c7c430fd4e8036e *NAMESPACE
 9756e0a829938cd57aaa5bdc7d8e3ebb *R/aclassesEnums.R
 447faef269c96042a1a2381bf4a506a6 *R/base64.R
@@ -13,9 +13,9 @@ aff70c0e60cd1ad0f30f7740879d679d *R/binary.S
 5e427a2444939eab28ec2191bf9653eb *R/curl.S
 0b1ee266223233929abdbbf49e8e0d08 *R/curlEnums.R
 2775179e15585f553fdb561ecbe11d8b *R/curlInfo.S
-9c0340eda617680fa49092cd6e305b89 *R/dynamic.R
+3eaee319cd35961b0fda450f0dfcf68b *R/dynamic.R
 92f0e04db1c84a7b82a020220fc45c85 *R/form.S
-3c9fd7e5c4ea4b1771ab1890ded39570 *R/getURLContent.R
+4619ec497052ebe7369c55ff3e0db6ec *R/getURLContent.R
 0fe57cfd392052fc9f765e35e92dc355 *R/header.R
 09fd8b385e2e06250b78c831cd25dd24 *R/httpError.R
 4a750157a238c60c8ce234b493b653ea *R/httpErrors.R
@@ -34,10 +34,9 @@ f9be4a5ba86c2f2912e649843152f027 *Todo.html
 71300855b97e827f7c7db8315ea577d1 *configure
 c54adac529e344f29d5ef355085f255b *configure.in
 0dfbf81f67816148bc127e4ab1a96dca *configure.win
-f42683b3ae529d828b4c281c2f7d8876 *cookies.R
 0bfa05054630a1e2d17e1336f413a1d6 *data/mimeTypeExtensions.rda
+5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R
 c899ae813295bea44416a17fefeef83e *exampleCode/encoding.R
-681d7f90e95d2ce47fcd0ae48b98dfb2 *hang.R
 3ff9d631b3ee4b545e9904b0e805f6d9 *inst/CurlSSL/boost.pem
 83e2ea55aeb9fc9578554decfb0ec5f6 *inst/CurlSSL/ca-bundle.crt
 7b3368433875576c0893dc23c2230338 *inst/CurlSSL/cacert.pem
@@ -63,7 +62,6 @@ f4bf70b7c21ee7f7ff5e536bc195c680 *inst/examples/chunks.S
 c53c11f28e838c5a4ff23db25ff4b0d3 *inst/examples/cis1.R
 ab22c45ae4769777b45cb55e9e598a35 *inst/examples/concurrent.S
 441cd6928dd6efd433bbd981966c8c8e *inst/examples/concurrent.xml
-ffeb96f63444119757a15a78d5494497 *inst/examples/cookies.R
 5d0c8992d7cf892ea6fd28dd0b71b028 *inst/examples/curl.c
 79024da4698d4a6f1926c2bebc976ad9 *inst/examples/download.R
 742186e36e0c4ab4d06010e80bed620d *inst/examples/elapsed.png
@@ -110,7 +108,7 @@ b9c7c1d57e154f2ffd802791d3f8744f *man/curlEscape.Rd
 fbfd511c5bbccb7001cc391e88fada05 *man/curlGlobalInit.Rd
 0afc8e28df6cd59c1602186cc5b5199c *man/curlOptions.Rd
 693e910e951afbf0eabb4cf27d3c7f6e *man/curlPerform.Rd
-85c0ab0e26890a368985ceebf5f35e20 *man/curlSetOpt.Rd
+d74b4c95e010ad38f5f669df97ddc89a *man/curlSetOpt.Rd
 a0daae1e8f5de3fd33936bf308a45b4f *man/curlVersion.Rd
 db07937e870f5bfece291348332dd83d *man/dynCurlReader.Rd
 fa1fd0863aedf7e3a66e73f66044475e *man/enums.Rd
@@ -129,7 +127,6 @@ c4cf55c01b0b09d2d7ac147479428837 *man/merge.list.Rd
 e9c686452f3758d2125ae50e61146d14 *man/postForm.Rd
 d35a0e167fc40d5d71f2d24f2f1b9be9 *man/reset.Rd
 8f94b049589f18a57f36227eeaaeb5f6 *man/scp.Rd
-78ccf3d1d33b7e78a44a65e2e3c74311 *postFormEg.R
 dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
 7bf117b3a6fec84a2973606a8e6319f5 *src/CURLOptTable.h
 12fe732c6d51fdab1a4a1c3bc9cbedb9 *src/CurlErrorEnums.h
@@ -147,4 +144,3 @@ d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c
 68da0b1b8277c3bb5655000270044fc3 *src/memoryManagement.c
 943870813dc101eac9ecdfbee0f6dfe8 *tests/dynSetReader.R
 e2a814d17b64770f528497cf90b2c1ad *tests/jpeg.R
-f283dfcb1390e7f7fab3d1becbfec63e *utf.c

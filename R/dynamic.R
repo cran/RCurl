@@ -13,7 +13,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     curHeaderStatus = -1
     inBody = FALSE          # whether we are collecting content for the body or still working on the header
     if(verbose)
-       cat("New  call to dynCurlReader:", baseURL, "\n")
+       cat("New call to dynCurlReader:", baseURL, "\n")
 
     update = function(str) {
 
