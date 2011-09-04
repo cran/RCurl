@@ -93,6 +93,65 @@
 
 <h2>Runtime</h2>
 <dl>
+
+ <dt>
+ <li> I have to specify followlocation = TRUE for all my requests. Why can't RCurl just do this for me.
+ <dd>
+   The reason RCurl doesn't set default values for Curl options is because it might be confusing.
+  Instead, we leave it to the R user/programmer to explicitly set any of the options she wants.
+  This can be repetitive. To avoid this repetition, we allow the R user to specify
+  the R option named "RCurlOptions".  This is consulted in each request (or specifically when we create a new curl handle)
+   and merged with the values specified explicitly in the call. 
+<pre>
+  options(RCurlOptions = list(verbose = TRUE, followlocation = TRUE, timeout = 100, useragent = "myApp in R"))
+  v = getURLContent("http://www.omegahat.org")
+</pre>
+With this, we can see that our useragent  appears in the HTTP header of the request.
+We see this since the verbose = TRUE shows the header of the request and the response.
+
+ <dt>
+ <li> Why doesn't RCurl provide a default value for the useragent that some sites require?
+ <dd>
+  This is a matter of philosophy. Firstly, libcurl doesn't specify a default value
+ and it is a framework for others to build applications. Similarly, RCurl is a general
+ framework for R programmers to create applications to make "Web" requests.
+ Accordingly, we don't set the user agent either.  We expect the R programmer to do this.
+ R programmers using RCurl in an R package to make requests to a site should use
+ the package name (and also the version of R) as the user agent and specify this in all requests.
+ <p>
+ Basically, we expect others to specify a meaningful value for useragent so that they identify themselves
+ correctly.
+ <p>
+ Note that users (not recommended for programmers) can set 
+ the R option named RCurlOptions via R's option() function.
+ The value should be a list of named curl options. This is used in each RCurl request
+ merging these values with those specified in the call.  This allows one to provide
+ default values.
+
+ <dt>
+ <li> I try to retrieve a page, but getURLContent() and getURL() both just hang.
+ I have to kill the R session. What is the problem? What can I do?
+ <dd>
+ First thing to do is to check whether this a problem on the server.
+You can do this by  loading the URL in a Web browser or via a command-line
+tool such as curl or wget.
+  If this does not succeed, then the problem is most likely with the server.
+  <p>
+
+    There are a couple of things that come to mind. Firstly, specify
+  a value for the curl option "useragent" and give it something meaningful to identify your application.
+  Hopefully adding that resolves the problem.  It does in the case
+<pre>
+getURLContent("https://mtgox.com/code/data/ticker.php", ssl.verifypeer = FALSE, useragent = "R")
+</pre>
+  <p>
+   If that doesn't solve the problem, set a value for the "timeout" option.
+<pre>
+getURLContent("https://mtgox.com/code/data/ticker.php", timeout = 4, ssl.verifypeer = FALSE)
+</pre>
+  This will at least cure the "hanging" indefinitely and return within that period of time.
+
+
   <dt>
   <li>When I go to a page that is just a directory,
       I get results about "302 Moved Permanently".
@@ -152,7 +211,21 @@
       When the browser or <b>curl</b> makes a request,
       it is sent across the network via your operating
       system.
-      With the appropriate permissions on the computer,
+What we want to do is look at the contents of the HTTP request
+and specifically the header information.
+There are two ways to do this.
+If we are doing this in a browser, we can examine the headers in that browser
+using browser-specific tools.
+Alternatively, if we are doing this via a command line utility
+or if we want to do this generally, we can capture all
+the network communication using a tool such as tcpdump or wireshark.
+
+<p>
+If we want to do this via the browser, we can use the LiveHTTPHeaders extension for
+Firefox or the "special" URL  chrome://net-internals  for Google Chrome.
+<p>
+For command-line/stand-alone tools,
+     with the appropriate permissions on the computer,
       we can use a program such as tcpdump or wireshark or ethereal
       to "sniff" or capture the packets as they go across the network
       device and then we can look at them.
@@ -247,18 +320,18 @@ Some are (in no particular order)
 
 
 <dt>
-<li> I am trying to download a file via FTP, but takes a very long time.
+<li> I am trying to download a file via FTP, but it takes a very long time.
   Any suggestions?
 <dd>
   We saw this in a posting to  <a href="https://stat.ethz.ch/pipermail/r-help/2009-January/184633.html">R-help by Zack Holden</a>.
- There the issue was passive mode.  When using R's own dwnload.file() function, an error was raised.
+ There the issue was passive mode.  When using R's own download.file() function, an error was raised.
  When using  RCurl's getURL(), the file was correctly downloaded, but it took a long time. There
  was about 3 minutes of delay. This can be seen with
 <pre class="rcode">
 getURL('ftp://ftp.wcc.nrcs.usda.gov/data/snow/snow_course/table/history/idaho/13e19.txt', 
         verbose = TRUE)
 </pre>
-One can see the request just wait for a long period of time and then eventually the contents
+One can see the request just waits for a long period of time and then eventually the contents
 of the file are displayed in the R session.
 <p>
 The fix for this is to avoid extended passive mode and  use the regular passive mode.
@@ -354,7 +427,7 @@ On some versions of UNIX, the certificates will also be found in
 x = getURLContent("https://www.google.com",
                    ssl.verifypeer = FALSE)
 </pre>
-    This does risk a 'man in the middle' attack.
+    This does risk a <a href="http://en.wikipedia.org/wiki/Man-in-the-middle_attack">'man in the middle'</a> attack.
     </p>
 
     <!-- 
@@ -371,6 +444,6 @@ x = getURLContent("https://www.google.com",
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Mar 17 10:42:52 PDT 2010
+Last modified: Fri Aug 26 05:29:21 PDT 2011
 <!-- hhmts end -->
 </body> </html>

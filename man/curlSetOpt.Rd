@@ -41,7 +41,7 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle(),
     of the \code{name: value} pairs of the HTTP header.}
   \item{.isProtected}{
    a logical vector (or value that is repeated) specifying which 
-   of the values in \dots and \code{.opts} needs to be explicitly
+   of the values in \dots and \code{.opts} need to be explicitly
    protected from garbage collection or not.
    The basic idea is that we specify \code{FALSE} if
    the value being set for the curl option may be garbage collected
