@@ -112,7 +112,4 @@ cat(paste(sapply(c("integer", "numeric", "character"), function(x)  sprintf("\\a
 
 
 
-
-
-
  # CURLPROTO

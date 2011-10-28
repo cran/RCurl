@@ -63,7 +63,8 @@ We might extend this to work with raw objects.
 
 
    # Binary data
-  f = paste(R.home(), "doc", "html", "logo.jpg", sep = .Platform$file.sep)
+#  f = paste(R.home(), "doc", "html", "logo.jpg", sep = .Platform$file.sep)
+  f = system.file("doc", "logo.jpg", package = "RCurl")
   img = readBin(f, "raw", file.info(f)[1, "size"])
   b64 = base64Encode(img, "raw")
   back = base64Decode(b64, "raw")
