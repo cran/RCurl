@@ -59,3 +59,8 @@ export(CFILE)
 export(scp)
 
 export(guessMIMEType)
+
+ # do we want a httpPOST.
+export(httpPUT, httpDELETE, httpGET, httpPOST)
+
+export(getFormParams)

@@ -16,7 +16,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
        cat("New call to dynCurlReader:", baseURL, "\n")
 
     update = function(str) {
-
+#print(Encoding(str))
         if(verbose)
            cat("inBody? ", inBody, ", num bytes", nchar(str, "bytes"), "\n", sep = "")
    

@@ -929,7 +929,7 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
            header but I am not certain we can believe that, so potentially read the contents a little
            e.g. use IsASCII. */
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 8, 0)
-
+	//fprintf(stderr, "encoding %d (%s)\n", encoding, buffer);
  	PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
 
 #else

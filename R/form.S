@@ -111,9 +111,9 @@ function(uri, ...,
    if(!is.na(style) && style == PostStyles['POST']) {
      tmp = as.list(.params)
      .params = paste(
-                  sapply(names(tmp),
-                         function(id)
-                             paste(id, if(is(tmp[[id]], "AsIs")) tmp[[id]] else .contentEncodeFun(tmp[[id]]), sep = "=")),
+                     unlist(mapply(function(id, val)
+                             paste(id, if(is(val, "AsIs")) val else .contentEncodeFun(val), sep = "="),
+                          names(tmp), tmp)),
                   collapse = "&")
             
    } else

@@ -44,7 +44,10 @@
       to install the curl-dev package. This is different from
       the curl package which is the command-line tool
       for using curl to download files. We need the "linkable" library.
-      
+      On Ubuntu, for example, you can use
+<pre>
+sudo apt-get install libcurl4-openssl-dev
+</pre>      
   
   <dt>
   <li> What version of libcurl do I need?
@@ -433,6 +436,43 @@ x = getURLContent("https://www.google.com",
     <!-- 
     -->
 
+
+<dt>
+<li> I'm trying to POST a request but this fails.
+    Does it have anything to do with the %'s in my parameter values?
+<dd>
+(Taken from a query from Olivier Merle. )
+<pre class="rcode">
+x = postForm("http://www.fas.usda.gov/psdonline/psdResult.aspx",
+             style = "post",
+            .params = list(visited="1",
+                          lstGroup = "all",
+                          lstCommodity="2631000",
+                          lstAttribute="88",
+                          lstCountry="**",
+                          lstDate="2011",
+                          lstColumn="Year",
+                          lstOrder="Commodity%2FAttribute%2FCountry"))    
+</pre>    
+This fails with a simple message from the server
+that the "Custom Query results" cannot be displayed.
+ Note the lstOrder parameter. It has %2F in two places.
+ This is the "percent encoding" for the character /.
+ postForm does the percent encoding on the inputs
+    and so ends up encoding %2F, ending up with
+    "%252F" in place of each "%2F".
+<p>    
+    So, don't pass percent encoded strings, but rather use
+    human-readable versions, e.g.
+    lstOrder="Commodity/Attribute/Country"
+    and leave postForm to handle the encoding.
+    Alternatively, you can tell postForm not to
+    percent-encode specific parameters by
+    passing them As-Is, e.g.
+<pre class="rcode">
+ lstOrder = I("Commodity%2FAttribute%2FCountry")
+</pre>
+
 </dl>
 
 
@@ -444,6 +484,6 @@ x = getURLContent("https://www.google.com",
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Fri Aug 26 05:29:21 PDT 2011
+Last modified: Fri Oct 28 06:56:41 PDT 2011
 <!-- hhmts end -->
 </body> </html>
