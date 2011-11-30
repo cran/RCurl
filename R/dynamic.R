@@ -4,11 +4,12 @@ dynCurlReader =
 # to harvest the body of the HTTP response.
 #
 function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verbose = FALSE,
-          binary = NA, baseURL = NA, isHTTP = NA) 
+          binary = NA, baseURL = NA, isHTTP = NA, encoding = NA) 
 {
     header = character()    # for the header
     buf = NULL              # for a binary connection.
     content.type = character()
+    requestCount = 0
 
     curHeaderStatus = -1
     inBody = FALSE          # whether we are collecting content for the body or still working on the header
@@ -16,7 +17,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
        cat("New call to dynCurlReader:", baseURL, "\n")
 
     update = function(str) {
-#print(Encoding(str))
+
         if(verbose)
            cat("inBody? ", inBody, ", num bytes", nchar(str, "bytes"), "\n", sep = "")
    
@@ -79,7 +80,11 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
              curlSetOpt(writefunction = getNativeSymbolInfo("R_curl_write_binary_data")$address,
                         file = buf@ref, curl = curl, .isProtected = c(TRUE, FALSE))
           } else {
-             curlSetOpt(writefunction = update, .encoding = content.type["charset"], curl = curl,
+#       browser()
+             if(length(encoding) == 0 || is.na(encoding) || encoding == "")
+                 encoding <<- content.type["charset"]
+             
+             curlSetOpt(writefunction = update, .encoding = encoding, curl = curl,
                           .isProtected = TRUE)
           }
 
@@ -99,6 +104,12 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
     reset = function() {
         txt <<- character()
         header <<- character()
+        buf <<- NULL
+        content.type <<- character()
+        curHeaderStatus <<- -1
+        inBody <<- FALSE
+        isHTTP <- NA
+        requestCount <<- requestCount + 1
     }
 
     val = if(missing(value))
@@ -113,6 +124,7 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
                 if (is.null(collapse)) 
                     return(txt)
                 ans = paste(txt, collapse = collapse, ...)
+                ans = encode(ans)
                 if(length(content.type))
                       attr(ans, "Content-Type") = content.type
                 ans
@@ -122,11 +134,19 @@ function(curl = getCurlHandle(), txt = character(), max = NA, value = NULL, verb
                tmp = if(!is.null(buf))
                         as(buf, "raw") 
                       else
-                        txt
+                        encode(txt)
                if(length(content.type))
                     attr(tmp, "Content-Type") = content.type               
                value(tmp)
              }
+
+    encode =
+      function(str) {
+        if(grepl("\\\\u[0-9]", str))
+           RCurlIconv(str, from = "C99", to = encoding)
+        else
+           str           
+      }
 
 
     ans = list(update = update, 
