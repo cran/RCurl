@@ -9,6 +9,8 @@ static char RCurlErrorBuffer[1000] = "<not set>";
 
 #define MIN(a,b) ((a) < (b) ? (a)  : (b))
 
+size_t doIconv(const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, cetype_t encoding);
+
 
 /* Callback routines that can be used to call R functions as handlers.  */
 size_t R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *);
@@ -45,7 +47,6 @@ struct curl_slist* Rcurl_set_header(CURL *obj, SEXP headers, Rboolean isProtecte
 
 SEXP getCurlInfoElement(CURL *obj, CURLINFO id);
 
-SEXP makeUTF8String(void *buffer, size_t len, cetype_t encoding);
 
 
 SEXP
@@ -914,6 +915,7 @@ R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData
   return(total);
 }
 
+#include <libxml/encoding.h>
 
 size_t
 R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data, cetype_t encoding)
@@ -930,17 +932,46 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
            header but I am not certain we can believe that, so potentially read the contents a little
            e.g. use IsASCII. */
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 8, 0)
+	//fprintf(stderr, "encoding %d (%s)\n", encoding, buffer);
+if(encoding == 1) {
+	char duncan[100000];
+	SEXP tmp ;
+//	UTF8Toisolat1(duncan, sizeof(duncan)/sizeof(duncan[0]),
+//	      buffer, size * nmemb);
+// Tried mkSting UTF8 (after making it non-static)
+// using R's own parser for the string.
+
+//        PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
+//        PROTECT(str = mkCharLenCE(duncan, size * nmemb, encoding));
+
 #if 0
-	if(FALSE && encoding != CE_NATIVE)
-	    PROTECT(str = makeUTF8String(buffer, size * nmemb, encoding));
-	else
+	size_t num = size * nmemb, numOut = 0;
+	doIconv((const char **) &buffer, &num, &duncan, &numOut, encoding);
+        PROTECT(str = mkCharLenCE(duncan, numOut, encoding));
+//        PROTECT(str = mkCharLenCE(buffer, size * nmemb, CE_BYTES));
+	Rf_PrintValue(str);
+#elif 1
+        PROTECT(str = StringValue(buffer, nmemb));
+#else
+	FILE *f = fopen("/tmp/utf8", "wb");
+	fwrite(buffer, size, nmemb, f) ;
+	fclose(f);
+	PROTECT(str = mkChar("/tmp/utf8"));
 #endif
-//    if(((char *) buffer)[0] == '\377' && ((char *) buffer)[1] == '\376') {
-//	buffer = buffer + 2;
-//      nmemb =- 2;
-//    }
-	    // probably don't need the encoding at this point!
-	PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
+#if 0
+        tmp = lang2(Rf_install("foo"), ScalarString(str));
+        PROTECT(tmp);
+        Rf_PrintValue(Rf_eval(tmp, R_GlobalEnv));
+        UNPROTECT(1);
+#endif
+
+        tmp = lang2(Rf_install("Encoding"), ScalarString(str));
+        PROTECT(tmp);
+        Rf_PrintValue(Rf_eval(tmp, R_GlobalEnv));
+        UNPROTECT(1);
+} else
+       PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
+
 #else
 	/* PROTECT(str = mkCharLen(buffer, size * nmemb)); */
 //        PROTECT(str = mkCharLen(buffer, size *nmemb));  /* Problems with the upload example in complete.Rd */
@@ -958,10 +989,9 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
          */
 #endif
 
-	SETCAR(CDR(e), TYPEOF(str) == CHARSXP ? ScalarString(str) : str);
+	SETCAR(CDR(e), ScalarString(str));
 
-
-	PROTECT(ans = Rf_eval(e, R_GlobalEnv)); /* , &errorOccurred); */
+	ans = Rf_eval(e, R_GlobalEnv); /* , &errorOccurred); */
 	if(TYPEOF(ans) == LGLSXP) {
              if(LOGICAL(ans)[0] == 1)
 		errorOccurred = 1;
@@ -970,26 +1000,17 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
 	} else 
 	    numRead = asInteger(ans);
 
-	UNPROTECT(3);
+	UNPROTECT(2);
 
-	if(numRead < size*nmemb  && encoding != CE_NATIVE) {
-	    PROBLEM  "only read %d of the %d input bytes/characters", 
-                     (int) numRead, (int) (size*nmemb)
+	if(numRead < size*nmemb) {
+	    PROBLEM  "only read %d of the %d input bytes/characters", (int) numRead, (int) (size*nmemb)
    	    WARN;
 	}
 
 #ifndef WITH_CE
-	/* When we use PROTECT(str = mkCharCE(buffer, CE_LATIN1)); , the R string can 
-           appear to have more characters via nchar() than nmemb * size tells us.  */
-
-	if(errorOccurred)
-	    return(0);
-	if(encoding != CE_NATIVE)
-	    return(size * nmemb);
-	else
-	    return(numRead);
-
-//	return(errorOccurred ? 0 :  (numRead >= size * nmemb ? size *nmemb : numRead)) ;
+	/* When we use PROTECT(str = mkCharCE(buffer, CE_LATIN1)); , the R string can appear to have more characters via nchar()
+           than nmemb * size tells us. So in this case*/
+	return(errorOccurred ? 0 :  (numRead >= size * nmemb ? size *nmemb : numRead)) ;
 #else
 //	return(errorOccurred ? 0 :  size *nmemb);
 	return(errorOccurred ? 0 :  (numRead >= size * nmemb ? size *nmemb : numRead)) ;
@@ -1542,7 +1563,7 @@ R_curlMultiPerform(SEXP m, SEXP repeat)
 size_t 
 R_internalWriteTest(void *buffer, size_t size, size_t nmemb, void *data)
 {
-    Rprintf("<R_internalWrite> size = %d, nmemb = %d\n", (int) size, (int) nmemb);
+    fprintf(stderr,"<R_internalWrite> size = %d, nmemb = %d\n", (int) size, (int) nmemb);
     return(size * nmemb);
 }
 
@@ -1597,39 +1618,23 @@ R_get_Cookies(SEXP handle, SEXP fileName)
 SEXP
 R_global_releaseObject(SEXP obj)
 {
-#if RCURL_DEBUG_MEMORY
     fprintf(stderr, "releasing %p\n", obj);
-#endif
     Rf_PrintValue(obj);
     R_ReleaseObject(obj);
     return(R_NilValue);
 }
 
 
-#if 0
 
 #include <R_ext/Riconv.h>
 
-SEXP makeUTF8String(void *buffer, size_t len, cetype_t encoding)
+size_t
+doIconv(const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft, cetype_t encoding)
 {
-#if 0
-    void *iconv;
-    iconv = Riconv_open("UTF-8", "C99");
-    Riconv(iconv, (const char **) buffer);
-#else
-
-    SEXP e, str;
-    PROTECT(e = allocVector(LANGSXP, 4));
-    SETCAR(e, Rf_install("RCurlIconv"));
-    SETCAR(CDR(e), str = ScalarString(mkCharLen(buffer, len)));
-//Rf_PrintValue(str);
-    SETCAR(CDR(CDR(e)), ScalarString(mkChar("C99")));
-    SETCAR(CDR(CDR(CDR(e))), ScalarString(mkChar("UTF-8")));
-   
-    SEXP ans = Rf_eval(e, R_GlobalEnv);
-    UNPROTECT(1);
-//Rf_PrintValue(ans);
-    return(ans);
-#endif
+    void *handle;
+    size_t status;
+    handle = Riconv_open("", "UCS-4BE");
+    status = Riconv(handle, inbuf, inbytesleft, outbuf, outbytesleft);
+    Riconv_close(handle);
+    return(status);
 }
-#endif

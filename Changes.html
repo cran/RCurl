@@ -5,12 +5,33 @@
 
 <body>
 
+<h2>1.8-0</h2>
+<dl>
+  <dt>
+  <li> getURLContent() attempts to handle encoding more comprehensively.
+  <dd>
+      
+  <dt>
+  <li> Added encoding argument for dynCurlReader() function.
+  <dd> This attempts to use this encoding for the content it receives
+       when it is not binary, but text.
+
+  <dt>
+  <li> dynCurlReader() has a more complete reset function and
+       some additional state variables (e.g. requestCount).
+       Contributed by Jeroen Ooms.
+  <dd>
+</dl>
+
+
 <h2>1.7-0</h2>
 <dl>
 
   <dt>
   <li> Added simple wrapper functions
-        httpPUT and httpDELETE
+        httpGET, httpPOST, httpPUT, httpHEAD, httpOPTIONS and
+        httpDELETE corresponding to the HTTP methods.
+      
   <dd>
 
   <dt>
@@ -830,6 +851,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Fri Oct 28 10:05:00 PDT 2011
+Last modified: Wed Nov 30 14:47:25 PST 2011
 <!-- hhmts end -->
 </body> </html>

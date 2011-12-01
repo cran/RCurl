@@ -88,7 +88,7 @@ function(uri, ...,
  buf = NULL
  header = basicTextGatherer()
  if(!hasOwnWrite) {
-     write = dynCurlReader(curl, verbose = FALSE, binary = binary, baseURL = uri)
+     write = dynCurlReader(curl, verbose = FALSE, binary = binary, baseURL = uri, encoding = .encoding)
           # Defer the setting of the writefunction until we need to set it
           # When we finish with the header, we'll set the writefunction.
           # .opts[["writefunction"]] = write$update
