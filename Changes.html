@@ -5,6 +5,54 @@
 
 <body>
 
+<h2>1.9-4</h2>
+<dl>
+  <dt>
+  <li> RCurl doesn't have to be in the search path to find the
+      curlError() function which is called when an error occurs in curlPerform().
+  <dd>
+
+</dl>
+
+<h2>1.9-3</h2>
+<dl>
+  <dt>
+      Import methods.
+  <dd>
+</dl>
+
+<h2>1.9-2</h2>
+<dl>
+  <dt>  Documentation updates.
+  <dd>
+</dl>
+
+<h2>1.9-1</h2>
+<dl>
+  <dt>
+  <li> Avoid warnings about names slot in an EnumValue by adding an
+       explicit names slot.  This was a result of a change in R-2.14.0.
+  <dd>
+</dl>
+
+<h2>1.9-0</h2>
+
+<dl>
+  <dt>
+  <li> Introduced url.exists() function.
+  <dd>
+
+  <dt>
+  <li> Introduced curlError() and a collection of error "condition"
+       objects corresponding to CURLCode status errors.  Errors can
+       now be caught with tryCatch according to their class.
+  <dd>
+
+  <dt>
+  <li>  Examples check the URLs are accessible before making the requests.
+  <dd> The tests do not.
+</dl>
+
 <h2>1.8-0</h2>
 <dl>
   <dt>
@@ -851,6 +899,6 @@ getURL('https://sourceforge.net', ssl.verifypeer = FALSE)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Wed Nov 30 14:47:25 PST 2011
+Last modified: Thu Jan  5 14:20:35 PST 2012
 <!-- hhmts end -->
 </body> </html>
