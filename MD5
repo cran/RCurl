@@ -1,11 +1,11 @@
-8e458ee62bd5ccf643ed00f5a1e04e89 *Changes.html
+badd0125bf8f9517bdd6047073b0303d *Changes.html
 9d9866976d2f936d3390b98b2841d11e *CodeGeneration/enum.c
 e36b8ad540e309bdbe9e0a98ec804eb6 *CodeGeneration/enum.c.001t.tu
 1857e7ebca5c79bc818cb8486bdb6d2c *CodeGeneration/enum.c.t00.tu
 73811caca2846f805693000220bdad21 *CodeGeneration/generate.R
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
-2e281f8e794c7b500a2026f00ab27cbe *DESCRIPTION
-884216b4f660f27b90b5b41b394d3d84 *FAQ.html
+89c9913fe38fbbf1c21bd52b94cc83f0 *DESCRIPTION
+ab34ac3155bf00a3ed39a4b844a7beb1 *FAQ.html
 aca05b1fe2012bb867ee623316634484 *NAMESPACE
 e8282c261c10a6d851db5c213e9034ba *R/aclassesEnums.R
 447faef269c96042a1a2381bf4a506a6 *R/base64.R
@@ -20,7 +20,7 @@ ff370b22965649c47132dde830bf90d4 *R/curlError.R
 8ed06fd5a057d6b89572c031bd7fa174 *R/getFormParams.R
 497c8314156fe893852d5b937bc1d105 *R/getURLContent.R
 0fe57cfd392052fc9f765e35e92dc355 *R/header.R
-b90b199a8c3961d313c74c182e5f47a2 *R/http.R
+a12416dbfd44105ac59d378379a587b1 *R/http.R
 09fd8b385e2e06250b78c831cd25dd24 *R/httpError.R
 4a750157a238c60c8ce234b493b653ea *R/httpErrors.R
 d506d085e6a168c28337ba77d7e85f81 *R/iconv.R
@@ -58,10 +58,12 @@ dc7cd605de74c70c165064b5f5fb672f *inst/CurlSSL/certs.pem
 00f28f64cbf9a8d58c9116a2e138eb0f *inst/CurlSSL/server.pem
 4c7269b0f0ccff811fbca84bf86fd3dc *inst/CurlSSL/statEth.pem
 5621c4bbff9afc92b49e7391007ada18 *inst/HTTPErrors/makeErrorClasses.R
-344cc9e38f4cc28c14daec52b92ef363 *inst/doc/RCurl.tex
+2bf4920251bc1971af9b49b342ae24ad *inst/doc/RCurl.pdf
+8dd00c403cc21e534751f6ac39bb0bb3 *inst/doc/RCurl.tex
 1d7acba3b0d1a66d0635b1b341a0b33b *inst/doc/cookies.xml
+4b30a6cee2ab2dd2540a59a51479c21d *inst/doc/fileUploads.html
 fbb29df6a29a38673037bb5a9fe3fc58 *inst/doc/fileUploads.xml
-cb0601933fba90e1c0b8e6021bdd6851 *inst/doc/logo.jpg
+01720fe84971edd01a46032005903009 *inst/doc/philosophy.html
 e75c917f956c5d46796bd9161852a8a3 *inst/doc/philosophy.xml
 eec77bb996fa92609f23413fcf51c9f3 *inst/enums/Renums.c
 7a8cf4a6ec500974ee79e2ed0091452c *inst/examples/CIS/cis.R
@@ -79,6 +81,7 @@ df928eb4803d8db4afa5c7c4485d09a0 *inst/examples/ftpList.R
 d990b75445557eb53447cfdccca35ffa *inst/examples/headers.S
 8b7ff24250cc5fef29434087f3ca0907 *inst/examples/headers2.S
 07a379435d274adaea3d9f62f1712078 *inst/examples/html.S
+cb0601933fba90e1c0b8e6021bdd6851 *inst/examples/logo.jpg
 e0c040aca468bb0543da977801d93876 *inst/examples/multi.S
 a6564f3e3e08c371385d07ffbadd20e9 *inst/examples/nestedHTML.xml
 e9bd39d5f6773b8570e3a4177a1b21eb *inst/examples/omg.netrc
@@ -106,7 +109,7 @@ bef71aabdb31732a73bd0f064382307a *man/CFILE.Rd
 5b09828b0b36ade44bb396bf861c3bea *man/HTTP_VERSION_1_0.Rd
 706285562f19d1a3a484842b14c05918 *man/MultiCURLHandle-class.Rd
 a01d37a6d891d549afc86a6418440a1b *man/RCurl-internal.Rd
-cf050412e19fcaaf4570070a110e9110 *man/base64.Rd
+c3ff9ca964287638ede0b24166324392 *man/base64.Rd
 3abdb83f45f40b2de7e3c50e86dd3ea3 *man/basicHeaderGatherer.Rd
 4dde543a124826e1429fdb08fb1016ab *man/basicTextGatherer.Rd
 4f7ffe37514f48bcb9a834f12fc91b9f *man/binaryBuffer.Rd
@@ -132,7 +135,7 @@ db2c510ebbfdb617918a6b4375e796da *man/getCurlHandle.Rd
 bb3934e5c40d8e0279fdce28a4d5b6a7 *man/getURIAsynchronous.Rd
 657d29698981983ca11fb71c2d3863bf *man/getURL.Rd
 4b20a6920f8cf6832a4aa3673da01ef6 *man/guessMIMEType.Rd
-e2c7ed1dbf9c6b0dd3554a5da10aed16 *man/httpPUT.Rd
+24d79d6f1f674126900270a78239b6ed *man/httpPUT.Rd
 c4cf55c01b0b09d2d7ac147479428837 *man/merge.list.Rd
 99717893fe3dc9c913828b75a741678c *man/mimeTypeExtensions.Rd
 3967ec427744a31012f5fdf22a7df0ae *man/postForm.Rd
@@ -144,7 +147,7 @@ dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
 12fe732c6d51fdab1a4a1c3bc9cbedb9 *src/CurlErrorEnums.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
-a6c9fe4ce49d943949892be46067d637 *src/Makevars
+36156b567017555731d83499160cfdb3 *src/Makevars
 2a4673b5e9bd2a0845a6f660369f2826 *src/Makevars.in
 7d1c72bba4427e18c5826ffe10a760d9 *src/Makevars.win
 14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
