@@ -26,10 +26,14 @@
   concurrent requests at present.
 }
 \usage{
-getURL(url, ..., .opts = list(), write = basicTextGatherer(),
-         curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
-getURI(url, ..., .opts = list(), write = basicTextGatherer(),
-         curl = getCurlHandle(), async = length(url) > 1, .encoding = integer())
+getURL(url, ..., .opts = list(),
+        write = basicTextGatherer(.mapUnicode = .mapUnicode),
+         curl = getCurlHandle(), async = length(url) > 1,
+           .encoding = integer(), .mapUnicode = TRUE)
+getURI(url, ..., .opts = list(), 
+        write = basicTextGatherer(.mapUnicode = .mapUnicode),
+         curl = getCurlHandle(), async = length(url) > 1,
+          .encoding = integer(), .mapUnicode = TRUE)
 getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                binary = NA, .opts = list(...),
                header = dynCurlReader(curl, binary = binary,
@@ -78,6 +82,9 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     specifying this avoids this slight overhead which is probably
     quite small relative to network latency and speed.
   }
+  \item{.mapUnicode}{a logical value that controls whether the resulting
+  text is processed to map components of the form \\uxxxx to their
+  appropriate Unicode representation.}
   \item{binary}{a logical value indicating whether the caller  knows
     whether the resulting content is binary (\code{TRUE}) or not
     (\code{FALSE}) or unknown (\code{NA}).
@@ -89,13 +96,20 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     call to \code{dynCurlReader}, e.g. to specify a
     function for its \code{value} parameter to
     control how the body is post-processed.
+    
+    The caller can specify a value of \code{TRUE} or \code{FALSE}
+    for this parameter.  \code{TRUE} means that the header will be
+    returned along with the body; \code{FALSE} corresponds to the
+    default  and only the body will be returned.
+    When returning the header, it is first parsed via
+    \code{\link{parseHTTPHeader}},
+    unless the value of \code{header} is of class \code{AsIs}.
+    So to get the raw header, pass the argument as \code{header = I(TRUE)}.
   }
   \item{isHTTP}{a logical value that indicates whether the request an
   HTTP request. This is used when determining how to process the response.}
 }
-\details{
-
-}
+%\details{}
 \value{
   If no value is supplied for \code{write},
   the result is the text that is the HTTP response.
