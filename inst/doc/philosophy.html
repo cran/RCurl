@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title></title><link rel="stylesheet" type="text/css" href="/Users/duncan/Classes/StatComputing/XDynDocs/inst/CSS/OmegaTech.css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></meta><meta name="keywords" content="HTTP, RCurl, R"></meta></head><body class="yui-skin-sam"><div class="article"><div class="titlepage"><div><div><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></br></span></div></div></div></div><hr></hr></div><div class="section" title="Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884730884"></a>Overview</h2></div></div></div><p></p>
+<title></title><link rel="stylesheet" type="text/css" href="../OmegaTech.css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></meta><meta name="keywords" content="HTTP, RCurl, R"></meta></head><body class="yui-skin-sam"><div class="article"><div class="titlepage"><div><div><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></br></span></div></div></div></div><hr></hr></div><div class="section" title="Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723591729"></a>Overview</h2></div></div></div><p></p>
 The <a class="ulink" href="http://www.omegahat.org/RCurl" target="_top">RCurl package</a> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
@@ -63,7 +63,7 @@ for input pending and essentially put the connection <span class="emphasis"><em>
 background</em></span>.  The support for threads in libcurl might make this
 easier if/when we support threads in R.
 
-</div><div class="section" title="A Quick Tour"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884730951"></a>A Quick Tour</h2></div></div></div>
+</div><div class="section" title="A Quick Tour"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723591796"></a>A Quick Tour</h2></div></div></div>
 
 This document aims to provide a basic overview of the RCurl package.
 It doesn't try to provide all the details.  The R function help files
@@ -502,7 +502,7 @@ function for writing errors from libcurl, but we have not put that in
 yet.)
 
 
-<div class="section" title="Forms"><div class="titlepage"><div><div><h3 class="title"><a id="id1169884731331"></a>Forms</h3></div></div></div> The RCurl package provides many additional
+<div class="section" title="Forms"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592176"></a>Forms</h3></div></div></div> The RCurl package provides many additional
 mechanisms for downloading URIs that R does not currently have
 built-in. But perhaps the most pressing reason for developing the
 RCurl package was the need to submit forms.  The <a class="xref" href="#bib:odbAccess" title="The RHTMLForms package: creating S functions from HTML forms.">odbAccess</a> package is
@@ -719,7 +719,7 @@ function in R. This is how <pre xmlns="" class="rfunction">getURL</pre>
 <br xmlns=""> is actually
 implemented.
 
-</div><div class="section" title="Statistics on the Request"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731535"></a>Statistics on the Request</h2></div></div></div>
+</div><div class="section" title="Statistics on the Request"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592381"></a>Statistics on the Request</h2></div></div></div>
 S is a statistical programming language and environment
 so why not gather data when we can.
 The function
@@ -755,7 +755,7 @@ These provide us the actual name of the URI downloaded after
 redirections, etc.; information about the transfer speed, etc.; etc.
 See the man page for <i xmlns=""><a href="c:routine(%22curl_easy_getinfo%22)">curl_easy_getinfo</a></i>.
 
-</div><div class="section" title="libcurl Version Information"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731569"></a>libcurl Version Information</h2></div></div></div>
+</div><div class="section" title="libcurl Version Information"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592415"></a>libcurl Version Information</h2></div></div></div>
 The RCurl package provides a way to obtain
 reflectance information about libcurl itself.
 The function <pre xmlns="" class="rfunction">curlVersion</pre>
@@ -817,7 +817,7 @@ for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name 
 "GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN)"
 (taken from <a class="ulink" href="http://www.gnu.org/software/libidn/" target="_top">http://www.gnu.org/software/libidn/</a>).
 
-</div><div class="section" title="Initialization"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731615"></a>Initialization</h2></div></div></div> As with most C libraries, one must
+</div><div class="section" title="Initialization"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592460"></a>Initialization</h2></div></div></div> As with most C libraries, one must
 typically initialize it to get the basic run-time structure
 established.  Fortunately, when we call any of the R functions, this
 is taken care of implicitly; libcurl handles this when we create a new
@@ -867,7 +867,7 @@ The names are converted and combined to a flag using
 <pre xmlns="" class="rfunction">setBitIndicators</pre>
 <br xmlns="">.
 
-</div><div class="section" title="Options"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731663"></a>Options</h2></div></div></div>
+</div><div class="section" title="Options"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592509"></a>Options</h2></div></div></div>
 
  It is hopefully clear that it is the libcurl options that make this
  interface work and allow us to make interesting queries. From
@@ -944,7 +944,7 @@ The function <pre xmlns="" class="rfunction">curlSetOpt</pre>
 the code above and this actually sets the option-values in a libcurl
 handle.  It can also be used to simply resolve them.
 
-</div><div class="section" title="Example Application"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731757"></a>Example Application</h2></div></div></div>
+</div><div class="section" title="Example Application"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592603"></a>Example Application</h2></div></div></div>
 
 In this section, we will outline a more complex use of the RCurl
 facilities.  Specifically, we will use it to send SOAP <a class="xref" href="#bib:SOAP" title="Programming Web Services with SOAP">SOAP</a> requests.
@@ -1045,12 +1045,12 @@ curlPerform(url="http://services.soaplite.com/hibye.cgi",
             verbose = TRUE
            )
 </pre>
-<br xmlns=""></div><div class="section" title="Additional Notes"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1169884731836"></a>Additional Notes</h2></div></div></div>
+<br xmlns=""></div><div class="section" title="Additional Notes"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723592682"></a>Additional Notes</h2></div></div></div>
 These were written before the package was finished.
 They are left here, but may not be helpful.
 
 
-<div class="section" title="Providing Text Handlers"><div class="titlepage"><div><div><h3 class="title"><a id="id1169884731842"></a>Providing Text Handlers</h3></div></div></div> 
+<div class="section" title="Providing Text Handlers"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592688"></a>Providing Text Handlers</h3></div></div></div> 
 
 One can provide a different text handler to consume/process the text
 that is received by the libcurl engine from the HTTP response.  We can
@@ -1107,7 +1107,7 @@ Obviously, this example is also somewhat contrived as the XML/HTML
 parsing facilities have their own HTTP facilities.  However, they do
 not understand all the finer points of HTTP such as SSL, FTP, passwords,
 etc.
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://docbook.sourceforge.net/release/xsl/current/images/note.svg"></img></td><th align="left">Note</th></tr><tr><td align="left" valign="top">This is not a very compelling example anymore!</td></tr></table></div></div><div class="section" title="Alternatives"><div class="titlepage"><div><div><h3 class="title"><a id="id1169884731894"></a>Alternatives</h3></div></div></div><p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="http://docbook.sourceforge.net/release/xsl/current/images/note.svg"></img></td><th align="left">Note</th></tr><tr><td align="left" valign="top">This is not a very compelling example anymore!</td></tr></table></div></div><div class="section" title="Alternatives"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592740"></a>Alternatives</h3></div></div></div><p>
  Using libcurl is by no means the only
 approach to getting HTTP access in R.  Firstly, we have HTTP access in
 R via the facilities incorporated from libxml (nanohttp and nanoftp).
@@ -1119,7 +1119,7 @@ add header fields, handle binary data, set the body of the request, etc.
 We can use R's socket connections and implement the details of HTTP
 ourselves.  There is a great deal of work in this as we have discussed
 before. Also, we currently don't have secure sockets (i.e. using SSL)
-in R<sup>[<a id="id1169884731911" href="#ftn.id1169884731911" class="footnote">1</a>]</sup> I initially started using this approach
+in R<sup>[<a id="id1170723592757" href="#ftn.id1170723592757" class="footnote">1</a>]</sup> I initially started using this approach
 so that I could discover the nuances of HTTP.  It quickly gets
 overwhelming to handle all the details.  It is more tedious than
 technically challenging, especially when others have done it already
@@ -1137,9 +1137,9 @@ libcurl is not the only C-level library that we could have used.
 Alternative libraries include <a class="ulink" href="http://www.w3.org/Library/" target="_top">libwww</a> from the W3 group.  We
 <span class="emphasis"><em>may</em></span> find that that is more suitable, but libcurl
 will definitely suffice for the present.
-</p></div><div class="section" title="Notes"><div class="titlepage"><div><div><h3 class="title"><a id="id1169884731946"></a>Notes</h3></div></div></div><p>
+</p></div><div class="section" title="Notes"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592792"></a>Notes</h3></div></div></div><p>
 libcurl can use <a class="ulink" href="ftp://athena-dist.mit.edu/pub/ATHENA/ares/" target="_top">ares</a> for
 asynchronous DNS resolution.
-</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1169884731965"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.org/RHTMLForms" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1169884731911" href="#id1169884731911" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
+</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592811"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.org/RHTMLForms" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1170723592757" href="#id1170723592757" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
 connections since the connection data structure is not exposed in the
 R API, yet!</p></div></div></div></body></html>

@@ -4,8 +4,8 @@ getForm =
   # The ... here are for the arguments to the form, not the curl options.
   #
   #
-function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(), .encoding = integer(), binary = NA,
-          .checkParams = TRUE)  
+function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
+         .encoding = integer(), binary = NA, .checkParams = TRUE)  
 {
     # should we merge params with ....
     # for now just one or the other.  
@@ -25,9 +25,9 @@ function(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle()
                                 paste(id, curlEscape(val), sep="=", collapse="&")
                }, names(.params), .params)
 
-   args = paste(els, collapse="&")
+   args = paste(els, collapse = "&")
 
-   uri = paste(uri, args, sep="?")
+   uri = paste(uri, args, sep = if(grepl("\\?", uri)) "&" else "?")
 
    getURLContent(uri, .opts = .opts, .encoding = .encoding, binary = binary, curl = curl)
 }
@@ -46,6 +46,33 @@ function(.params)
 PostStyles = c('HTTPPOST' = NA,
                'POST' = as.integer(47))
 
+matchPostStyle =
+function(style)
+{
+  if(is.na(style))
+    return(style)
+  
+      # The style of the post, i.e. HTTPPOST or regular POST,
+      # i.e. www-form-encoded or
+  if(is.character(style)) {
+        i = pmatch(tolower(style), tolower(names(PostStyles)))
+        if(is.na(i))
+          stop("POST style is not recognized: must be one of ", paste(names(PostStyles), collapse = ", "))
+        as.integer(PostStyles[i])
+    } else {
+        if(!(style %in% PostStyles))
+          warning("Unrecognized style value ", style)
+        as.integer(style)
+      }
+}
+
+
+.postForm =
+function(curl, .opts, .params, style = 'HTTPPOST')
+{
+  .Call("R_post_form", curl, .opts, .params, TRUE, matchPostStyle(style), PACKAGE = "RCurl")
+}
+
 postForm =
   #
   # The ... here are for the arguments to the form, not the curl options.
@@ -61,21 +88,7 @@ function(uri, ...,
   write = NULL
   noCurlOptions = missing(.opts)
 
-
-  if(!is.na(style)) {
-      # The style of the post, i.e. HTTPPOST or regular POST,
-      # i.e. www-form-encoded or
-      if(is.character(style)) {
-        i = pmatch(tolower(style), tolower(names(PostStyles)))
-        if(is.na(i))
-          stop("POST style is not recognized: must be one of ", paste(names(PostStyles), collapse = ", "))
-        style = as.integer(PostStyles[i])
-      } else {
-        if(!(style %in% PostStyles))
-          warning("Unrecognized style value ", style)
-        style = as.integer(style)
-      }
-    }
+  style = matchPostStyle(style)
   
    # merge the two sources of inputs
   .params = merge(list(...), .params)
@@ -117,7 +130,7 @@ function(uri, ...,
                   collapse = "&")
             
    } else
-     .params = as.list(.params)
+     .params = lapply(.params, as, "character") # as.list(.params)
   
 
   if(length(.params) == 0) {
@@ -128,6 +141,7 @@ function(uri, ...,
     testCurlOptionsInFormParameters(.params)
   
   status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")
+  status = .postForm(curl, .opts, .params, style)
 
   if(any(!isProtected)) {
      # Reset the httppost field to NULL so we can release the values.
@@ -135,6 +149,11 @@ function(uri, ...,
      curlSetOpt(httpget = TRUE, curl = curl)
   }
 
+  if(!is.null(write)) {
+     http.header = parseHTTPHeader(write$header())
+     stop.if.HTTP.error(http.header)
+  }
+  
   if(!is.null(buf)) {
     processContent( as(buf, "raw"), header, .encoding)
   } else  if(!is.null(write)) 

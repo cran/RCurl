@@ -92,9 +92,11 @@ sudo apt-get install libcurl4-openssl-dev
 	  uses some GNU make constructs.
 	  Please set the environment variable
 	  MAKE to gmake.
+       </dd>
 </dl>
 
-<h2>Runtime</h2>
+
+<h1>Runtime</h1>
 <dl>
 
  <dt>
@@ -176,8 +178,14 @@ getURLContent("https://mtgox.com/code/data/ticker.php", timeout = 4, ssl.verifyp
   <dt> <li> Why does https not work for me?
 
   <dd> Probably because when you compiled/installed libcurl, you didn't have support for
-  SSL.  You can check this with the command <pre> curl-config
-  --feature </pre> If ssl doesn't appear there, you don't have support
+  SSL.  You can check this with the command shell
+<pre> curl-config  --feature </pre>
+      or the R command
+<pre>
+curlVersion()$features
+</pre>
+      
+  If ssl doesn't appear in either of these, you don't have support
   for it.  You should reinstall curl, having first installed SSL
   (e.g. <a href="http://www.openssl.org">openssl</a>).
 
@@ -507,6 +515,20 @@ httpPUT(url, textToSend)
 </pre>
     and the function will fill in the other curl options
 
+
+
+<dt>
+<li> When using authentication in an HTTP request, libcurl makes multiple
+    requests.     How can we make this more efficient?
+<dd>
+    Basically, when we specify a username and password (e.g. via <code
+    class="curlopt">userpwd</code>)
+    libcurl doesn't know which authentication mechanism to use.
+    So it tries several in order until one is successful.
+    So it is best to specify the authentication mechanism explicitly
+    via <code class="curlopt">httpauth</code>.
+    Specify one of the values CURLAUTH_
+    
 </dl>
 
 
@@ -518,6 +540,6 @@ httpPUT(url, textToSend)
 <address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
 <a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
 <!-- hhmts start -->
-Last modified: Tue Jan 31 19:00:33 PST 2012
+Last modified: Thu May 31 21:08:44 PDT 2012
 <!-- hhmts end -->
 </body> </html>
