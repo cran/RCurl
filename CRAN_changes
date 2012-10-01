@@ -1,0 +1,3 @@
+configure.win and src/Makevars.win need changes for biarch builds.
+
+src/json.c needed change to compile on Solaris.
