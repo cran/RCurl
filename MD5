@@ -1,3 +1,4 @@
+9c877fecba31abeeb5aa296f61072954 *CRAN_changes
 6ca0ad116d6e9bc2fec44ea69912e966 *Changes.html
 efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 7dba4dff1366f76d983aa72785aa804b *CodeGeneration/auth.o
@@ -9,7 +10,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-8ea988c038ce2fcd4e9b0e286b83eb81 *DESCRIPTION
+97dc5c3283848b5fc551c266eacd4848 *DESCRIPTION
 711649e84b483207ff9ec8de676c1bf8 *FAQ.html
 4d329575e3c9dbfac890059c3a158dea *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
@@ -47,7 +48,7 @@ f9be4a5ba86c2f2912e649843152f027 *Todo.html
 10efa07da47324135996775777b4667a *cacert.pem
 71300855b97e827f7c7db8315ea577d1 *configure
 c54adac529e344f29d5ef355085f255b *configure.in
-0dfbf81f67816148bc127e4ab1a96dca *configure.win
+291f17f929229fc4c1993f68761497e3 *configure.win
 0bfa05054630a1e2d17e1336f413a1d6 *data/mimeTypeExtensions.rda
 5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R
 baa455d19a1b197d89017a11ba7b41fc *encoding.R
@@ -166,7 +167,7 @@ dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
 15d1fe0c03c6396d82b8581721307e55 *src/Makevars
 2a4673b5e9bd2a0845a6f660369f2826 *src/Makevars.in
-7d1c72bba4427e18c5826ffe10a760d9 *src/Makevars.win
+824eeada539b0ee0905ceb5c5efafb04 *src/Makevars.win
 14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
 29131fea6cf93af5dfe4455f79b49faa *src/base64.c
 ac6ca3284413a1e837c746d282e71e4d *src/curl.c
@@ -174,7 +175,7 @@ ac6ca3284413a1e837c746d282e71e4d *src/curl.c
 d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c
 710acfc08da20917bb97e11a803166e9 *src/curl_base64.c
 39fedd40e25feae55cc5e1db5701a278 *src/enums.c
-f85d0bfa4dab901cbb422e766c138c97 *src/json.c
+dcc667e254a87988f490ef53b2d0ebdc *src/json.c
 68da0b1b8277c3bb5655000270044fc3 *src/memoryManagement.c
 5eb7b43775b92417c696d36ba9e6b672 *src/myUTF8.c
 943870813dc101eac9ecdfbee0f6dfe8 *tests/dynSetReader.R
