@@ -140,7 +140,7 @@ function(uri, ...,
   } else if(noCurlOptions && .checkParams)
     testCurlOptionsInFormParameters(.params)
   
-  status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")
+#  status = .Call("R_post_form", curl, .opts, .params, TRUE, as.integer(style),  PACKAGE = "RCurl")
   status = .postForm(curl, .opts, .params, style)
 
   if(any(!isProtected)) {
