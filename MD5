@@ -1,4 +1,4 @@
-6ca0ad116d6e9bc2fec44ea69912e966 *Changes.html
+7a433efc2481b9a6db0bcdbbca55982b *Changes.html
 efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 7dba4dff1366f76d983aa72785aa804b *CodeGeneration/auth.o
 418d06153cef29309e09f8d68dc06e0f *CodeGeneration/auth.so
@@ -9,7 +9,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-cb1a6c35ca2f5a2fedc5270bb841db50 *DESCRIPTION
+4a29277b373e0259bd89dbe3e513c740 *DESCRIPTION
 711649e84b483207ff9ec8de676c1bf8 *FAQ.html
 4d329575e3c9dbfac890059c3a158dea *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
@@ -23,7 +23,7 @@ b8d5f5c4cf59d48ac1f237b79660a497 *R/curlAuthConstants.R
 39b878b41e6ceccca2523b879e6bd993 *R/curlError.R
 d6cf7f79ffb9db4ea3fd7cf6677ae871 *R/curlInfo.S
 7a50107b510693fcd0528843fd55c083 *R/dynamic.R
-6aff88bebdf48001cbf92fde7f617e37 *R/form.S
+c815819807906445aad57bd4053d6e6c *R/form.S
 2946be19bd5dba272a68b746f4629626 *R/getFormParams.R
 6599814e81ba659e060397d4f09f8a75 *R/getURLContent.R
 0fe57cfd392052fc9f765e35e92dc355 *R/header.R
@@ -42,12 +42,12 @@ a83571931c5b6cdde4c3f6cc4953e2dd *R/urlExists.R
 91adca5eb94b3b76883d1279c9a78633 *R/xbits.R
 efbfb83dcdae6f04056188c8a41ecbb0 *R/zclone.R
 cabb7f48acb3dd85a0acbcd4729d9ddd *README
-a9df38244e664a93550683bd4f783176 *README.windows
+8861218c77c37af3fefb0d1b452c19a8 *README.windows
 f9be4a5ba86c2f2912e649843152f027 *Todo.html
 10efa07da47324135996775777b4667a *cacert.pem
 71300855b97e827f7c7db8315ea577d1 *configure
 c54adac529e344f29d5ef355085f255b *configure.in
-291f17f929229fc4c1993f68761497e3 *configure.win
+4f39e0e19c30b69c0cf63d196e777d4e *configure.win
 0bfa05054630a1e2d17e1336f413a1d6 *data/mimeTypeExtensions.rda
 5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R
 baa455d19a1b197d89017a11ba7b41fc *encoding.R
@@ -164,8 +164,9 @@ dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
 12fe732c6d51fdab1a4a1c3bc9cbedb9 *src/CurlErrorEnums.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
+15d1fe0c03c6396d82b8581721307e55 *src/Makevars
 2a4673b5e9bd2a0845a6f660369f2826 *src/Makevars.in
-824eeada539b0ee0905ceb5c5efafb04 *src/Makevars.win
+48afc8b91f7c706cdabec0792c9d14b1 *src/Makevars.win
 14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
 29131fea6cf93af5dfe4455f79b49faa *src/base64.c
 ac6ca3284413a1e837c746d282e71e4d *src/curl.c

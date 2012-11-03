@@ -130,7 +130,12 @@ function(uri, ...,
                   collapse = "&")
             
    } else
-     .params = lapply(.params, as, "character") # as.list(.params)
+     .params = lapply(.params,
+                       function(x)
+                         if(is.atomic(x))
+                              as.character(x)
+                         else
+                            x)
   
 
   if(length(.params) == 0) {

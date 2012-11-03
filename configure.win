@@ -1,6 +1,9 @@
+#!/bin/sh
+
 if test -z "${LIB_CURL}" ; then
   echo "Please set LIB_CURL"
 fi
+
 
 mkdir -p ${R_PACKAGE_DIR}/libs${R_ARCH}
 if test "${R_ARCH}" = "/x64"; then
@@ -10,3 +13,6 @@ else
   # libeay32.a is an import library
   cp $LIB_CURL/bin/libeay32.dll $R_PACKAGE_DIR/libs${R_ARCH}
 fi
+
+# mkdir $R_PACKAGE_DIR/libs
+# cp $LIB_CURL/bin/*.dll $R_PACKAGE_DIR/libs
