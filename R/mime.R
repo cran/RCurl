@@ -28,7 +28,7 @@ guessMIMEType =
   # 
 function(name, default = NA)
 {
-  data(mimeTypeExtensions)
+  data("mimeTypeExtensions")
   ext = getExtension(name)
   ans = mimeTypeExtensions[tolower(ext)]
   if(any(i <- is.na(ans)) )
