@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-b9af6ee2f247ef891407fddb148dc79b *DESCRIPTION
+ab49964df430b6d00a9575a412046b66 *DESCRIPTION
 711649e84b483207ff9ec8de676c1bf8 *FAQ.html
 4d329575e3c9dbfac890059c3a158dea *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
@@ -43,10 +43,10 @@ cabb7f48acb3dd85a0acbcd4729d9ddd *README
 8861218c77c37af3fefb0d1b452c19a8 *README.windows
 5fec26ec04fa449d272663386cbc1fcd *Todo.html
 10efa07da47324135996775777b4667a *cacert.pem
-71300855b97e827f7c7db8315ea577d1 *configure
-c54adac529e344f29d5ef355085f255b *configure.in
+2f63c56d84567a5b5a15aa5c4248081b *configure
+fbe652c0acbd95a4497bab93381a0315 *configure.in
 d213840d8874d80a6a0943de7685f8aa *configure.win
-0bfa05054630a1e2d17e1336f413a1d6 *data/mimeTypeExtensions.rda
+467533fb590da7db17bcaf3b66f3146f *data/mimeTypeExtensions.rda
 5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R
 baa455d19a1b197d89017a11ba7b41fc *encoding.R
 c899ae813295bea44416a17fefeef83e *exampleCode/encoding.R
@@ -158,7 +158,7 @@ d35a0e167fc40d5d71f2d24f2f1b9be9 *man/reset.Rd
 7ef74e5dee0d9ece60a173ffa65e41fc *post.R
 66f879ca2c4aa4bf666bc36b1a38d905 *postForm.html
 dbd7d5f12f5e4e7648f03980e198a64f *src/CURLINFOTable.h
-7bf117b3a6fec84a2973606a8e6319f5 *src/CURLOptTable.h
+f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 12fe732c6d51fdab1a4a1c3bc9cbedb9 *src/CurlErrorEnums.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h

@@ -1,5 +1,5 @@
 Package: RCurl
-Version: 1.95-4.1
+Version: 1.95-4.2
 Title: General network (HTTP/FTP/...) client interface for R
 Author: Duncan Temple Lang
 SystemRequirements: libcurl (version 7.14.0 or higher)
@@ -37,7 +37,7 @@ Collate: aclassesEnums.R bitClasses.R xbits.R base64.R binary.S
         curlInfo.S dynamic.R form.S getFormParams.R getURLContent.R
         header.R http.R httpError.R httpErrors.R iconv.R info.S mime.R
         multi.S options.S scp.R support.S upload.R urlExists.R zclone.R
-Packaged: 2013-03-06 17:15:55 UTC; ligges
+Packaged: 2014-07-28 10:56:28 UTC; hornik
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-03-06 18:27:23
+Date/Publication: 2014-07-28 23:08:38
