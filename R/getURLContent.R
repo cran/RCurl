@@ -1,7 +1,7 @@
 getURLContent =
   #
   # Used to be
-  #  header = basicTextGatherer()  
+  #  header = basicTextGatherer()
   #  ans = getBinaryURL(url, headerfunction = header$update, curl = header$curl())
   #  processContent(ans, header$header(), .encoding)
   # but now we use the dynamic reader.
@@ -11,7 +11,7 @@ function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary =
           isHTTP = length(grep('^[[:space:]]*http', url)) > 0)
 {
   url = as(url, "character")
-  
+
   if(!missing(curl))
      curlSetOpt(.opts = .opts, curl = curl)
 
@@ -20,14 +20,14 @@ function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary =
      header = dynCurlReader(curl, binary = binary, baseURL = url, isHTTP = isHTTP, encoding = .encoding)
   } else
      returnHeader = FALSE
-  
+
   if(!('headerfunction' %in% names(.opts))) {
     # .opts$headerfunction = header$update
      protect = missing(header)
      curlSetOpt(curl = curl, .isProtected = protect,
                  headerfunction = header$update)
    }
-  
+
   if(!isHTTP && !('writefunction' %in% names(.opts))) {
       # If for example this is scp where there is no header
       # or headerfunction will never get called. So we have to
@@ -36,10 +36,10 @@ function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary =
      protect = missing(header)
      curlSetOpt(curl = curl, .isProtected = protect,
                  writefunction = header$update)
-   }  
-  
+   }
+
   curlPerform(url = url, curl = curl, .opts = .opts)
-  
+
   if(isHTTP && length(header$header())) {
      http.header = parseHTTPHeader(header$header())
      stop.if.HTTP.error(http.header)
@@ -55,15 +55,15 @@ function(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA, binary =
     header$value()
 }
 
-stop.if.HTTP.error = 
+stop.if.HTTP.error =
 function(http.header)
 {
 
   if(length(http.header) == 0)
     return(NA) # or TRUE
-  
+
   if( floor(as.integer(http.header[["status"]])/100) >= 4) {
-     klass =  RCurl:::getHTTPErrorClass(http.header[["status"]])
+     klass = getHTTPErrorClass(http.header[["status"]])
      err = simpleError(http.header[["statusMessage"]])
      err$httpHeader = http.header
      class(err) = c(klass, class(err))
@@ -74,7 +74,7 @@ function(http.header)
   TRUE
 }
 
-processContent = 
+processContent =
 #
 # Figure out how to interpret the contents based on the HTTP response's header
 # i.e. look at its Content-Type.
@@ -84,7 +84,7 @@ function(ans, header, .encoding = NA)
   headerText = if(is.character(header)) header else header$value()
   http.header = parseHTTPHeader(headerText)
 
-  stop.if.HTTP.error(http.header)  
+  stop.if.HTTP.error(http.header)
 
   content.type = getContentType(http.header)
   binary = isBinaryContent(http.header, content.type)
@@ -105,12 +105,12 @@ function(ans, header, .encoding = NA)
 }
 
 trim =
-function(x) 
+function(x)
 {
     gsub("(^[[:space:]]+|[[:space:]]+$)", "", x, perl = TRUE)
 }
 
-getContentType = 
+getContentType =
 function(header, full = FALSE)
 {
    i = match("content-type", tolower(names(header)))
@@ -122,7 +122,7 @@ function(header, full = FALSE)
        return(tmp)
 
    vals = strsplit(tmp, "=")
-   structure(gsub(";$", "", sapply(vals, function(x) x[length(x)])), 
+   structure(gsub(";$", "", sapply(vals, function(x) x[length(x)])),
              names = sapply(vals, function(x) if(length(x) > 1) x[1] else ""))
 }
 
@@ -148,16 +148,16 @@ function(header, type = getContentType(header)[1],
      }
      return(last)
    }
-  
+
    if(length(type) == 0)
      return(NA)
-  
+
    if(is.null(textTypes))
      textTypes = textContentTypes
    type.els = strsplit(type, "/")[[1]]
    if(type.els[1] == "text")
      return(FALSE)
-   
+
    if(any(type.els %in% textContentTypes))
       return(FALSE)
 

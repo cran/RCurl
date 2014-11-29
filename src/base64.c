@@ -14,15 +14,20 @@
 SEXP
 R_base64_decode(SEXP r_text, SEXP asRaw)
 {
-  const char *text;
+  char *text;
   unsigned char *ans;
   size_t len;
   SEXP r_ans;
   
   if(TYPEOF(r_text) == STRSXP)
     text = CHAR(STRING_ELT(r_text, 0));
-  else
-    text = RAW(r_text);
+  else {
+      // RAW() is not null-terminated
+      // text = RAW(r_text);
+      len = LENGTH(r_text);
+      text = R_alloc(len+1, 1); text[len] = '\0';
+      memcpy(text, RAW(r_text), len);
+  }
 
   len = R_Curl_base64_decode(text, &ans);
 

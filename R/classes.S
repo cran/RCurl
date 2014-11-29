@@ -1,8 +1,8 @@
-.onAttach =
-function(...)
- library(methods)
+## .onAttach =
+## function(...)
+##  library(methods)
 
-         
+
 
 setClass("MultiCURLHandle",
            representation(ref = "externalptr",

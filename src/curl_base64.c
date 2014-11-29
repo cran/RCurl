@@ -173,7 +173,9 @@ size_t R_Curl_base64_encode(const char *inp, size_t insize, char **outptr)
   if(0 == insize)
     insize = strlen(indata);
 
-  base64data = output = (char*)malloc(insize*4/3+4);
+  // some platforms optimize by reading in multiples of 4,
+  // and valgrind objects.  So over-allocate by at least 4.
+  base64data = output = (char*)malloc(insize*4/3+8);
   if(NULL == output)
     return 0;
 

@@ -24,8 +24,8 @@ size_t R_curl_read_buffer_callback(void *ptr, size_t size, size_t nmemb, void *s
 typedef struct BufInfo {
     size_t length;
     size_t pos;
-    void *buf;
-    void *cur;
+    char *buf;
+    char *cur;
 } BufInfo;
 
 void * getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *handle);
