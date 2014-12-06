@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-49b23b9417c84a955880647487550bc5 *DESCRIPTION
+4ca2f43e9c21eec2457cc1208f791406 *DESCRIPTION
 711649e84b483207ff9ec8de676c1bf8 *FAQ.html
 d61a0c56b44bd2c748fbd21aec84eb0d *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
@@ -45,8 +45,8 @@ cabb7f48acb3dd85a0acbcd4729d9ddd *README
 10efa07da47324135996775777b4667a *cacert.pem
 2f63c56d84567a5b5a15aa5c4248081b *configure
 fbe652c0acbd95a4497bab93381a0315 *configure.in
-d213840d8874d80a6a0943de7685f8aa *configure.win
-467533fb590da7db17bcaf3b66f3146f *data/mimeTypeExtensions.rda
+d41d8cd98f00b204e9800998ecf8427e *configure.win
+a1f6addec97ef547de92290f014f4deb *data/mimeTypeExtensions.rda
 5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R
 baa455d19a1b197d89017a11ba7b41fc *encoding.R
 c899ae813295bea44416a17fefeef83e *exampleCode/encoding.R
@@ -163,7 +163,7 @@ f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
 2a4673b5e9bd2a0845a6f660369f2826 *src/Makevars.in
-124a1909c0dba4c84df3492215695c0c *src/Makevars.win
+88560cecb035c22788476f1ccd5f4059 *src/Makevars.win
 14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
 0d4a07c162cf3ea6a90b5f65453e6f35 *src/base64.c
 138e3b1fd2f71a1d220b94cc52e9a85a *src/curl.c

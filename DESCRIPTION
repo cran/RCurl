@@ -1,11 +1,8 @@
 Package: RCurl
-Version: 1.95-4.4
+Version: 1.95-4.5
 Title: General network (HTTP/FTP/...) client interface for R
 Author: Duncan Temple Lang
-SystemRequirements: libcurl (version 7.14.0 or higher)
-        http://curl.haxx.se. On Linux systems, you will often have to
-        explicitly install libcurl-devel to have the header files and
-        the libcurl library.
+SystemRequirements: GNU make
 Maintainer: Duncan Temple Lang <duncan@r-project.org>
 Description: The package allows one to compose general HTTP requests
         and provides convenient functions to fetch URIs, get & post
@@ -21,6 +18,7 @@ License: BSD
 Depends: R (>= 3.0.0), methods, bitops
 Suggests: Rcompression, XML
 URL: http://www.omegahat.org/RCurl
+Additional_repositories: http://www.omegahat.org/R/
 Limitations: One doesn't yet have full control over the contents of a
         POST form such as specifying files, content type. Error
         handling uses a single global variable at present.
@@ -36,7 +34,7 @@ Collate: aclassesEnums.R bitClasses.R xbits.R base64.R binary.S
         curlInfo.S dynamic.R form.S getFormParams.R getURLContent.R
         header.R http.R httpError.R httpErrors.R iconv.R info.S mime.R
         multi.S options.S scp.R support.S upload.R urlExists.R zclone.R
-Packaged: 2014-12-03 08:30:14 UTC; ripley
+Packaged: 2014-12-28 05:49:54 UTC; ripley
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-12-03 09:45:22
+Date/Publication: 2014-12-28 06:50:09
