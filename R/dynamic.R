@@ -167,7 +167,7 @@ mapUnicodeEscapes =
   #  and returning a UTF-8 encoded string.
   #
   #
-function(str, len = nchar(str) * 4L)
+function(str, len = nchar(str, "bytes") * 4L)
 {
    str = as.character(str)
    len = rep(as.integer(len), length = length(str))

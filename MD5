@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-4ca2f43e9c21eec2457cc1208f791406 *DESCRIPTION
+7c73623d07d156543b4fb061ab32e378 *DESCRIPTION
 711649e84b483207ff9ec8de676c1bf8 *FAQ.html
 d61a0c56b44bd2c748fbd21aec84eb0d *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
@@ -20,7 +20,7 @@ b8d5f5c4cf59d48ac1f237b79660a497 *R/curlAuthConstants.R
 0b1ee266223233929abdbbf49e8e0d08 *R/curlEnums.R
 39b878b41e6ceccca2523b879e6bd993 *R/curlError.R
 d6cf7f79ffb9db4ea3fd7cf6677ae871 *R/curlInfo.S
-7a50107b510693fcd0528843fd55c083 *R/dynamic.R
+9075cb386a838f1d44e10d7e9dcea5dc *R/dynamic.R
 a54092f27a209ae57424d0dac219a82f *R/form.S
 2946be19bd5dba272a68b746f4629626 *R/getFormParams.R
 56b7169e1307b1e536200dbc2998b2ea *R/getURLContent.R
