@@ -7,8 +7,8 @@ library(RCurl)
 
 reader = dynCurlReader()
 status = curlPerform(url = "http://ws.audioscrobbler.com/2.0/?method=library%2Egetartists&user=oso&api_key=de933ba987ea45f82a73acd0d82071c3",
-                     headerfunction = reader$update, 
+                     headerfunction = reader$update,
                      curl = reader$curl())
 
-Encoding(reader$value())    # UTF-8
+try(Encoding(reader$value()))    # UTF-8, sometimes
 

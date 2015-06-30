@@ -20,7 +20,7 @@
 }
 \source{
 The table of MIME types and extensions was programmatically extracted
-from \url{http://www.webmaster-toolkit.com/mime-types.shtml} or
+from \samp{http://www.webmaster-toolkit.com/mime-types.shtml} or
 \url{http://reference.sitepoint.com/html/mime-types-full} with
 \code{
   tbls = readHTMLTable("http://www.webmaster-toolkit.com/mime-types.shtml")
@@ -29,7 +29,7 @@ from \url{http://www.webmaster-toolkit.com/mime-types.shtml} or
   save(mimeTypeExtensions, file = "data/mimeTypeExtensions.rda")
 }
 The IANA list is not as convenient to programmatically compile.
-\url{http://www.ltsw.se/knbase/internet/mime.htp}  
+%\url{http://www.ltsw.se/knbase/internet/mime.htp}  
 }
 %\references{}
 \examples{

@@ -31,8 +31,8 @@
 \usage{
 getURIAsynchronous(url, ..., .opts = list(), write = NULL,
                    curl = getCurlHandle(),
-                    multiHandle = getCurlMultiHandle(), perform = Inf,
-                     .encoding = integer(), binary = rep(NA, length(url)))
+                   multiHandle = getCurlMultiHandle(), perform = Inf,
+                  .encoding = integer(), binary = rep(NA, length(url)))
 }
 \arguments{
   \item{url}{a character vector identifying the URIs to download.}
@@ -110,7 +110,8 @@ getURIAsynchronous(url, ..., .opts = list(), write = NULL,
   \code{\link{curlMultiPerform}}  
 }
 \examples{
-  uris = c("http://www.omegahat.org/RCurl/index.html", "http://www.omegahat.org/RCurl/philosophy.xml")
+  uris = c("http://www.omegahat.org/RCurl/index.html",
+           "http://www.omegahat.org/RCurl/philosophy.xml")
   txt = getURIAsynchronous(uris)
   names(txt)
   nchar(txt)
