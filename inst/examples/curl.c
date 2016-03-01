@@ -1,6 +1,6 @@
 #include <curl/curl.h>
 
-char *DefaultURL = "http://www.omegahat.org/index.html";
+char *DefaultURL = "http://www.omegahat.net/index.html";
 
 
 int

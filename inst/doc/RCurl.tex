@@ -73,14 +73,14 @@ Errors
 
 
 Suppose we were to download the file index.html from the RCurl web
-page, i.e.  \url{http://www.omegahat.org/RCurl/index.html}.  Our
-client would use TCP/IP to connect to the machine www.omegahat.org
+page, i.e.  \url{http://www.omegahat.net/RCurl/index.html}.  Our
+client would use TCP/IP to connect to the machine www.omegahat.net
 (having first resolved the IP address of the machine corresponding the
-name www.omegahat.org). It would attempt to connect on the port 80
+name www.omegahat.net). It would attempt to connect on the port 80
 which is the default port on which Web servers listen for such
 requests.  If the server were listening on a non-standard port, such
 as 8080, the request would be
-\url{http://www.omegahat.org:8080/RCurl/index.html} and the connection
+\url{http://www.omegahat.net:8080/RCurl/index.html} and the connection
 would be established using that different port.
 Assuming the connectin has been made, the client and server
 then start their HTTP conversation.
@@ -111,7 +111,7 @@ So the client need only write the following text
 along the socket connecting the client and Web server:
 \begin{verbatim}
 GET / HTTP/1.1
-Host: www.omegahat.org
+Host: www.omegahat.net
 \end{verbatim}
 Both lines are ended with a control-linefeed (\\\\r\\\\n) and the
 request is completed by sending a terminating blank-line.  

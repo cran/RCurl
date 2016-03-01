@@ -1,6 +1,6 @@
 library(RCurl)
 Sys.setlocale(, "en_US.UTF-8")
-x = getURL("http://www.omegahat.org/RCurl/index.html")
+x = getURL("http://www.omegahat.net/RCurl/index.html")
 Encoding(x)
 
 f = system.file("NAMESPACE", package = "RCurl")

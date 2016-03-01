@@ -130,17 +130,17 @@ debugGatherer()
   \code{\link{dynCurlReader}}  
 }
 \examples{
-if(url.exists("http://www.omegahat.org/RCurl/index.html")) {
-  txt = getURL("http://www.omegahat.org/RCurl/index.html", write = basicTextGatherer())
+if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
+  txt = getURL("http://www.omegahat.net/RCurl/index.html", write = basicTextGatherer())
 
   h = basicTextGatherer()
-  txt = getURL("http://www.omegahat.org/RCurl/index.html", write = h$update)
+  txt = getURL("http://www.omegahat.net/RCurl/index.html", write = h$update)
     # Cumulate across pages.
-  txt = getURL("http://www.omegahat.org/index.html", write = h$update)
+  txt = getURL("http://www.omegahat.net/index.html", write = h$update)
 
 
   headers = basicTextGatherer()
-  txt = getURL("http://www.omegahat.org/RCurl/index.html",
+  txt = getURL("http://www.omegahat.net/RCurl/index.html",
                header = TRUE, headerfunction = headers$update)
 
      # Now read the headers.
@@ -150,13 +150,13 @@ if(url.exists("http://www.omegahat.org/RCurl/index.html")) {
 
     # Debugging callback
   d = debugGatherer()
-  x = getURL("http://www.omegahat.org/RCurl/index.html", debugfunction = d$update, verbose = TRUE)
+  x = getURL("http://www.omegahat.net/RCurl/index.html", debugfunction = d$update, verbose = TRUE)
   names(d$value())
   d$value()[["headerIn"]]
 
 
-  uris = c("http://www.omegahat.org/RCurl/index.html",
-           "http://www.omegahat.org/RCurl/philosophy.html")
+  uris = c("http://www.omegahat.net/RCurl/index.html",
+           "http://www.omegahat.net/RCurl/philosophy.html")
   g = multiTextGatherer(uris)
   txt = getURIAsynchronous(uris,  write = g)
   names(txt)
@@ -173,8 +173,8 @@ if(url.exists("http://www.omegahat.org/RCurl/index.html")) {
 \dontrun{
  Sys.setlocale(,"en_US.latin1")
  Sys.setlocale(,"en_US.UTF-8")
- uris = c("http://www.omegahat.org/RCurl/index.html",
-          "http://www.omegahat.org/RCurl/philosophy.html")
+ uris = c("http://www.omegahat.net/RCurl/index.html",
+          "http://www.omegahat.net/RCurl/philosophy.html")
  g = multiTextGatherer(uris)
  txt = getURIAsynchronous(uris,  write = g)
 }

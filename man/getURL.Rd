@@ -134,11 +134,11 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 }
 \examples{
 
-  omegahatExists = url.exists("http://www.omegahat.org")
+  omegahatExists = url.exists("http://www.omegahat.net")
 
    # Regular HTTP
   if(omegahatExists) {
-     txt = getURL("http://www.omegahat.org/RCurl/")
+     txt = getURL("http://www.omegahat.net/RCurl/")
         # Then we could parse the result.
      if(require(XML))
          htmlTreeParse(txt, asText = TRUE)
@@ -162,8 +162,8 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
   if(interactive() && omegahatExists) {
      curl = getCurlHandle()
      pages = list()
-     for(u in c("http://www.omegahat.org/RCurl/index.html",
-                "http://www.omegahat.org/RGtk/index.html")) {
+     for(u in c("http://www.omegahat.net/RCurl/index.html",
+                "http://www.omegahat.net/RGtk/index.html")) {
          pages[[u]] = getURL(u, curl = curl)
      }
   }
@@ -172,7 +172,7 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     # Set additional fields in the header of the HTTP request.
     # verbose option allows us to see that they were included.
   if(omegahatExists)
-     getURL("http://www.omegahat.org", httpheader = c(Accept = "text/html", 
+     getURL("http://www.omegahat.net", httpheader = c(Accept = "text/html", 
                                                       MyField = "Duncan"), 
                verbose = TRUE)
 
@@ -184,7 +184,7 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     # status line)
   if(omegahatExists) {
      h = basicTextGatherer()
-     txt = getURL("http://www.omegahat.org/RCurl/index.html",
+     txt = getURL("http://www.omegahat.net/RCurl/index.html",
                   header= TRUE, headerfunction = h$update, 
                   httpheader = c(Accept="text/html", Test=1), verbose = TRUE) 
      print(paste(h$value(NULL)[-1], collapse=""))
@@ -195,12 +195,12 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 
    # Test the passwords.
   if(omegahatExists) {
-     x = getURL("http://www.omegahat.org/RCurl/testPassword/index.html",  userpwd = "bob:duncantl")
+     x = getURL("http://www.omegahat.net/RCurl/testPassword/index.html",  userpwd = "bob:duncantl")
 
        # Catch an error because no authorization
        # We catch the generic HTTPError, but we could catch the more specific "Unauthorized" error
        # type.
-      x = tryCatch(getURLContent("http://www.omegahat.org/RCurl/testPassword/index.html"),
+      x = tryCatch(getURLContent("http://www.omegahat.net/RCurl/testPassword/index.html"),
                     HTTPError = function(e) {
                                    cat("HTTP error: ", e$message, "\n")
                                 })
@@ -220,7 +220,7 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 
    if(interactive() && omegahatExists) {
        d = debugGatherer()
-       x = getURL("http://www.omegahat.org", debugfunction = d$update, verbose = TRUE)
+       x = getURL("http://www.omegahat.net", debugfunction = d$update, verbose = TRUE)
        d$value()
    }
 
@@ -229,11 +229,11 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 
    if(interactive() && omegahatExists) {
       opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-      getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
+      getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
 
          # Using options in the CURL handle.
       h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-      getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
+      getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
    }
 
 
@@ -241,15 +241,15 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
    # Use a C routine as the reader. Currently gives a warning.
   if(interactive() && omegahatExists) {
      routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-     getURL("http://www.omegahat.org/RCurl/index.html", writefunction = routine)
+     getURL("http://www.omegahat.net/RCurl/index.html", writefunction = routine)
   }
 
 
 
   # Example
   if(interactive() && omegahatExists) {
-     uris = c("http://www.omegahat.org/RCurl/index.html",
-              "http://www.omegahat.org/RCurl/philosophy.xml")
+     uris = c("http://www.omegahat.net/RCurl/index.html",
+              "http://www.omegahat.net/RCurl/philosophy.xml")
      txt = getURI(uris)
      names(txt)
      nchar(txt)
@@ -266,20 +266,20 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 
 
          # getURLContent() for text and binary
-     x = getURLContent("http://www.omegahat.org/RCurl/index.html")
+     x = getURLContent("http://www.omegahat.net/RCurl/index.html")
      class(x)
 
-     x = getURLContent("http://www.omegahat.org/RCurl/data.gz")
+     x = getURLContent("http://www.omegahat.net/RCurl/data.gz")
      class(x)
      attr(x, "Content-Type")
 
-     x = getURLContent("http://www.omegahat.org/Rcartogram/demo.jpg")
+     x = getURLContent("http://www.omegahat.net/Rcartogram/demo.jpg")
      class(x)
      attr(x, "Content-Type")
 
 
      curl = getCurlHandle()
-     dd = getURLContent("http://www.omegahat.org/RJSONIO/RJSONIO.pdf",
+     dd = getURLContent("http://www.omegahat.net/RJSONIO/RJSONIO.pdf",
                         curl = curl,
                         header = dynCurlReader(curl, binary = TRUE,
                                            value = function(x) {

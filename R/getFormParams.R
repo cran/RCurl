@@ -5,7 +5,7 @@
 
 getFormParams =
   #
-  #  getFormParams("http://www.omegahat.org/foo/bob.R?xyz=1&abc=verylong")
+  #  getFormParams("http://www.omegahat.net/foo/bob.R?xyz=1&abc=verylong")
   #  getFormParams("xyz=1&abc=verylong")
   #  getFormParams("xyz=1&abc=")
   #  getFormParams("xyz=1&abc=&on=true")

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- <?xml-stylesheet type="text/xsl" href="../../../Docs/XSL/Rexample.xsl" ?> -->
-<?xml-stylesheet type="text/xsl" href="http://www.omegahat.org/XSL/Rexample.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="http://www.omegahat.net/XSL/Rexample.xsl" ?>
 
 
 <article xmlns:r="http://www.r-project.org"
@@ -146,13 +146,13 @@ The code below performs the basic steps
 
 <r:code>
 <![CDATA[
-uri = "http://www.omegahat.org/RCurl/philosophy.xml"
+uri = "http://www.omegahat.net/RCurl/philosophy.xml"
 
 
 handle = getCurlMultiHandle()
 streams = HTTPReaderXMLParser(handle)
 
-uri = "http://www.omegahat.org/RDoc/overview.xml"
+uri = "http://www.omegahat.net/RDoc/overview.xml"
 handle = getURLAsynchronous(uri, 
                            write = streams$getHTTPResponse,
                            multiHandle = handle, 
@@ -251,7 +251,7 @@ f = function(txt) {
   Content <<- c(Content, txt)
 }
 
-uri = "http://www.omegahat.org/RCurl/philosophy.xml"
+uri = "http://www.omegahat.net/RCurl/philosophy.xml"
 
 handle = getCurlMultiHandle()
 handle = getURLAsynchronous(uri, 

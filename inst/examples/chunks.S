@@ -18,4 +18,4 @@ function()
 
 s = summer()
 
-getURL("http://www.omegahat.org/RCurl/matrix.data", write = chunkToLineReader(s$read)$read)
+getURL("http://www.omegahat.net/RCurl/matrix.data", write = chunkToLineReader(s$read)$read)

@@ -34,8 +34,8 @@ then put the downloading of the original/top-level file on the stack
 for the multi handler.
 <pre xmlns="" class="S">
 
-uri = "http://www.omegahat.org/index.html"
-uri = "http://www.omegahat.org/RCurl/philosophy.xml"
+uri = "http://www.omegahat.net/index.html"
+uri = "http://www.omegahat.net/RCurl/philosophy.xml"
 
 multiHandle = getCurlMultiHandle()
 streams = HTTPReaderXMLParser(multiHandle, save = TRUE)
@@ -62,7 +62,7 @@ via a call to <i xmlns="" class="rfunc">xmlEventParse()
 </i>.
 
 <pre xmlns="" class="S">
-links = downloadLinks(multiHandle, "http://www.omegahat.org", "ulink", "url", verbose = TRUE)
+links = downloadLinks(multiHandle, "http://www.omegahat.net", "ulink", "url", verbose = TRUE)
 xmlEventParse(streams$supplyXMLContent, handlers = links, saxVersion = 2)
 </pre>
 <br xmlns="">

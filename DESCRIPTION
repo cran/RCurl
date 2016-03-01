@@ -1,5 +1,5 @@
 Package: RCurl
-Version: 1.95-4.7
+Version: 1.95-4.8
 Title: General Network (HTTP/FTP/...) Client Interface for R
 Author: Duncan Temple Lang and the CRAN team
 SystemRequirements: GNU make, libcurl
@@ -18,8 +18,8 @@ Description: A wrapper for 'libcurl' <http://curl.haxx.se/libcurl/>
 License: BSD
 Depends: R (>= 3.0.0), methods, bitops
 Suggests: Rcompression, XML
-URL: http://www.omegahat.org/RCurl
-Additional_repositories: http://www.omegahat.org/R/
+URL: http://www.omegahat.net/RCurl
+Additional_repositories: http://www.omegahat.net/R/
 Limitations: One doesn't yet have full control over the contents of a
         POST form such as specifying files, content type. Error
         handling uses a single global variable at present.
@@ -37,6 +37,6 @@ Collate: aclassesEnums.R bitClasses.R xbits.R base64.R binary.S
         multi.S options.S scp.R support.S upload.R urlExists.R zclone.R
         zzz.R
 NeedsCompilation: yes
-Packaged: 2015-06-30 10:26:34 UTC; ripley
+Packaged: 2016-03-01 07:37:59 UTC; ripley
 Repository: CRAN
-Date/Publication: 2015-06-30 14:32:11
+Date/Publication: 2016-03-01 10:54:28

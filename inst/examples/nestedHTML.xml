@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="../../../Docs/XSL/Rexample.xsl" ?>
-<?xml-stylesheet type="text/xsl" href="http://www.omegahat.org/XSL/Rexample.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="http://www.omegahat.net/XSL/Rexample.xsl" ?>
 
 <article xmlns:r="http://www.r-project.org"
            xmlns:s="http://cm.bell-labs.com/stat/S4">
@@ -53,8 +53,8 @@ then put the downloading of the original/top-level file on the stack
 for the multi handler.
 <s:code id="go">
 <![CDATA[
-uri = "http://www.omegahat.org/index.html"
-uri = "http://www.omegahat.org/RCurl/philosophy.xml"
+uri = "http://www.omegahat.net/index.html"
+uri = "http://www.omegahat.net/RCurl/philosophy.xml"
 
 multiHandle = getCurlMultiHandle()
 streams = HTTPReaderXMLParser(multiHandle, save = TRUE)
@@ -87,7 +87,7 @@ And now we are ready to start the XML parser
 via a call to <s:func package = "XML">xmlEventParse</s:func>.
 
 <s:code>
-links = downloadLinks(multiHandle, "http://www.omegahat.org", "ulink", "url", verbose = TRUE)
+links = downloadLinks(multiHandle, "http://www.omegahat.net", "ulink", "url", verbose = TRUE)
 xmlEventParse(streams$supplyXMLContent, handlers = links, saxVersion = 2)
 </s:code>
 

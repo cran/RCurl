@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- <?xml-stylesheet type="text/xsl" href="../../../Docs/XSL/Rexample.xsl" ?> -->
-<?xml-stylesheet type="text/xsl" href="http://www.omegahat.org/XSL/Rexample.xsl" ?>
+<?xml-stylesheet type="text/xsl" href="http://www.omegahat.net/XSL/Rexample.xsl" ?>
 
 
 <article xmlns:r="http://www.r-project.org"
@@ -66,14 +66,14 @@ function(uris, ..., multiHandle = getCurlMultiHandle(), .perform = TRUE)
 
 To test this, we can fetch pages from the Omegahat Web site:
 <s:expr>
-getURIs(c("http://www.omegahat.org/index.html", "http://www.omegahat.org/RecentActivities.html"))
+getURIs(c("http://www.omegahat.net/index.html", "http://www.omegahat.net/RecentActivities.html"))
 </s:expr>
 
 To see what effect we have on timing, let's run the asynchronous
 version and the serial version and compute their times.
 <r:code>
 <![CDATA[
-uris = c("http://www.omegahat.org/index.html", "http://www.omegahat.org/RecentActivities.html")
+uris = c("http://www.omegahat.net/index.html", "http://www.omegahat.net/RecentActivities.html")
 
 atime = system.time(z <- getURIs(uris))
 stime = system.time(zz <- lapply(uris, getURL))
@@ -84,11 +84,11 @@ How does this vary with larger numbers of URIs?
 
 <r:code>
 <![CDATA[
-uris = c("http://www.omegahat.org/index.html", 
-         "http://www.omegahat.org/RecentActivities.html",
-         "http://www.omegahat.org/RCurl/index.html", 
-         "http://www.omegahat.org/RCurl/philosophy.xml",
-         "http://www.omegahat.org/RCurl/philosophy.html")
+uris = c("http://www.omegahat.net/index.html", 
+         "http://www.omegahat.net/RecentActivities.html",
+         "http://www.omegahat.net/RCurl/index.html", 
+         "http://www.omegahat.net/RCurl/philosophy.xml",
+         "http://www.omegahat.net/RCurl/philosophy.html")
 
 atime = system.time(z <- getURIs(uris))
 stime = system.time(zz <- lapply(uris, getURL))

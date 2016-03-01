@@ -14,7 +14,7 @@
 <affiliation>
 <orgname>Department of Statistics, UC Davis</orgname>
 </affiliation>
-<title>The <ulink url="http://www.omegahat.org/RCurl">RCurl package</ulink></title>
+<title>The <ulink url="http://www.omegahat.net/RCurl">RCurl package</ulink></title>
 </author>
 <keywordset>
 <keyword>HTTP</keyword>
@@ -28,7 +28,7 @@
 
 <para/>
 The <ulink
-url="http://www.omegahat.org/RCurl">RCurl package</ulink> provides
+url="http://www.omegahat.net/RCurl">RCurl package</ulink> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
 generally compose HTTP requests.  It supports HTTPS, the secure HTTP;
@@ -128,7 +128,7 @@ the <s:function>download.url</s:function>
 function in the standard R.
 We can fetch a URI with the command something like
 <s:code>
-getURL("http://www.omegahat.org/RCurl/index.html")
+getURL("http://www.omegahat.net/RCurl/index.html")
 </s:code>
 The idea is that we specify the URI.
 There are several other arguments to this function,
@@ -287,12 +287,12 @@ We specify one or more options by using the names.  To make
 interactive use easier, we perform partial matching on the names
 relative to the set of know names.  So, for example, we could specify
 <s:code>
-getURL("http://www.omegahat.org/RCurl/testPassword",
+getURL("http://www.omegahat.net/RCurl/testPassword",
         verbose = TRUE)
 </s:code>
 or, more succinctly,
 <s:code>
-getURL("http://www.omegahat.org/RCurl/testPassword",
+getURL("http://www.omegahat.net/RCurl/testPassword",
         v = TRUE)
 </s:code>
 Obviously, the first is more readable and less ambiguous.
@@ -355,7 +355,7 @@ Many options are specified as strings.
 For example, we can specify  
 the user password for a URI as
 <s:code>
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", userpwd = "bob:duncantl", verbose = TRUE)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", userpwd = "bob:duncantl", verbose = TRUE)
 </s:code>
 Note that we also turned on the "verbose" option so that we can see what libcurl is doing.
 This is extremely convenient when trying to understand why things aren't
@@ -365,7 +365,7 @@ working (or are working in a particular way!).
 Another example of using strings is to
 specify a <curl:opt>referer</curl:opt> URI and a user-agent.
 <s:code>
-getURL("http://www.omegahat.org/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.org")
+getURL("http://www.omegahat.net/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.net")
 </s:code>
 (Again, you might want to turn on the "verbose" option
 to see what libcurl  is doing with this information.)
@@ -382,16 +382,16 @@ for the Accept field and add a new field named,
 say, Made-up-field.
 We could do this in the request as
 <s:code>
-getURL("http://www.omegahat.org/RCurl", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"))
+getURL("http://www.omegahat.net/RCurl", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"))
 </s:code>
 If you turn on the verbose option again for this request, you will see these
 fields being set.
 <s:output>
-> getURL("http://www.omegahat.org", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"), verbose = TRUE)
-* About to connect() to www.omegahat.org port 80
-* Connected to www.omegahat.org (169.237.46.32) port 80
+> getURL("http://www.omegahat.net", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"), verbose = TRUE)
+* About to connect() to www.omegahat.net port 80
+* Connected to www.omegahat.net (169.237.46.32) port 80
 > GET / HTTP/1.1
-Host: www.omegahat.org
+Host: www.omegahat.net
 Pragma: no-cache
 Accept: text/html
 Made-up-field: bob
@@ -453,7 +453,7 @@ We can do this by creating a callback function via the
 <s:function>basicTextGatherer</s:function> function.
 <s:code>
  h = basicTextGatherer()
- txt = getURL("http://www.omegahat.org/RCurl", header = TRUE, headerfunction = h$update)
+ txt = getURL("http://www.omegahat.net/RCurl", header = TRUE, headerfunction = h$update)
 </s:code>
 All we have done is create a collection of functions (stored in
 <s:var>h</s:var>) and passed the update callback to libcurl.  Each
@@ -489,7 +489,7 @@ the <s:var>value</s:var> function.
 The setup is easy:
 <s:code>
   d = debugGatherer()
-  x = getURL("http://www.omegahat.org/RCurl", debugfunction=d$update, verbose = TRUE)
+  x = getURL("http://www.omegahat.net/RCurl", debugfunction=d$update, verbose = TRUE)
 </s:code>
 At the end of the request, again we have the text from the URI in
 <s:var>x</s:var>, but we also have the debugging information.
@@ -541,7 +541,7 @@ at the end of the URI name,
 e.g.
 <literallayout>
 <![CDATA[
-  http://www.omegahat.org/cgi-bin/form.pl?a=1&b=2
+  http://www.omegahat.net/cgi-bin/form.pl?a=1&b=2
 ]]>
 </literallayout>
 The POST method expects the name-value pairs to be
@@ -681,12 +681,12 @@ So it is easy for us to create such a handle before calling
 one of these functions and then pass that as the value 
 for <s:arg>curl</s:arg>.
 For example, we can make two requests to the
-www.omegahat.org site using the same handle
+www.omegahat.net site using the same handle
 as follows:
 <s:code>
  handle = getCurlHandle()
- a = getURL("http://www.omegahat.org/RCurl", curl = handle)
- b = getURL("http://www.omegahat.org/", curl = handle)
+ a = getURL("http://www.omegahat.net/RCurl", curl = handle)
+ b = getURL("http://www.omegahat.net/", curl = handle)
 </s:code>
 
 <para/>
@@ -744,7 +744,7 @@ created the handle rather than used the default
 value for <s:arg>curl</s:arg> and so lost it.)
 <s:code>
 h = getCurlHandle()
-getURL("http://www.omegahat.org", curl = h)
+getURL("http://www.omegahat.net", curl = h)
 names(getCurlInfo(h))
 </s:code>
 The names of the resulting elements are
@@ -825,7 +825,7 @@ clear from the names.
 The only ones that might be obscure are
 <s:var>ares</s:var> and <s:var>libidn</s:var>.
 <s:var>ares</s:var> refers to asynchronous domain name server (DNS) lookup
-for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name (e.g. www.omegahat.org).
+for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name (e.g. www.omegahat.net).
 "GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN)"
 (taken from <ulink url="http://www.gnu.org/software/libidn/">http://www.gnu.org/software/libidn/</ulink>).
 
@@ -925,7 +925,7 @@ to real libcurl options.
 We can use this function something like the following.
 <s:code>
 opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
 </s:code>
 Here we create the options ahead of time and use them in a call while
 specifying additional options (i.e. "verbose").
@@ -939,7 +939,7 @@ This is indeed a natural and often good way to do things.
 The following code does what we want.
 <s:code>
 h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
 </s:code>
 The first line creates a new handle and fills in the three
 "persistent" options.  These are in the handle itself, not in R at
@@ -969,7 +969,7 @@ We have to add the appropriate fields to the HTTP header to identify
 the SOAP call and then insert the XML that defines the method call
 in the body of the request.
 Using our favorite client SOAP facility
-(e.g. SOAP::Lite, <ulink url="http://www.omegahat.org/SSOAP">SSOAP</ulink>), 
+(e.g. SOAP::Lite, <ulink url="http://www.omegahat.net/SSOAP">SSOAP</ulink>), 
 we can send the SOAP request that performs the HTTP request. 
 We can find out what the actual HTTP request looks like using
 facilities in those tools or actually sniffing the packets as they go across the wire using
@@ -1186,7 +1186,7 @@ asynchronous DNS resolution.
   </authorgroup>
 <!--   <copyright><year>2004</year></copyright> -->
   <title>The RHTMLForms package: creating S functions from HTML forms.</title>
-  <ulink url="http://www.omegahat.org/RHTMLForms">RHTMLForms</ulink>
+  <ulink url="http://www.omegahat.net/RHTMLForms">RHTMLForms</ulink>
 </biblioentry>
 
 

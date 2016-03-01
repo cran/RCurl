@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title></title><link rel="stylesheet" type="text/css" href="../OmegaTech.css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></meta><meta name="keywords" content="HTTP, RCurl, R"></meta></head><body class="yui-skin-sam"><div class="article"><div class="titlepage"><div><div><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></br></span></div></div></div></div><hr></hr></div><div class="section" title="Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723591729"></a>Overview</h2></div></div></div><p></p>
-The <a class="ulink" href="http://www.omegahat.org/RCurl" target="_top">RCurl package</a> provides
+The <a class="ulink" href="http://www.omegahat.net/RCurl" target="_top">RCurl package</a> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
 generally compose HTTP requests.  It supports HTTPS, the secure HTTP;
@@ -102,7 +102,7 @@ the <pre xmlns="" class="rfunction">download.url</pre>
 function in the standard R.
 We can fetch a URI with the command something like
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl/index.html")
+getURL("http://www.omegahat.net/RCurl/index.html")
 </pre>
 <br xmlns="">
 The idea is that we specify the URI.
@@ -263,13 +263,13 @@ We specify one or more options by using the names.  To make
 interactive use easier, we perform partial matching on the names
 relative to the set of know names.  So, for example, we could specify
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl/testPassword",
+getURL("http://www.omegahat.net/RCurl/testPassword",
         verbose = TRUE)
 </pre>
 <br xmlns="">
 or, more succinctly,
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl/testPassword",
+getURL("http://www.omegahat.net/RCurl/testPassword",
         v = TRUE)
 </pre>
 <br xmlns="">
@@ -329,7 +329,7 @@ Many options are specified as strings.
 For example, we can specify  
 the user password for a URI as
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", userpwd = "bob:duncantl", verbose = TRUE)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", userpwd = "bob:duncantl", verbose = TRUE)
 </pre>
 <br xmlns="">
 Note that we also turned on the "verbose" option so that we can see what libcurl is doing.
@@ -340,7 +340,7 @@ working (or are working in a particular way!).
 Another example of using strings is to
 specify a <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">referer</font> URI and a user-agent.
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.org")
+getURL("http://www.omegahat.net/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.net")
 </pre>
 <br xmlns="">
 (Again, you might want to turn on the "verbose" option
@@ -358,17 +358,17 @@ for the Accept field and add a new field named,
 say, Made-up-field.
 We could do this in the request as
 <pre xmlns="" class="S">
-getURL("http://www.omegahat.org/RCurl", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"))
+getURL("http://www.omegahat.net/RCurl", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"))
 </pre>
 <br xmlns="">
 If you turn on the verbose option again for this request, you will see these
 fields being set.
 <pre xmlns="" class="routput">
-&gt; getURL("http://www.omegahat.org", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"), verbose = TRUE)
-* About to connect() to www.omegahat.org port 80
-* Connected to www.omegahat.org (169.237.46.32) port 80
+&gt; getURL("http://www.omegahat.net", httpheader = c(Accept="text/html", 'Made-up-field' = "bob"), verbose = TRUE)
+* About to connect() to www.omegahat.net port 80
+* Connected to www.omegahat.net (169.237.46.32) port 80
 &gt; GET / HTTP/1.1
-Host: www.omegahat.org
+Host: www.omegahat.net
 Pragma: no-cache
 Accept: text/html
 Made-up-field: bob
@@ -436,7 +436,7 @@ We can do this by creating a callback function via the
 <br xmlns=""> function.
 <pre xmlns="" class="S">
  h = basicTextGatherer()
- txt = getURL("http://www.omegahat.org/RCurl", header = TRUE, headerfunction = h$update)
+ txt = getURL("http://www.omegahat.net/RCurl", header = TRUE, headerfunction = h$update)
 </pre>
 <br xmlns="">
 All we have done is create a collection of functions (stored in
@@ -475,7 +475,7 @@ the <b xmlns="" class="$" title="">value</b> function.
 The setup is easy:
 <pre xmlns="" class="S">
   d = debugGatherer()
-  x = getURL("http://www.omegahat.org/RCurl", debugfunction=d$update, verbose = TRUE)
+  x = getURL("http://www.omegahat.net/RCurl", debugfunction=d$update, verbose = TRUE)
 </pre>
 <br xmlns="">
 At the end of the request, again we have the text from the URI in
@@ -527,7 +527,7 @@ at the end of the URI name,
 e.g.
 <div class="literallayout"><p><br></br>
 <br></br>
-  http://www.omegahat.org/cgi-bin/form.pl?a=1&amp;b=2<br></br>
+  http://www.omegahat.net/cgi-bin/form.pl?a=1&amp;b=2<br></br>
 <br></br>
 </p></div>
 The POST method expects the name-value pairs to be
@@ -671,12 +671,12 @@ So it is easy for us to create such a handle before calling
 one of these functions and then pass that as the value 
 for <i xmlns="" class="rarg">curl</i>.
 For example, we can make two requests to the
-www.omegahat.org site using the same handle
+www.omegahat.net site using the same handle
 as follows:
 <pre xmlns="" class="S">
  handle = getCurlHandle()
- a = getURL("http://www.omegahat.org/RCurl", curl = handle)
- b = getURL("http://www.omegahat.org/", curl = handle)
+ a = getURL("http://www.omegahat.net/RCurl", curl = handle)
+ b = getURL("http://www.omegahat.net/", curl = handle)
 </pre>
 <br xmlns=""><p></p>
 It is important to remember that if we set any options in any of the
@@ -734,7 +734,7 @@ created the handle rather than used the default
 value for <i xmlns="" class="rarg">curl</i> and so lost it.)
 <pre xmlns="" class="S">
 h = getCurlHandle()
-getURL("http://www.omegahat.org", curl = h)
+getURL("http://www.omegahat.net", curl = h)
 names(getCurlInfo(h))
 </pre>
 <br xmlns="">
@@ -815,7 +815,7 @@ clear from the names.
 The only ones that might be obscure are
 <b xmlns="" class="$" title="">ares</b> and <b xmlns="" class="$" title="">libidn</b>.
 <b xmlns="" class="$" title="">ares</b> refers to asynchronous domain name server (DNS) lookup
-for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name (e.g. www.omegahat.org).
+for resolving the IP address (e.g. 128.41.12.2) corresponding to a machine name (e.g. www.omegahat.net).
 "GNU Libidn is an implementation of the Stringprep, Punycode and IDNA specifications defined by the IETF Internationalized Domain Names (IDN)"
 (taken from <a class="ulink" href="http://www.gnu.org/software/libidn/" target="_top">http://www.gnu.org/software/libidn/</a>).
 
@@ -915,7 +915,7 @@ to real libcurl options.
 We can use this function something like the following.
 <pre xmlns="" class="S">
 opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
 </pre>
 <br xmlns="">
 Here we create the options ahead of time and use them in a call while
@@ -930,7 +930,7 @@ This is indeed a natural and often good way to do things.
 The following code does what we want.
 <pre xmlns="" class="S">
 h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-getURL("http://www.omegahat.org/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
+getURL("http://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
 </pre>
 <br xmlns="">
 The first line creates a new handle and fills in the three
@@ -957,7 +957,7 @@ We have to add the appropriate fields to the HTTP header to identify
 the SOAP call and then insert the XML that defines the method call
 in the body of the request.
 Using our favorite client SOAP facility
-(e.g. SOAP::Lite, <a class="ulink" href="http://www.omegahat.org/SSOAP" target="_top">SSOAP</a>), 
+(e.g. SOAP::Lite, <a class="ulink" href="http://www.omegahat.net/SSOAP" target="_top">SSOAP</a>), 
 we can send the SOAP request that performs the HTTP request. 
 We can find out what the actual HTTP request looks like using
 facilities in those tools or actually sniffing the packets as they go across the wire using
@@ -1142,6 +1142,6 @@ will definitely suffice for the present.
 </p></div><div class="section" title="Notes"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592792"></a>Notes</h3></div></div></div><p>
 libcurl can use <a class="ulink" href="ftp://athena-dist.mit.edu/pub/ATHENA/ares/" target="_top">ares</a> for
 asynchronous DNS resolution.
-</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592811"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.org/RHTMLForms" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1170723592757" href="#id1170723592757" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
+</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592811"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.net/RHTMLForms" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1170723592757" href="#id1170723592757" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
 connections since the connection data structure is not exposed in the
 R API, yet!</p></div></div></div></body></html>

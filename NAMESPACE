@@ -1,5 +1,6 @@
 import(methods)
 importFrom(bitops, bitAnd, bitOr)
+importFrom(utils, data)
 
 export(getURL, getURI, postForm, getForm, getURLContent)
 export(.postForm)

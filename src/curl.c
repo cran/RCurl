@@ -1420,7 +1420,7 @@ getRStringsFromNullArray(const char * const *d)
 
 
 #if 0
-char *DefaultURL = "http://www.omegahat.org/index.html";
+char *DefaultURL = "http://www.omegahat.net/index.html";
 void
 R_test_curl(void)
 {

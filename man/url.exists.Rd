@@ -46,7 +46,7 @@ Duncan Temple Lang
  \code{\link{curlPerform}}
 }
 \examples{
- url.exists("http://www.omegahat.org/RCurl")
- try(url.exists("http://www.omegahat.org/RCurl-xxx"))
+ url.exists("http://www.omegahat.net/RCurl")
+ try(url.exists("http://www.omegahat.net/RCurl-xxx"))
 }
 

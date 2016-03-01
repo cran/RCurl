@@ -139,13 +139,13 @@ The code below performs the basic steps
 
 <div xmlns="" class="codeToggle"><div class="unhidden" id="id1169139892496"><div><pre class="" title="R code">
 
-uri = "http://www.omegahat.org/RCurl/philosophy.xml"
+uri = "http://www.omegahat.net/RCurl/philosophy.xml"
 
 
 handle = getCurlMultiHandle()
 streams = HTTPReaderXMLParser(handle)
 
-uri = "http://www.omegahat.org/RDoc/overview.xml"
+uri = "http://www.omegahat.net/RDoc/overview.xml"
 handle = getURLAsynchronous(uri, 
                            write = streams$getHTTPResponse,
                            multiHandle = handle, 

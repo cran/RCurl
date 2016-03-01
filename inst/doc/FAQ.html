@@ -109,7 +109,7 @@ sudo apt-get install libcurl4-openssl-dev
    and merged with the values specified explicitly in the call. 
 <pre>
   options(RCurlOptions = list(verbose = TRUE, followlocation = TRUE, timeout = 100, useragent = "myApp in R"))
-  v = getURLContent("http://www.omegahat.org")
+  v = getURLContent("http://www.omegahat.net")
 </pre>
 With this, we can see that our useragent  appears in the HTTP header of the request.
 We see this since the verbose = TRUE shows the header of the request and the response.
@@ -166,11 +166,11 @@ getURLContent("https://mtgox.com/code/data/ticker.php", timeout = 4, ssl.verifyp
       URI, e.g.
       change
 <pre>
-      http://www.omegahat.org/RCurl
+      http://www.omegahat.net/RCurl
 </pre>            
       to
 <pre>
-      http://www.omegahat.org/RCurl/
+      http://www.omegahat.net/RCurl/
 </pre>
       That works for me.
 

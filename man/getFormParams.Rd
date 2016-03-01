@@ -28,9 +28,9 @@ Duncan Temple Lang
 }
 
 \examples{
-if(url.exists("http://www.omegahat.org/foo/bob.R")) {
+if(url.exists("http://www.omegahat.net/foo/bob.R")) {
 
-  getFormParams("http://www.omegahat.org/foo/bob.R?xyz=1&abc=verylong")
+  getFormParams("http://www.omegahat.net/foo/bob.R?xyz=1&abc=verylong")
 
   getFormParams("xyz=1&abc=verylong")
   getFormParams("xyz=1&abc=&on=true")

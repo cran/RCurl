@@ -1,8 +1,8 @@
 library(RCurl)
-uris = c("http://www.omegahat.org/index.html", "http://www.omegahat.org/RecentActivities.html",
-         "http://www.omegahat.org/RCurl/index.html", 
-         "http://www.omegahat.org/RCurl/philosophy.xml",
-         "http://www.omegahat.org/RCurl/philosophy.html")
+uris = c("http://www.omegahat.net/index.html", "http://www.omegahat.net/RecentActivities.html",
+         "http://www.omegahat.net/RCurl/index.html", 
+         "http://www.omegahat.net/RCurl/philosophy.xml",
+         "http://www.omegahat.net/RCurl/philosophy.html")
 write = multiTextGatherer(uris)
 system.time(ans <- getURIAsynchronous(uris, write = write, perform = 1000))
 

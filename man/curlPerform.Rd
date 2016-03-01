@@ -71,9 +71,9 @@ curlMultiPerform(curl, multiple = TRUE)
  \code{\link{curlSetOpt}}
 }
 \examples{
-if(url.exists("http://www.omegahat.org/RCurl")) {
+if(url.exists("http://www.omegahat.net/RCurl")) {
   h = basicTextGatherer()
-  curlPerform(url = "http://www.omegahat.org/RCurl", writefunction = h$update)
+  curlPerform(url = "http://www.omegahat.net/RCurl", writefunction = h$update)
    # Now read the text that was cumulated during the query response.
   h$value()
 }
@@ -109,9 +109,9 @@ if(url.exists("http://services.soaplite.com/hibye.cgi")) {
 
 
    # Using a C routine as the reader of the body of the response.
-if(url.exists("http://www.omegahat.org/RCurl/index.html")) {
+if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
   routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-  curlPerform(URL = "http://www.omegahat.org/RCurl/index.html",
+  curlPerform(URL = "http://www.omegahat.net/RCurl/index.html",
               writefunction = routine)
 }
 }

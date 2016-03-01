@@ -26,7 +26,7 @@ function(uris, ..., multiHandle = getCurlMultiHandle(), .perform = TRUE)
 }
 
 
-uris = c("http://www.omegahat.org/index.html", 
+uris = c("http://www.omegahat.net/index.html", 
          "http://www.r-project.org/src/contrib/PACKAGES.html",
          "http://developer.r-project.org/index.html", 
          "http://www.slashdot.org/philosophy.xml",

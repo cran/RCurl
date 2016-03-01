@@ -17,7 +17,7 @@
   and so increases the consumption of CPU cycles.
   On the other hand, there is a potentially large saving of
   time when one considers total time to download.
-  See \url{http://www.omegahat.org/RCurl/concurrent.xml}
+  See \url{http://www.omegahat.net/RCurl/concurrent.xml}
   for more details.  This is a common trade-off that arises in
   concurrent/parallel/asynchronous computing.
    
@@ -110,8 +110,8 @@ getURIAsynchronous(url, ..., .opts = list(), write = NULL,
   \code{\link{curlMultiPerform}}  
 }
 \examples{
-  uris = c("http://www.omegahat.org/RCurl/index.html",
-           "http://www.omegahat.org/RCurl/philosophy.xml")
+  uris = c("http://www.omegahat.net/RCurl/index.html",
+           "http://www.omegahat.net/RCurl/philosophy.xml")
   txt = getURIAsynchronous(uris)
   names(txt)
   nchar(txt)

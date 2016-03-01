@@ -55,14 +55,14 @@ function(uris, ..., multiHandle = getCurlMultiHandle(), .perform = TRUE)
 
 To test this, we can fetch pages from the Omegahat Web site:
 <code xmlns="" class="Sexpression">
-getURIs(c("http://www.omegahat.org/index.html", "http://www.omegahat.org/RecentActivities.html"))
+getURIs(c("http://www.omegahat.net/index.html", "http://www.omegahat.net/RecentActivities.html"))
 </code>
 
 To see what effect we have on timing, let's run the asynchronous
 version and the serial version and compute their times.
 <div xmlns="" class="codeToggle"><div class="unhidden" id="id1172421655714"><div><pre class="" title="R code">
 
-uris = c("http://www.omegahat.org/index.html", "http://www.omegahat.org/RecentActivities.html")
+uris = c("http://www.omegahat.net/index.html", "http://www.omegahat.net/RecentActivities.html")
 
 atime = system.time(z &lt;- getURIs(uris))
 stime = system.time(zz &lt;- lapply(uris, getURL))
@@ -74,11 +74,11 @@ How does this vary with larger numbers of URIs?
 
 <div xmlns="" class="codeToggle"><div class="unhidden" id="id1172421655720"><div><pre class="" title="R code">
 
-uris = c("http://www.omegahat.org/index.html", 
-         "http://www.omegahat.org/RecentActivities.html",
-         "http://www.omegahat.org/RCurl/index.html", 
-         "http://www.omegahat.org/RCurl/philosophy.xml",
-         "http://www.omegahat.org/RCurl/philosophy.html")
+uris = c("http://www.omegahat.net/index.html", 
+         "http://www.omegahat.net/RecentActivities.html",
+         "http://www.omegahat.net/RCurl/index.html", 
+         "http://www.omegahat.net/RCurl/philosophy.xml",
+         "http://www.omegahat.net/RCurl/philosophy.html")
 
 atime = system.time(z &lt;- getURIs(uris))
 stime = system.time(zz &lt;- lapply(uris, getURL))

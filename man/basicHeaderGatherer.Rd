@@ -51,9 +51,9 @@ parseHTTPHeader(lines, multi = TRUE)
   \code{\link{curlSetOpt}}  
 }
 \examples{
-  if(url.exists("http://www.omegahat.org/RCurl/index.html")) {
+  if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
      h = basicHeaderGatherer()
-     getURI("http://www.omegahat.org/RCurl/index.html",
+     getURI("http://www.omegahat.net/RCurl/index.html",
               headerfunction = h$update)
      names(h$value())
      h$value()

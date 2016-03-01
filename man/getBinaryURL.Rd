@@ -57,7 +57,7 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(),
   \code{gunzip} in the \code{Rcompression} package.
 }
 \examples{
-  u = "http://www.omegahat.org/RCurl/data.gz"
+  u = "http://www.omegahat.net/RCurl/data.gz"
 
 if(url.exists(u)) {
 
