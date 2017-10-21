@@ -48,7 +48,7 @@ function(lines, multi = TRUE)
 #   header <- sapply(els, function(x) paste(x[2]) #XX what if more than 2 els.
 #   names(header) <- sapply(els, function(x) x[1])
    header = structure(sub("[^:]+: (.*)", "\\1", lines),
-                      names = sub("([^:]+):.*", "\\1", lines))
+                      names = tolower(sub("([^:]+):.*", "\\1", lines)))
  }
 
 # st = getStatus(status)
