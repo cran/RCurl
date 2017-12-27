@@ -20,7 +20,7 @@ R_base64_decode(SEXP r_text, SEXP asRaw)
   SEXP r_ans;
   
   if(TYPEOF(r_text) == STRSXP)
-    text = CHAR(STRING_ELT(r_text, 0));
+    text = (char *) CHAR(STRING_ELT(r_text, 0)); // used read-only
   else {
       // RAW() is not null-terminated
       // text = RAW(r_text);
@@ -41,10 +41,11 @@ R_base64_decode(SEXP r_text, SEXP asRaw)
      r_ans = allocVector(RAWSXP, len);
      memcpy(RAW(r_ans), ans, len);
   } else {
-    r_ans = mkString(ans);
+    r_ans = mkString((char *) ans);
   }
-  if(ans && len > -1)
-    free(ans);
+// LENGTH cannot be negative
+//  if(ans && len > -1)
+   if(ans) free(ans);
 
   return(r_ans);
 }
@@ -62,7 +63,7 @@ R_base64_encode(SEXP r_text, SEXP asRaw)
     text = CHAR(STRING_ELT(r_text, 0));
     n = strlen(text);
   } else {
-    text = RAW(r_text);
+    text = (const char *) RAW(r_text);
     n = Rf_length(r_text);
   }
 

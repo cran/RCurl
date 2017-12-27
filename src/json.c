@@ -41,7 +41,7 @@ int UTF8Encode2BytesUnicode( unsigned short input, char * s )
 		return 2;
 	}
 	// 1110xxxx 10xxxxxx 10xxxxxx
-	else if( input < 0x10000 )
+	else // if( input < 0x10000 ) // the input is unsigned short, so tautology
 	{
 		s[ 0 ] = (MASK3BYTES | ( input >> 12 ) );
 		s[ 1 ] = (MASKBYTE | ( ( input >> 6 ) & MASKBITS ) );

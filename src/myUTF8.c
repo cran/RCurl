@@ -98,7 +98,6 @@ static int mbcs_get_next2(int c, ucs_t *wc)
 
 SEXP StringValue(void *input, int len)
 {
-    Rboolean mbcslocale = TRUE;
     SEXP yylval = R_NilValue;
     int pos = 0;
     int c = xxgetc();
@@ -281,7 +280,7 @@ SEXP StringValue(void *input, int len)
     STEXT_PUSH('\0');
     WTEXT_PUSH(0);
 
-    yylval = mkCharLenCE(wcs, wcnt, CE_UTF8); /* include terminator */
+    yylval = mkCharLenCE((char *) wcs, wcnt, CE_UTF8); /* include terminator */
     if(stext != st0) free(stext);
     return(yylval);
 }

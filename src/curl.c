@@ -219,7 +219,7 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 			status =  curl_easy_setopt(obj, opt, &R_curl_read_buffer_callback);
 			buf->length = Rf_length(el);
 			buf->pos = 0;
-			buf->buf = RAW(el);
+			buf->buf = (char *) RAW(el);
 			buf->cur = buf->buf;
 			status =  curl_easy_setopt(obj, CURLOPT_READDATA, buf);
 		} else if(opt == CURLOPT_READDATA) {
@@ -1519,7 +1519,7 @@ R_pushCurlMultiHandle(SEXP m, SEXP curl)
 
     status = curl_multi_add_handle(h, c);
 
-    return(makeCURLcodeRObject(status));
+    return(makeCURLcodeRObject((int)status));
 }
 
 SEXP
@@ -1533,7 +1533,7 @@ R_popCurlMultiHandle(SEXP m, SEXP curl)
 
     status = curl_multi_remove_handle(h, c);
 
-    return(makeCURLcodeRObject(status));    
+    return(makeCURLcodeRObject((int)status));    
 }
 
 SEXP
@@ -1592,7 +1592,7 @@ R_curlMultiPerform(SEXP m, SEXP repeat)
 
  
     PROTECT(ans = allocVector(VECSXP, 2));
-    SET_VECTOR_ELT(ans, 0, makeCURLcodeRObject(status));
+    SET_VECTOR_ELT(ans, 0, makeCURLcodeRObject((int)status));
     SET_VECTOR_ELT(ans, 1, ScalarInteger(n));
     UNPROTECT(1);
 
