@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-7fd1936eceb4b7c62909982420d61ebb *DESCRIPTION
+fae4f299d24bf8f82400a7bc4f214264 *DESCRIPTION
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
 447faef269c96042a1a2381bf4a506a6 *R/base64.R
@@ -168,13 +168,13 @@ f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 88560cecb035c22788476f1ccd5f4059 *src/Makevars.win
 14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
 de30c6693e9c422214b01a6136cdbb9a *src/base64.c
-555cb0b5f5e875f9a2a5046bfb60034d *src/curl.c
+16ea9b02e567dfcc5a5473fcd453e1aa *src/curl.c
 cb212d4fee48aae22995023392a96ee8 *src/curl.c-expt
 d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c
 3e912561cc0d15eec15063be6e18c49a *src/curl_base64.c
 39fedd40e25feae55cc5e1db5701a278 *src/enums.c
-ae89542fdbafe3d84e2cfad29a4e49c2 *src/json.c
+d001e8c7a187e44f4c81220679fa5d07 *src/json.c
 68da0b1b8277c3bb5655000270044fc3 *src/memoryManagement.c
-b1a85fb8232a50ba78bea5f3cb49d374 *src/myUTF8.c
+78d58c0c326b4da7115324a33ccd99e1 *src/myUTF8.c
 5a214a4ba72067193718de76f2d6e682 *tests/dynSetReader.R
 ebc97999845e72b360975bc40407d729 *tests/jpeg.R

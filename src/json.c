@@ -30,23 +30,23 @@ int UTF8Encode2BytesUnicode( unsigned short input, char * s )
 	// 0xxxxxxx
 	if( input < 0x80 )
 	{
-		s[ 0 ] = input;
+	    s[ 0 ] = (char) input;
 		return 1;
 	}
 	// 110xxxxx 10xxxxxx
 	else if( input < 0x800 )
 	{
-		s[ 0 ] = (MASK2BYTES | ( input >> 6 ) );
-		s[ 1 ] = (MASKBYTE | ( input & MASKBITS ) );
+	    s[ 0 ] = (char)(MASK2BYTES | ( input >> 6 ) );
+	    s[ 1 ] = (MASKBYTE | ( input & MASKBITS ) );
 		return 2;
 	}
 	// 1110xxxx 10xxxxxx 10xxxxxx
 	else // if( input < 0x10000 ) // the input is unsigned short, so tautology
 	{
-		s[ 0 ] = (MASK3BYTES | ( input >> 12 ) );
-		s[ 1 ] = (MASKBYTE | ( ( input >> 6 ) & MASKBITS ) );
-		s[ 2 ] = (MASKBYTE | ( input & MASKBITS ) );
-		return 3;
+	    s[ 0 ] = (MASK3BYTES | ( input >> 12 ) );
+	    s[ 1 ] = (MASKBYTE | ( ( input >> 6 ) & MASKBITS ) );
+	    s[ 2 ] = (MASKBYTE | ( input & MASKBITS ) );
+	    return 3;
 	}
 	return 0; // avoid compiler warnings
 }
@@ -166,7 +166,7 @@ SEXP R_mapString(SEXP str, SEXP suggestedLen)
     PROTECT(ans = NEW_CHARACTER(numEls));
     for(i = 0; i < numEls; i++) {
 
-	int num;
+	size_t num;
 	if(Rf_length(suggestedLen))
 	    num = INTEGER(suggestedLen)[i];
 	else
@@ -180,7 +180,9 @@ SEXP R_mapString(SEXP str, SEXP suggestedLen)
 
 	const char *tmp;
 	tmp = CHAR(STRING_ELT(str, i));
-	SET_STRING_ELT(ans, i, mapString(tmp, strlen(tmp), buf, INTEGER(suggestedLen)[i]));
+	SET_STRING_ELT(ans, i, 
+		       mapString(tmp, (int)strlen(tmp), buf,
+				 INTEGER(suggestedLen)[i]));
     }
 
     UNPROTECT(1);

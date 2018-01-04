@@ -5,7 +5,6 @@
 
 typedef wchar_t xxx_ucs_t;
 
-//int mbcs_get_next(int c, wchar_t *wc);
 
 #if defined(Win32) || defined(__STDC_ISO_10646__)
 typedef wchar_t ucs_t;
@@ -13,63 +12,11 @@ typedef wchar_t ucs_t;
 #else
 typedef unsigned int ucs_t;
 # define WC_NOT_UNICODE 
-
-static int mbcs_get_next2(int c, ucs_t *wc)
-{
-#if 0
-    int i, res, clen = 1; char s[9];
-
-    s[0] = c;
-    /* This assumes (probably OK) that all MBCS embed ASCII as single-byte
-       lead bytes, including control chars */
-    if((unsigned int) c < 0x80) {
-	*wc = (wchar_t) c;
-	return 1;
-    }
-    if(utf8locale) {
-	clen = utf8clen(c);
-	for(i = 1; i < clen; i++) {
-	    s[i] = xxgetc();
-	    if(s[i] == R_EOF) {
-		PROBLEM "EOF whilst reading MBCS char"
-		    ERROR;
-	    }
-	}
-	s[clen] ='\0'; /* x86 Solaris requires this */
-	res = mbtoucs(wc, s, clen);
-	if(res == -1) {
-	    PROBLEM "invalid multibyte character in parser"
-		ERROR;
-	}
-    } else {
-	/* This is not necessarily correct for stateful MBCS */
-	while(clen <= MB_CUR_MAX) {
-	    res = mbtoucs(wc, s, clen);
-	    if(res >= 0) break;
-	    if(res == -1) {
-		PROBLEM "invalid multibyte character in parser"
-		    ERROR;
-	    }
-	    /* so res == -2 */
-	    c = xxgetc();
-	    if(c == R_EOF) {
-		PROBLEM "EOF whilst reading MBCS char"
-		    ERROR;
-	    }
-	    s[clen++] = c;
-	} /* we've tried enough, so must be complete or invalid by now */
-    }
-    for(i = clen - 1; i > 0; i--) xxungetc(s[i]);
-    return clen;
-#else
-    return(0);
-#endif
- }
 #endif
 
 #define CTEXT_PUSH(c) do { \
 	if (ct - currtext >= 1000) {memmove(currtext, currtext+100, 901); memmove(currtext, "... ", 4); ct -= 100;} \
-	*ct++ = (c); \
+	*ct++ = (char)(c);						\
 } while(0)
 
 #define CTEXT_POP() ct--
@@ -79,7 +26,7 @@ static int mbcs_get_next2(int c, ucs_t *wc)
 #define R_EOF '\0'
 
 #define STEXT_PUSH(c) do {                  \
-	unsigned int nc = bp - stext;       \
+	unsigned long nc = bp - stext;      \
 	if (nc >= nstext - 1) {             \
 	    char *old = stext;              \
 	    nstext *= 2;                    \
@@ -89,7 +36,7 @@ static int mbcs_get_next2(int c, ucs_t *wc)
 	    memmove(stext, old, nc);        \
 	    if(old != st0) free(old);	    \
 	    bp = stext+nc; }		    \
-	*bp++ = (c);                        \
+	*bp++ = (char)(c);		    \
     } while(0)
 
 #define WTEXT_PUSH(c) do { if(wcnt < 10000) wcs[wcnt++] = c; } while(0)

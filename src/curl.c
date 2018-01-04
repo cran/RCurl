@@ -289,9 +289,11 @@ R_openFile(SEXP r_filename, SEXP r_mode)
     }
     PROTECT(klass = MAKE_CLASS("CFILE"));
     PROTECT(r_ans = NEW(klass));
-    SET_SLOT(r_ans, Rf_install("ref"), tmp = R_MakeExternalPtr(ans, Rf_install("FILE"), R_NilValue));
+    SET_SLOT(r_ans, 
+	     PROTECT(Rf_install("ref")), 
+	     tmp = PROTECT(R_MakeExternalPtr(ans, PROTECT(Rf_install("FILE")), R_NilValue)));
     R_RegisterCFinalizer(tmp, R_closeFILE);
-    UNPROTECT(2);
+    UNPROTECT(5);
     return(r_ans);
 }
 
@@ -741,7 +743,7 @@ getCurlError(CURL *h, int throw, CURLcode status)
    if(throw) {
        SEXP e, ptr, fun;
 
-       fun = Rf_findVarInFrame(R_FindNamespace(ScalarString(mkChar("RCurl"))), Rf_install("curlError"));
+       fun = PROTECT(Rf_findVarInFrame(PROTECT(R_FindNamespace(PROTECT(ScalarString(mkChar("RCurl"))))), PROTECT(Rf_install("curlError"))));
 
        PROTECT(e = Rf_allocVector(LANGSXP, 4));
        SETCAR(e, fun); ptr = CDR(e);
@@ -750,7 +752,7 @@ getCurlError(CURL *h, int throw, CURLcode status)
        SETCAR(ptr, ScalarLogical(throw));  ptr = CDR(ptr);
 
        Rf_eval(e, R_GlobalEnv);
-       UNPROTECT(1);
+       UNPROTECT(5);
    }
 
 #endif
@@ -937,7 +939,7 @@ size_t
 R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData)
 {
   RCurl_BinaryData *data;
-  int total = size*nmemb;
+  unsigned int total = (unsigned int)(size*nmemb);
   data = (  RCurl_BinaryData *) userData;
   if(!data->data || (data->cursor +  total >= data->data + data->alloc_len )) {
        data->alloc_len = MAX( 2 * data->alloc_len, data->alloc_len + total);
@@ -990,7 +992,7 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
 	PROTECT(str = mkCharLenCE(tmp, len, encoding));
 #else
 
-	PROTECT(str = mkCharLenCE(buffer, size * nmemb, encoding));
+	PROTECT(str = mkCharLenCE(buffer, (int)(size * nmemb), encoding));
 
 #endif
 
@@ -1065,11 +1067,11 @@ checkEncoding(char *buffer, size_t len, RWriteDataInfo *data)
 	SETCAR(e, Rf_install("findHTTPHeaderEncoding"));
 #else
 	PROTECT(ns_name = mkString("RCurl"));
-	ns_env = R_FindNamespace(ns_name);
+	ns_env = PROTECT(R_FindNamespace(ns_name));
 	SETCAR(e, findVarInFrame(ns_env, Rf_install("findHTTPHeaderEncoding")));
-	UNPROTECT(1);
+	UNPROTECT(2);
 #endif
-	SETCAR(CDR(e), ScalarString(mkCharLen(buffer, len)));
+	SETCAR(CDR(e), ScalarString(mkCharLen(buffer, (int)len)));
 	ans = INTEGER(Rf_eval(e, R_GlobalEnv))[0];
 
 	UNPROTECT(1);
@@ -1103,7 +1105,7 @@ R_curl_write_data(void *buffer, size_t size, size_t nmemb, RWriteDataInfo *data)
 
 #include <Rversion.h>
 
-const char const *CurlInfoTypeNames[] =  {
+const char *CurlInfoTypeNames[] =  {
     "TEXT", "HEADER_IN", "HEADER_OUT",
     "DATA_IN", "DATA_OUT", "SSL_DATA_IN", "SSL_DATA_OUT", 
     "END"
@@ -1354,7 +1356,7 @@ RCurlVersionInfoToR(const curl_version_info_data *d)
    SET_VECTOR_ELT(ans, 3, mkString(d->host));
    SET_VECTOR_ELT(ans, 4, ScalarInteger(d->features)); 
    SET_VECTOR_ELT(ans, 5, mkString(d->ssl_version ? d->ssl_version : ""));
-   SET_VECTOR_ELT(ans, 6, ScalarInteger(d->ssl_version_num));
+   SET_VECTOR_ELT(ans, 6, ScalarInteger((int)d->ssl_version_num));
    SET_VECTOR_ELT(ans, 7, mkString(d->libz_version));
 
    SET_VECTOR_ELT(ans, 8, getRStringsFromNullArray(d->protocols));
@@ -1467,11 +1469,13 @@ makeMultiCURLPointerRObject(CURLM *obj)
 	
 	PROTECT(klass = MAKE_CLASS("MultiCURLHandle"));
 	PROTECT(ans = NEW(klass));
-	PROTECT(ans = SET_SLOT(ans, Rf_install("ref"), 
-                                R_MakeExternalPtr((void *) obj, Rf_install("MultiCURLHandle"), R_NilValue)));
+	ans = SET_SLOT(ans, PROTECT(Rf_install("ref")), 
+           PROTECT(R_MakeExternalPtr((void *) obj,
+		PROTECT( Rf_install("MultiCURLHandle")),
+	       	R_NilValue)));
 
 	/*XXX R_RegisterCFinalizer(ans, R_finalizeMultiCurlHandle); */
-	UNPROTECT(3);
+	UNPROTECT(5);
 
 	return(ans);
 } 
