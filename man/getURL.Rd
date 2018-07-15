@@ -188,7 +188,9 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                   header= TRUE, headerfunction = h$update, 
                   httpheader = c(Accept="text/html", Test=1), verbose = TRUE) 
      print(paste(h$value(NULL)[-1], collapse=""))
-     read.dcf(textConnection(paste(h$value(NULL)[-1], collapse="")))
+     con <- textConnection(paste(h$value(NULL)[-1], collapse=""))
+     read.dcf(con)
+     close(con)
   }
 
 

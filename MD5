@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-fae4f299d24bf8f82400a7bc4f214264 *DESCRIPTION
+f002073434629ab59c50c043acfc5399 *DESCRIPTION
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
 447faef269c96042a1a2381bf4a506a6 *R/base64.R
@@ -148,7 +148,7 @@ f171886ef91dab6df501eb91f0381496 *man/getBinaryURL.Rd
 204b5cf5707ae7cccf38c79a005394a1 *man/getCurlInfo.Rd
 608bf08a002dd3e5ab27755785dd2d7d *man/getFormParams.Rd
 6788254143210982f08816e922235f72 *man/getURIAsynchronous.Rd
-c9027ce3a3d5b4a8293043facc6b9fe7 *man/getURL.Rd
+22ecfad208cb7fc9f813443044123ea3 *man/getURL.Rd
 59d1cd237bd6888f4dd1dedfa3116b8b *man/guessMIMEType.Rd
 a5ecefeeffec3d7e04b259633adc337e *man/httpPUT.Rd
 c4cf55c01b0b09d2d7ac147479428837 *man/merge.list.Rd
