@@ -7,7 +7,7 @@ efb947d6ab2ba84e55e69b889459bda4 *CodeGeneration/auth.c
 86790ee252cc5d4584c40c9b73225b1d *CodeGeneration/generateDocs.R
 f6c336fbcce86f651e6e72be42c7aaa6 *CodeGeneration/makeAuthCode.R
 e0bbd04b7eb5c0d65c71d7fbe2345360 *CodeGeneration/readHTMLDoc.R
-f002073434629ab59c50c043acfc5399 *DESCRIPTION
+4e2b1f38913c09502c1d99c4fee2aeda *DESCRIPTION
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 167838793e6e7ecf40a8176d3679aa1e *R/aclassesEnums.R
 447faef269c96042a1a2381bf4a506a6 *R/base64.R
@@ -22,7 +22,7 @@ d6cf7f79ffb9db4ea3fd7cf6677ae871 *R/curlInfo.S
 9075cb386a838f1d44e10d7e9dcea5dc *R/dynamic.R
 a54092f27a209ae57424d0dac219a82f *R/form.S
 44be5234779b2d1f63dd0d22af56ab19 *R/getFormParams.R
-56b7169e1307b1e536200dbc2998b2ea *R/getURLContent.R
+57dce474acfd3bccc142e51007d03457 *R/getURLContent.R
 0fe57cfd392052fc9f765e35e92dc355 *R/header.R
 8d0db4eb5ac9650ec2cf6234e8d4a176 *R/http.R
 09fd8b385e2e06250b78c831cd25dd24 *R/httpError.R
@@ -43,7 +43,7 @@ cabb7f48acb3dd85a0acbcd4729d9ddd *README
 8861218c77c37af3fefb0d1b452c19a8 *README.windows
 bbc9b511ddfcad5948cc1cf7bb015229 *Todo.html
 2f63c56d84567a5b5a15aa5c4248081b *configure
-fbe652c0acbd95a4497bab93381a0315 *configure.in
+fbe652c0acbd95a4497bab93381a0315 *configure.ac
 d41d8cd98f00b204e9800998ecf8427e *configure.win
 a1f6addec97ef547de92290f014f4deb *data/mimeTypeExtensions.rda
 5f81b5aacae0ddcbf8800ab5f4e88960 *dynGC.R

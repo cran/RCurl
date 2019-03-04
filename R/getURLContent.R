@@ -143,7 +143,7 @@ function(header, type = getContentType(header)[1],
    if(is.list(type) && length(type) > 1) {
      last <- TRUE
      for(i in type) {
-        if(length(i) && !is.na(i) && (last <- isBinaryContent(header, i, textTypes)))
+        if(length(i) && !any(is.na(i)) && (last <- isBinaryContent(header, i, textTypes)))
           return(TRUE)
      }
      return(last)
