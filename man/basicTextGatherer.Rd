@@ -122,7 +122,7 @@ debugGatherer()
    
 }
 \references{Curl homepage \url{http://curl.haxx.se}}
-\author{Duncan Temple Lang <duncan@wald.ucdavis.edu>}
+\author{Duncan Temple Lang}
 
 
 \seealso{
@@ -130,12 +130,12 @@ debugGatherer()
   \code{\link{dynCurlReader}}  
 }
 \examples{
-if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
+if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
   txt = getURL("http://www.omegahat.net/RCurl/index.html", write = basicTextGatherer())
 
   h = basicTextGatherer()
   txt = getURL("http://www.omegahat.net/RCurl/index.html", write = h$update)
-    # Cumulate across pages.
+    ## Cumulate across pages.
   txt = getURL("http://www.omegahat.net/index.html", write = h$update)
 
 
@@ -143,23 +143,24 @@ if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
   txt = getURL("http://www.omegahat.net/RCurl/index.html",
                header = TRUE, headerfunction = headers$update)
 
-     # Now read the headers.
-  headers$value()
+     ## Now read the headers.
+  cat(headers$value())
   headers$reset()
 
 
-    # Debugging callback
+    ## Debugging callback
   d = debugGatherer()
   x = getURL("http://www.omegahat.net/RCurl/index.html", debugfunction = d$update, verbose = TRUE)
-  names(d$value())
+  cat(names(d$value()))
   d$value()[["headerIn"]]
 
 
+    ## This hangs on Solaris
   uris = c("http://www.omegahat.net/RCurl/index.html",
            "http://www.omegahat.net/RCurl/philosophy.html")
   g = multiTextGatherer(uris)
   txt = getURIAsynchronous(uris,  write = g)
-  names(txt)
+  names(txt) # no names this way
   nchar(txt)
 
    # Now don't use names for the gatherer elements.
@@ -167,7 +168,7 @@ if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
   txt = getURIAsynchronous(uris,  write = g)
   names(txt)
   nchar(txt)
-}
+})
 
 
 \dontrun{

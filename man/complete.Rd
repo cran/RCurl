@@ -32,6 +32,7 @@ complete(obj, ...)
   \code{\link{push}}, \code{\link{pop}}  
 }
 \examples{
+\dontrun{# it does not exist
 if(url.exists("http://eeyore.ucdavis.edu/cgi-bin/testForm1.pl")) {
 
   f = system.file("NAMESPACE", package = "RCurl")
@@ -49,7 +50,7 @@ if(url.exists("http://eeyore.ucdavis.edu/cgi-bin/testForm1.pl")) {
                                     paste(readLines(f), collapse = "\n")
                                     ),
             .opts = list(verbose = TRUE, header = TRUE))
-}
+}}
 }
 \keyword{IO}
 

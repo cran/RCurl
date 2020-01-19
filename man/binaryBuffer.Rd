@@ -44,7 +44,7 @@ binaryBuffer(initialSize = 5000)
   raw vector using \code{as(buf, "raw")}.
 }
 \references{Curl homepage \url{http://curl.haxx.se}}
-\author{Duncan Temple Lang <duncan@wald.ucdavis.edu>}
+\author{Duncan Temple Lang}
 
 \seealso{
  \code{R_curl_write_binary_data}
@@ -61,8 +61,9 @@ if(url.exists("http://www.omegahat.net/RCurl/xmlParse.html.gz")) {
    # Convert the internal data structure into an R raw vector
   b = as(buf, "raw")
 
- if(require(Rcompression)) 
-   gunzip(b)
+  if (getRversion() >= "4")
+    txt = memDecompress(b, asChar = TRUE)
+  ## or txt = Rcompression::gunzip(b)
  }
 }
 \keyword{IO}

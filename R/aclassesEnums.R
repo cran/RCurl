@@ -105,7 +105,7 @@ function(def, className = class(def), where = globalenv())
               el = def[i]
             assign(i, el, where)
           }))
-}  
+}
 
 cumBitOr = bitlist =
 function(...)
@@ -116,7 +116,7 @@ function(...)
 
   ans = x[1]
   for(i in 2:length(x)) {
-    ans = bitOr(ans, x[i])
+    ans = bitOr(ans, x[i]) # from package bitops
   }
   ans
 }
@@ -146,7 +146,7 @@ function(val, values, class = values@EnumName, fromString = NA,
       tmp = as(tmp, class)
     return(tmp)
   }
-  
+
   if(is.na(fromString))
      fromString = is(val, "character")
 
@@ -175,7 +175,7 @@ function(val, values, class = values@EnumName, fromString = NA,
     names(ans) = names(values)[i]
   }
   ans
-}  
+}
 
 
 GenericEnumValue =
@@ -187,9 +187,9 @@ function(name, val, class = "EnumValue", S3 = FALSE)
     ans = new(class, val)
     names(ans) = name
   }
-  
+
   ans
-}  
+}
 
 
 raiseEnumError =
@@ -200,7 +200,7 @@ function(val, values, fromString = is(fromString, "character"), fixCloseMatches 
     if(fromString) {
       possibles = names(values)[m <- agrep(val[is.na(index)], names(values))]
     } else {
-      possibles = values[ m <- agrep(as.character(val), as.character(values)) ] 
+      possibles = values[ m <- agrep(as.character(val), as.character(values)) ]
     }
     if(length(possibles)) {
       txt = paste("\n\tPerhaps you meant",  if(length(possibles) > 1) "one of", paste(possibles, collapse = ", "))
@@ -211,7 +211,7 @@ function(val, values, fromString = is(fromString, "character"), fixCloseMatches 
                  class = class)
 
       if(fixCloseMatches && all(!is.na(m))) {
-        class(msg) =  c("EnumCoercionWarning", "warning", "condition")                
+        class(msg) =  c("EnumCoercionWarning", "warning", "condition")
         warning(msg)
         index[is.na(index)] = m
         return(index)
@@ -220,6 +220,6 @@ function(val, values, fromString = is(fromString, "character"), fixCloseMatches 
         stop(msg)
       }
     }
-    else 
+    else
       stop("No such value(s) ", val[is.na(index)], " in ", paste(names(values), collapse = ", "))
 }

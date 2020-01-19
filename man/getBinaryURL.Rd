@@ -51,26 +51,26 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(),
 }
 \author{Duncan Temple Lang}
 \seealso{
-  \code{\link{getURL}}
-  \code{\link[base]{raw}}
-  %\code{\link[Rcompression]{gunzip}}
-  \code{gunzip} in the \code{Rcompression} package.
+  \code{\link{getURL}},
+  \code{\link[base]{raw}},
+  \code{\link{memDecompress}}
 }
 \examples{
   u = "http://www.omegahat.net/RCurl/data.gz"
 
-if(url.exists(u)) {
+if(url.exists(u)) withAutoprint({
 
   content = getBinaryURL(u)
 
-  if(require(Rcompression)) {
-    x = gunzip(content)
+  if (getRversion() >= "4") withAutoprint({
+    x <- memDecompress(content, asChar = TRUE)
     read.csv(textConnection(x))
-  } else {
+  }) else withAutoprint({
      tmp = tempfile()
-     write(content, file = tmp)
+     writeBin(content, con = tmp)
      read.csv(gzfile(tmp))
-  }
+     unlink(tmp)
+  })
 
 
    # Working from the Content-Type in the header of the HTTP response.
@@ -80,11 +80,17 @@ if(url.exists(u)) {
   type = strsplit(header["Content-Type"], "/")[[1]]
 
   if(type[2] \%in\% c("x-gzip", "gzip")) {
-    if(require(Rcompression)) 
-        x = gunzip(content)
+  if (getRversion() >= "4") {
+     cat(memDecompress(content, asChar = TRUE))
+  } else {
+    tmp = tempfile()
+    writeBin(content, con = tmp)
+    writeLines(readLines(gzfile(tmp)))
+    unlink(tmp)
+    }
   }
 
-}
+})
 }
 \keyword{IO}
 \keyword{programming}

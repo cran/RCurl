@@ -95,7 +95,7 @@ getForm(uri, ..., .params = character(), .opts = list(), curl = getCurlHandle(),
 }
 \examples{
 
-if(url.exists("http://www.google.com")) {
+if(url.exists("http://www.google.com")) withAutoprint({
    # Two ways to submit a query to google. Searching for RCurl
   getURL("http://www.google.com/search?hl=en&lr=&ie=ISO-8859-1&q=RCurl&btnG=Search")
 
@@ -106,7 +106,7 @@ if(url.exists("http://www.google.com")) {
    # And here if we already have the parameters as a list/vector.
   getForm("http://www.google.com/search", .params = c(hl="en", lr="",
           ie="ISO-8859-1",  q="RCurl", btnG="Search"))
-}
+})
 
 
    # Now looking at POST method for forms.
@@ -121,7 +121,7 @@ if(url.exists(url))
 
 
   # Genetic database via the Web.
-if(url.exists('http://www.wormbase.org/db/searches/advanced/dumper')) {
+if(url.exists('http://www.wormbase.org/db/searches/advanced/dumper')) withAutoprint({
  x = postForm('http://www.wormbase.org/db/searches/advanced/dumper',
          species="briggsae",
          list="",
@@ -149,7 +149,7 @@ if(url.exists('http://www.wormbase.org/db/searches/advanced/dumper')) {
          relative = "Chromsome",
          DNA ="flanking sequences only",
          .cgifields =c("feature", "orientation", "DNA", "dump", "relative"))
-}
+})
 	  
 }
 \keyword{IO}

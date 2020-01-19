@@ -2,6 +2,12 @@ url.exists =
 function(url, ..., .opts = list(...), curl = getCurlHandle(.opts = .opts),
          .header = FALSE)
 {
+  if(length(url) > 1) {
+          # Really want to do this with a multi curl so asynchronous.
+      ap = if(.header) lapply else sapply
+      return(ap(url, url.exists, curl = curl, .header = .header))
+  }
+
   g = basicTextGatherer()
   failed = FALSE
   ans = tryCatch(curlPerform(url = url, followlocation = TRUE, headerfunction = g$update,
@@ -11,8 +17,8 @@ function(url, ..., .opts = list(...), curl = getCurlHandle(.opts = .opts),
 
   if(failed)
       return(FALSE)
-                   
-  if(grepl("^ftp", url)) {
+
+  if(grepl("^s?ftp", url)) {
     return(TRUE)
   } else
      header = parseHTTPHeader(g$value())

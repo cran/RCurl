@@ -60,7 +60,7 @@ function(val, name = names(val),
          i = match(val, names(defValues))
          if(any(is.na(i)))
            raiseEnumError(val, defValues, TRUE, FALSE, index = i)
-         
+
          val = defValues[i]
       }
 
@@ -68,9 +68,9 @@ function(val, name = names(val),
          # the value is too big for an integer in R.
         warning("BitwiseValue ", val, " doesn't fit into integer value")
       }
-          
+
       ans =  new(class, val)
-      
+
       names(ans) = name
     }
     ans
@@ -117,7 +117,7 @@ setMethod("&", c("BitwiseValue", "BitwiseValue"),
                  !( is(e1, class(e2)) || is(e2, class(e1))))
               warning("OR'ing two BitwiseValue objects of different class")
 
-            v = bitAnd(e1, e2)
+            v = bitAnd(e1, e2) # from package bitops
                  # if these are of different classes, we should decide what class the result
                  # should be.
             BitwiseValue(v, paste(names(e1), names(e2), sep = " & "), class = class(e1))
@@ -128,7 +128,7 @@ setMethod("&", c("BitwiseValue", "BitwiseValue"),
 
  # Should this return a vector with the same number of elements as x
  # a single value?
- # Version of 
+ # Version of
  # Perhaps introduce a BitwiseValueVector to represent more than one element.
 if(FALSE) {
 setMethod("c", c("BitwiseValue"),

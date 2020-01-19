@@ -1236,7 +1236,7 @@ R_finalizeCurlHandle(SEXP h)
 
    if(curl) {
 #ifdef RCURL_DEBUG_MEMORY
-     fprintf(stderr, "Clearing %p\n", (void *)curl);fflush(stderr);  
+     REprintf("Clearing curl handle %p\n", (void *)curl);fflush(stderr);  
 #endif
 
      CURLOptionMemoryManager *mgr = RCurl_getMemoryManager(curl);

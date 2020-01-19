@@ -11,7 +11,7 @@ curlGlobalCleanup =
 function()
 {
 .Call("R_curl_global_cleanup", PACKAGE = "RCurl")
-}  
+}
 
 asCurlErrorCode =
 function(val)
@@ -26,7 +26,7 @@ function()
 {
   els = NULL
   info = NULL
-  
+
   update = function(msg, type, curl)  {
     els[[type + 1]] <<- c(els[[type + 1]], msg)
     info[[length(info) + 1]] <<- msg
@@ -50,10 +50,10 @@ function()
              value = function(collapse = "", ordered = FALSE, ...) {
                          if(ordered)
                            return(info)
-                         
+
                          if(is.null(collapse))
                            return(els)
-                                 
+
                          sapply(els, function(x) paste(x, collapse = collapse, ...))
                        },
              reset = reset)
@@ -62,11 +62,11 @@ function()
   class(ans) <- c("RCurlDebugHandler", "RCurlCallbackFunction")
 
   ans$reset()
-  
+
   ans
 }
 
-  
+
 
 
 basicTextGatherer =
@@ -76,7 +76,7 @@ basicTextGatherer =
   # called when the libcurl engine has some text to be processed as it is reading the HTTP response from the
   # server.
   # The function that reads the text can do whatever it wants with it. This one simply
-  # cumulates it and makes it available via a second function. 
+  # cumulates it and makes it available via a second function.
   #
 function(txt = character(), max = NA, value = NULL, .mapUnicode = TRUE)
 {
@@ -84,7 +84,7 @@ function(txt = character(), max = NA, value = NULL, .mapUnicode = TRUE)
     txt <<- c(txt, str)
     if(!is.na(max) && nchar(txt) >= max)
       return(0)
-    
+
     nchar(str, "bytes") # use bytes rather than chars as for UTF-8, etc. we may have fewer characters,
                         # but the C code for libcurl works in bytes. If we report chars and < bytes,
                         # libcurl terminates the download.
@@ -108,28 +108,28 @@ function(txt = character(), max = NA, value = NULL, .mapUnicode = TRUE)
                txt = mapUnicodeEscapes(txt)
              value(txt)
           }
-  
+
 
   ans = list(update = update,
              value = val,
              reset = reset)
 
   class(ans) <- c("RCurlTextHandler", "RCurlCallbackFunction")
-  
+
   ans$reset()
-  
+
   ans
 }
 
 basicHeaderGatherer =
-function(txt = character(), max = NA)  
+function(txt = character(), max = NA)
   basicTextGatherer(txt, max, parseHTTPHeader)
 
 
 
-getURL = getURI = 
+getURL = getURI =
   #
-  # initializes a curl handle, populates its settingsc
+  # initializes a curl handle, populates its settings
   #
 function(url, ..., .opts = list(), write = basicTextGatherer(.mapUnicode = .mapUnicode), curl = getCurlHandle(),
           async = length(url) > 1, .encoding = integer(), .mapUnicode = TRUE)
@@ -137,7 +137,7 @@ function(url, ..., .opts = list(), write = basicTextGatherer(.mapUnicode = .mapU
 #    write = getNativeSymbolInfo("R_curl_write_data", PACKAGE = "RCurl")$address
 
   url = as.character(url)
-  
+
   if(async) {
      if(missing(write))
         write = multiTextGatherer(url)
@@ -149,7 +149,7 @@ function(url, ..., .opts = list(), write = basicTextGatherer(.mapUnicode = .mapU
       # then the caller wants to use a serialized sequence of requests and collect
       # the results into a single string if write is specified and as a character vector
       # of strings otherwise.
-    
+
        # If write wasn't specified, then
      dupWriter = FALSE
      if(missing(write))
@@ -160,7 +160,7 @@ function(url, ..., .opts = list(), write = basicTextGatherer(.mapUnicode = .mapU
                             getURI(u, ..., .opts = .opts, write = write, curl = curl, async = FALSE, .encoding = .encoding)
                          }))
   }
-  
+
   returnWriter = FALSE
   if(missing(write) || inherits(write, "RCurlCallbackFunction")) {
       writeFun = write$update
@@ -176,7 +176,7 @@ function(url, ..., .opts = list(), write = basicTextGatherer(.mapUnicode = .mapU
 
   if(returnWriter)
     return(write)
-  
+
   write$value()
 }
 
@@ -186,7 +186,7 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
   isProtected = missing(curl)
 
   .encoding = getEncodingValue(.encoding)
-  
+
   .opts = curlSetOpt(..., .opts = .opts, curl = NULL, .encoding = .encoding)
 
     # The 3rd argument - TRUE - is just so that we don't need to create it in the
@@ -195,7 +195,7 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer())
   status = .Call("R_curl_easy_perform", curl, .opts,  isProtected, .encoding, PACKAGE = "RCurl")
 
   asCurlErrorCode(status)
-}  
+}
 
 CE_NATIVE = 0L
 CE_UTF8 = 1L
@@ -213,7 +213,7 @@ function(val)
  else
    as.integer(val)
 }
-  
+
 
 curlSetOpt =
   #
@@ -243,7 +243,7 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .fo
   }
 
   .encoding = getEncodingValue(.encoding)
- 
+
   if(length(.opts) || length(.encoding)) {
      optIds = mapCurlOptNames(names(.opts))
 
@@ -252,7 +252,7 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .fo
 
      if(!all(is.na(idx)))  {
         i = names(.opts)[!is.na(idx)]
-        .opts[i] =  lapply(i, function(x)  
+        .opts[i] =  lapply(i, function(x)
                                   optionConverters[[x]](.opts[[x]]))
      }
 
@@ -264,7 +264,7 @@ function(..., .opts = list(), curl = getCurlHandle(), .encoding = integer(), .fo
   } else
      optIds = integer()
 
- 
+
   tmp = list(ids = optIds, values = .opts)
   class(tmp) <- "ResolvedCURLOptions"
   tmp
@@ -285,9 +285,9 @@ function(..., .opts = NULL, .encoding = integer(),
    i = match(names(.defaults), names(.opts))
    .opts[names(.defaults)[is.na(i)]] = .defaults[is.na(i)]
  }
- 
+
  curlSetOpt(..., .opts = .opts, curl = h, .encoding = .encoding)
- 
+
  h
 }
 
@@ -309,7 +309,7 @@ setMethod("reset", "CURLHandle",
            function(x, ...) {
                .Call("R_curl_easy_reset", x, PACKAGE = "RCurl")
            })
-  
+
 
 
 curlEscape =
@@ -323,17 +323,17 @@ curlUnescape =
 function(urls)
 {
    .Call("R_curl_escape", as.character(urls), FALSE, PACKAGE = "RCurl")
-}   
+}
 
 
 if(FALSE) {
   tbls = readHTMLTable("http://en.wikipedia.org/wiki/Percent-encoding", stringsAsFactors = FALSE)
   tt = tbls[[5]]
   PercentCodes = structure(as.character(tt[2,]), names = as.character(tt[1,]))
-  cat(paste(sQuote(names(PercentCodes)), dQuote(PercentCodes), sep = " = ", collapse = ",\n\t"))  
+  cat(paste(sQuote(names(PercentCodes)), dQuote(PercentCodes), sep = " = ", collapse = ",\n\t"))
 }
 PercentCodes = c(
-	'%' = "%25",  # this has to go first.  
+	'%' = "%25",  # this has to go first.
         '!' = "%21",
 	'*' = "%2A",
 	'"' = "%22",
@@ -354,7 +354,7 @@ PercentCodes = c(
 	'[' = "%5B",
 	']' = "%5D",
 	'{' = "%7B",
-	'}' = "%7D",  
+	'}' = "%7D",
         ' ' = '%20',
         '\r' = '%0D',
         '\n' = '%0A')
@@ -367,14 +367,14 @@ function(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
      if(!is.na(i))
        codes = codes[ - i ]
    }
-  
+
   for(i in seq(along = codes)) {
      x = gsub(names(codes)[i], codes[i], x, fixed = TRUE)
   }
 
   if(post.amp)
      x = gsub("%", "%25", x, fixed = TRUE)
-  x              
+  x
 }
 
 esc =
@@ -385,7 +385,7 @@ function(x, codes = RCurl:::PercentCodes)
 {
   els = strsplit(x, "")[[1]]
   i =  match(els, names(codes), 0L)
-  
+
   els[ i != 0 ] = codes[ i ]
   paste(els, collapse = "")
 }

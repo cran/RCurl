@@ -43,7 +43,7 @@ parseHTTPHeader(lines, multi = TRUE)
   and return that value.
 }
 \references{Curl homepage \url{http://curl.haxx.se}}
-\author{Duncan Temple Lang <duncan@wald.ucdavis.edu>}
+\author{Duncan Temple Lang}
 
 \seealso{
   \code{\link{basicTextGatherer}}
@@ -51,13 +51,13 @@ parseHTTPHeader(lines, multi = TRUE)
   \code{\link{curlSetOpt}}  
 }
 \examples{
-  if(url.exists("http://www.omegahat.net/RCurl/index.html")) {
+  if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
      h = basicHeaderGatherer()
      getURI("http://www.omegahat.net/RCurl/index.html",
               headerfunction = h$update)
      names(h$value())
      h$value()
-  }
+  })
 }
 \keyword{IO}
 \concept{network client}
