@@ -11,7 +11,7 @@ if test -z "${CURL_CONFIG}" ; then
   exit 1
 fi
 
-if test -n "${enable_debug}" && test "${enable_debug}" == "yes" ; then
+if test -n "${enable_debug}" && test "${enable_debug}" = "yes" ; then
  DEFINES=-DRCURL_DEBUG_MEMORY
 fi
 

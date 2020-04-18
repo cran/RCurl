@@ -1,4 +1,4 @@
-88da9445a9e8e7a386125ececb09c41c *DESCRIPTION
+5302ee8a333ef00309146a01533ea616 *DESCRIPTION
 2612e26855b0ff1c756bff9e0c7545f6 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -32,8 +32,8 @@ cd7bac8adc72089ab8abf1ceb904d124 *R/urlExists.R
 efbfb83dcdae6f04056188c8a41ecbb0 *R/zclone.R
 8cfb5944429e1a25c4947f01843272a8 *R/zzz.R
 cabb7f48acb3dd85a0acbcd4729d9ddd *README
-2f63c56d84567a5b5a15aa5c4248081b *configure
-fbe652c0acbd95a4497bab93381a0315 *configure.ac
+92444748de854b7fc91c186586a3004b *configure
+d00c74e10446bb081bf45ebf9de05dba *configure.ac
 d41d8cd98f00b204e9800998ecf8427e *configure.win
 a1f6addec97ef547de92290f014f4deb *data/mimeTypeExtensions.rda
 3ff9d631b3ee4b545e9904b0e805f6d9 *inst/CurlSSL/boost.pem
@@ -162,4 +162,4 @@ d001e8c7a187e44f4c81220679fa5d07 *src/json.c
 68da0b1b8277c3bb5655000270044fc3 *src/memoryManagement.c
 78d58c0c326b4da7115324a33ccd99e1 *src/myUTF8.c
 5a214a4ba72067193718de76f2d6e682 *tests/dynSetReader.R
-ebc97999845e72b360975bc40407d729 *tests/jpeg.R
+bf521bd0c80a8b87eb3ac711cb838c65 *tests/jpeg.R
