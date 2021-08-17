@@ -23,7 +23,7 @@ merge.list(x, y, ...)
   in names of x and y and whose values are those taken
   from y and then with those in x, overwriting if necessary.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

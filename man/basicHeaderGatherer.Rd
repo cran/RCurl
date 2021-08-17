@@ -42,7 +42,7 @@ parseHTTPHeader(lines, multi = TRUE)
   on the contents read during the processing of the  libcurl request
   and return that value.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

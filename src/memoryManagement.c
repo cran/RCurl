@@ -21,8 +21,7 @@ RCurl_addMemoryAllocation(CURLoption opt, const void *data, CURL *curl)
 	RCurlMemory *el;
 	el = (RCurlMemory *) malloc(sizeof(RCurlMemory));
 	if(!el) {
-		PROBLEM "Can't allocate space for RCurlMemory structure."
-		ERROR;
+	    Rf_error("Can't allocate space for RCurlMemory structure.");
 	}
 	el->data = data;
 	el->option = opt;
@@ -107,8 +106,7 @@ RCurl_releaseManagerMemoryTickets(CURLOptionMemoryManager *mgr)
     if(!mgr) {
 #if 0
 /* This is okay as we may not have needed to protected it. */
-	    PROBLEM "CURL object (%p) that is not handled in the RCurl memory management system.", (void*)curl
-	    WARN;
+	Rf_warning("CURL object (%p) that is not handled in the RCurl memory management system.", (void*)curl);
 #endif
 	    return;
     }

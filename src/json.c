@@ -83,8 +83,7 @@ SEXP mapString(const char *s, int nchar, char *buf, size_t bufLen)
 	    if( s[ i ] == '\\' ) {
 		i++;
 		if(i >= nchar) {
-		    PROBLEM "ending string with an escape: %d > %d", (int) i, (int) nchar
-			WARN;
+		    Rf_warning("ending string with an escape: %d > %d", (int) i, (int) nchar);
 		    break;
 		}
 
@@ -118,15 +117,13 @@ SEXP mapString(const char *s, int nchar, char *buf, size_t bufLen)
 		    {
                       int j;
 		      if(i > nchar - 3) {
-			  PROBLEM "walking passed the end"
-			      ERROR;
+			  Rf_error("walking passed the end");
 		      }
   		      for(j = 1; j <= 4; j++ )
 			if( (i + j >= nchar) || ( ( s[ i + j ] >= 'a' && s[ i + j ] <= 'f' ) || 
 			      ( s[ i + j ] >= 'A' && s[ i + j ] <= 'F' ) ||
 			      ( s[ i + j ] >= '0' && s[ i + j ] <= '9' ) ) == FALSE ) {
-			    PROBLEM "unexpected unicode escaped char '%c'; 4 hex digits should follow the \\u (found %i valid digits)", s[ i + j ], j - 1 
-				ERROR;
+			    Rf_error("unexpected unicode escaped char '%c'; 4 hex digits should follow the \\u (found %i valid digits)", s[ i + j ], j - 1);
 			}
 
 		    unsigned short unicode;
@@ -174,8 +171,7 @@ SEXP R_mapString(SEXP str, SEXP suggestedLen)
 
 	char * buf = (char *) R_alloc(num, sizeof(char));
 	if(!buf) {
-	    PROBLEM "can't allocate memory for working buffer"
-		ERROR;
+	    Rf_error("can't allocate memory for working buffer");
 	}
 
 	const char *tmp;

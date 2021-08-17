@@ -50,8 +50,8 @@
   }
 }
 
-\references{Curl homepage \url{http://curl.haxx.se}
-  \url{http://www.omegahat.net/RCurl}
+\references{Curl homepage \url{https://curl.se/}
+  \url{http://www.omegahat.net/RCurl/}
 }
 \author{Duncan Temple Lang}
 \seealso{

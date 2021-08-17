@@ -49,7 +49,7 @@ curlVersion(id = 0)
   \code{features} in R is a named integer vector
   detailing the different features.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

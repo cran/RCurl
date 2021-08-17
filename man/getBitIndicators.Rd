@@ -34,7 +34,7 @@ setBitIndicators(vals, defs)
   of the different values).
 }
 
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 

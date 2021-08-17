@@ -84,7 +84,7 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
   This list has the S3 class vector
   \code{c("DynamicRCurlTextHandler", "RCurlTextHandler", "RCurlCallbackFunction")}
 }
-\references{libcurl \url{http://curl.haxx.se}}
+\references{libcurl \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

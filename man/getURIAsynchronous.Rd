@@ -101,7 +101,7 @@ getURIAsynchronous(url, ..., .opts = list(), write = NULL,
   }
   
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang <duncan@r-project.org>}
 
 \seealso{

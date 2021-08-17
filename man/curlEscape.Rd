@@ -40,9 +40,9 @@ curlPercentEncode(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
   to the input with the characters escaped or not.
 }
 \references{
-  Curl homepage \url{http://curl.haxx.se}
+  Curl homepage \url{https://curl.se/}
   
-  Percent encoding explained in \url{http://en.wikipedia.org/wiki/Percent-encoding}
+  Percent encoding explained in \url{https://en.wikipedia.org/wiki/Percent-encoding}
 }
 \author{Duncan Temple Lang}
 

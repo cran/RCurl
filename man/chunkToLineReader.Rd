@@ -36,7 +36,7 @@ chunkToLineReader(f, verbose = FALSE)
   \item{comp2 }{Description of 'comp2'}
   ...
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

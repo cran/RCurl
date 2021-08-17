@@ -55,7 +55,7 @@ getCurlMultiHandle(..., .handles = list(...))
   which is simply a pointer to the memory for the C
   structure.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 

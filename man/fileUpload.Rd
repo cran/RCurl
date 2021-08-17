@@ -52,7 +52,7 @@ fileUpload(filename = character(), contents = character(), contentType = charact
 }
 
 \references{
- \url{http://curl.haxx.se}
+ \url{https://curl.se/}
 }
 \author{Duncan Temple Lang}
 \seealso{

@@ -32,8 +32,7 @@ R_base64_decode(SEXP r_text, SEXP asRaw)
   len = R_Curl_base64_decode(text, &ans);
 
   if(len < 1) {
-     PROBLEM "decoding from base64 failed"
-     ERROR;
+      Rf_error("decoding from base64 failed");
   }
 
 
@@ -70,8 +69,7 @@ R_base64_encode(SEXP r_text, SEXP asRaw)
   len = R_Curl_base64_encode(text, n, &ans);
 
   if(len == -1) {
-    PROBLEM "failed to encode the data"
-    ERROR;
+      Rf_error("failed to encode the data");
   }
   if(INTEGER(asRaw)[0]) {
      r_ans = allocVector(RAWSXP, len);

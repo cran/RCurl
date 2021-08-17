@@ -33,7 +33,7 @@ reset(x, ...)
   In other words, the object should not be treated as a reference
   but a new object with the updated contents should be returned.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 \seealso{
   \code{\link{getCurlHandle}}

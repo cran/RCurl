@@ -100,8 +100,7 @@ SEXP StringValue(void *input, int len)
 			CTEXT_POP();
 			if (i == 0) { /* was just \x */
 			    *ct = '\0';
-			    PROBLEM "'\\x' used without hex digits in character string starting \"%s\"", currtext
-                            ERROR;
+			    Rf_error("'\\x' used without hex digits in character string starting \"%s\"", currtext);
 			}
 			break;
 		    }
@@ -129,8 +128,7 @@ SEXP StringValue(void *input, int len)
 			CTEXT_POP();
 			if (i == 0) { /* was just \u */
 			    *ct = '\0';
-			    PROBLEM "'\\u' used without hex digits in character string starting \"%s\"", currtext
-				ERROR;
+			    Rf_error("'\\u' used without hex digits in character string starting \"%s\"", currtext);
 			}
 			break;
 		    }
@@ -138,8 +136,7 @@ SEXP StringValue(void *input, int len)
 		}
 		if(delim) {
 		    if((c = xxgetc()) != '}') {
-			PROBLEM "invalid \\u{xxxx} sequence"
-		        ERROR;
+			Rf_error("invalid \\u{xxxx} sequence");
 		    } else CTEXT_PUSH(c);
 		}
 		WTEXT_PUSH(val); /* this assumes wchar_t is Unicode */
@@ -164,8 +161,7 @@ SEXP StringValue(void *input, int len)
 			CTEXT_POP();
 			if (i == 0) { /* was just \U */
 			    *ct = '\0';
-			    PROBLEM  "'\\U' used without hex digits in character string starting \"%s\"", currtext 
-				ERROR;
+			    Rf_error( "'\\U' used without hex digits in character string starting \"%s\"", currtext);
 			}
 			break;
 		    }
@@ -173,8 +169,7 @@ SEXP StringValue(void *input, int len)
 		}
 		if(delim) {
 		    if((c = xxgetc()) != '}') {
-			PROBLEM "invalid \\U{xxxxxxxx} sequence"
-			    ERROR;
+			Rf_error("invalid \\U{xxxxxxxx} sequence");
 		    } else CTEXT_PUSH(c);
 		}
 		WTEXT_PUSH(val);
@@ -214,8 +209,7 @@ SEXP StringValue(void *input, int len)
 		    break;
 		default:
 		    *ct = '\0';
-		    PROBLEM "'\\%c' is an unrecognized escape in character string starting \"%s\"", c, currtext
-												 ERROR;
+		    Rf_error("'\\%c' is an unrecognized escape in character string starting \"%s\"", c, currtext);
 		}
 	    }
 	}

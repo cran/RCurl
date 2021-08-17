@@ -244,9 +244,8 @@ R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP e
 		    data->nobody = 1;
 
 		if(status) {
-			PROBLEM "Error setting the option for # %d (status = %d) (enum = %d) (value = %p): %s %s", 
-			          i+1, status, opt, val, curl_easy_strerror(status), getCurlError(obj, 0, -1)
-			WARN;
+			Rf_warning("Error setting the option for # %d (status = %d) (enum = %d) (value = %p): %s %s", 
+				   i+1, status, opt, val, curl_easy_strerror(status), getCurlError(obj, 0, -1));
 		}
 
 	}
@@ -284,8 +283,7 @@ R_openFile(SEXP r_filename, SEXP r_mode)
 
     ans = fopen(filename, mode);
     if(!ans) {
-	PROBLEM "Cannot open file %s", filename
-	    ERROR;
+	Rf_error("Cannot open file %s", filename);
     }
     PROTECT(klass = MAKE_CLASS("CFILE"));
     PROTECT(r_ans = NEW(klass));
@@ -340,8 +338,7 @@ R_curl_read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
 	if(TYPEOF(ans) == RAWSXP) {
 	    len = Rf_length(ans);
 	    if(len > size * nmemb) {
-		PROBLEM  "the read function returned too much data (%lf > %lf)", (double) len, (double) (size * nmemb)
-		    ERROR;
+		Rf_error( "the read function returned too much data (%lf > %lf)", (double) len, (double) (size * nmemb));
 	    }
 
 	    memcpy(ptr, RAW(ans), len);
@@ -375,8 +372,7 @@ R_post_form(SEXP handle, SEXP opts, SEXP params, SEXP isProtected, SEXP r_style)
 		style = CURLOPT_HTTPPOST;
 
 	    if(style != CURLOPT_HTTPPOST && style != CURLOPT_POST) {
-		PROBLEM  "using form post style that is not HTTPPOST or POST"
-		    WARN
+		Rf_warning( "using form post style that is not HTTPPOST or POST");
 	    }
 	}
 
@@ -479,8 +475,7 @@ addFormElement(SEXP el, SEXP name, struct curl_httppost **post, struct curl_http
 			     CURLFORM_END);
 
 	} else {
-		PROBLEM "need to specify either the contents or a file name when uploading the contents of a file"
-		ERROR;
+	    Rf_error("need to specify either the contents or a file name when uploading the contents of a file");
 	}
 	
 #if 0
@@ -555,8 +550,7 @@ Rcurl_set_header(CURL *obj, SEXP headers, Rboolean isProtected)
 	for(i = 0; i < n; i++) {
 		val = CHAR(STRING_ELT(headers, i));
 		if(!val || !val[0]) {
-			PROBLEM "No value for HTTP header entry %d, ignoring it", i+i
-			WARN;
+		    Rf_warning("No value for HTTP header entry %d, ignoring it", i+i);
 			continue;
 		}
 		val = isProtected ? val : strdup(val);
@@ -654,8 +648,7 @@ curlCertInfoToR(struct curl_certinfo *certs)
     UNPROTECT(1);
     return(ans);
 #else
-    PROBLEM "no suport for curl_certinfo in this version of libcurl. (Consider upgrading.)"
-	WARN;
+    Rf_warning("no suport for curl_certinfo in this version of libcurl. (Consider upgrading.)");
     return(R_NilValue);
 #endif
 }
@@ -699,8 +692,7 @@ getCurlInfoElement(CURL *obj, CURLINFO id)
 	       }
 	      break;
   	    default:
-		    PROBLEM "invalid getinfo option identifier"
-		    ERROR;
+		Rf_error("invalid getinfo option identifier");
 	}
 
 	return(ans);
@@ -735,8 +727,7 @@ getCurlError(CURL *h, int throw, CURLcode status)
 {
 #if 0
    if(throw) {
-	   PROBLEM "%s", RCurlErrorBuffer
-	   ERROR;
+       Rf_error("%s", RCurlErrorBuffer0;
    }
 #else
 
@@ -825,8 +816,7 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    isProtected = 1;
 	      break;
    	    default:
-		PROBLEM "Unhandled case for the value of curl_easy_setopt (R type = %d, option %d)", TYPEOF(el), option
-		    ERROR;
+		Rf_error("Unhandled case for the value of curl_easy_setopt (R type = %d, option %d)", TYPEOF(el), option);
   	      break;
 	}
 
@@ -861,18 +851,15 @@ getBinaryDataFromR(SEXP r_ref)
 {
   RCurl_BinaryData *data;
   if(TYPEOF(r_ref) != EXTPTRSXP) {
-     PROBLEM "BinaryData_to_raw expects and external pointer to access the C-level data structure"
-     ERROR;
+      Rf_error("BinaryData_to_raw expects and external pointer to access the C-level data structure");
   }
 
   if(R_ExternalPtrTag(r_ref) != Rf_install("RCurl_BinaryData")) {
-     PROBLEM "external pointer passed to BinaryData_to_raw is not an RCurl_BinaryData"
-     ERROR;
+      Rf_error("external pointer passed to BinaryData_to_raw is not an RCurl_BinaryData");
   }
   data = (RCurl_BinaryData *) R_ExternalPtrAddr(r_ref);
   if(!data) {
-     PROBLEM "nil value passed for RCurl_BinaryData object"
-     ERROR;
+      Rf_error("nil value passed for RCurl_BinaryData object");
   }
   return(data);
 }
@@ -896,8 +883,7 @@ R_curl_BinaryData_new(SEXP r_size)
   data = (RCurl_BinaryData *) malloc(sizeof(RCurl_BinaryData));
 
   if(!data) {
-     PROBLEM "cannot allocate space for RCurl_BinaryData: %d bytes", (int) sizeof(RCurl_BinaryData)
-     ERROR;
+      Rf_error("cannot allocate space for RCurl_BinaryData: %d bytes", (int) sizeof(RCurl_BinaryData));
   }  
 
   size = size > 0 ? size : 1;
@@ -907,8 +893,7 @@ R_curl_BinaryData_new(SEXP r_size)
   data->len = 0;
 
   if(!data->data) {
-     PROBLEM "cannot allocate more space: %d bytes", data->alloc_len
-     ERROR;
+      Rf_error("cannot allocate more space: %d bytes", data->alloc_len);
   }  
 
 
@@ -945,8 +930,7 @@ R_curl_write_binary_data(void *buffer, size_t size, size_t nmemb, void *userData
        data->alloc_len = MAX( 2 * data->alloc_len, data->alloc_len + total);
        data->data = (unsigned char *) realloc(data->data, sizeof(unsigned char ) * data->alloc_len);
        if(!data->data) {
-         PROBLEM "cannot allocate more space: %d bytes", data->alloc_len
-         ERROR;
+	   Rf_error("cannot allocate more space: %d bytes", data->alloc_len);
        }
        data->cursor = data->data + data->len;
   }
@@ -1034,9 +1018,8 @@ R_call_R_write_function(SEXP fun, void *buffer, size_t size, size_t nmemb, RWrit
 	UNPROTECT(3);
 
 	if(numRead < size*nmemb  && encoding != CE_NATIVE) {
-	    PROBLEM  "only read %d of the %d input bytes/characters", 
-                     (int) numRead, (int) (size*nmemb)
-   	    WARN;
+	    Rf_warning("only read %d of the %d input bytes/characters", 
+		       (int) numRead, (int) (size*nmemb));
 	}
 
 #ifndef WITH_CE
@@ -1124,9 +1107,8 @@ R_curl_debug_callback (CURL *curl, curl_infotype type, char  *msg,  size_t len, 
 	{
 	  char * buf = (char *) malloc((len + 1)* sizeof(char));
 	  if(!buf) {
-	      PROBLEM "cannot allocate memory for string (%d bytes)", (int) len
- 	      ERROR;
-	  }
+	      Rf_error("cannot allocate memory for string (%d bytes)", (int) len);
+ 	  }
 	  memcpy(buf, msg, len);	  
           buf[len] = '\0';
 	  PROTECT(str = mkChar(buf));
@@ -1216,14 +1198,12 @@ getCURLPointerRObject(SEXP obj)
 
 	handle = (CURL *) R_ExternalPtrAddr(ref);
 	if(!handle) {
-		PROBLEM "Stale CURL handle being passed to libcurl"
-		ERROR;
+	    Rf_error("Stale CURL handle being passed to libcurl");
 	}
 
 	if(R_ExternalPtrTag(ref) != Rf_install("CURLHandle")) {
-		PROBLEM "External pointer with wrong tag passed to libcurl. Was %s",
-                        CHAR(PRINTNAME(R_ExternalPtrTag(ref)))
-		ERROR;
+		Rf_error("External pointer with wrong tag passed to libcurl. Was %s",
+			 CHAR(PRINTNAME(R_ExternalPtrTag(ref))));
 	}
 
 	return(handle);
@@ -1259,8 +1239,7 @@ makeCURLPointerRObject(CURL *obj, int addFinalizer)
 	SEXP ans, klass, ref;
 
 	if(!obj) {
-		PROBLEM "NULL CURL handle being returned"
-		ERROR;
+	    Rf_error("NULL CURL handle being returned");
 	}
 
 #if 0
@@ -1462,8 +1441,7 @@ makeMultiCURLPointerRObject(CURLM *obj)
     SEXP ans, klass;
 
 	if(!obj) {
-		PROBLEM "NULL CURL handle being returned"
-		ERROR;
+	    Rf_error("NULL CURL handle being returned");
 	}
 
 	
@@ -1489,14 +1467,12 @@ getMultiCURLPointerRObject(SEXP obj)
 
 	handle = (CURLM *) R_ExternalPtrAddr(ref = GET_SLOT(obj, Rf_install("ref")));
 	if(!handle) {
-		PROBLEM "Stale MultiCURL handle being passed to libcurl"
-		ERROR;
+	    Rf_error("Stale MultiCURL handle being passed to libcurl");
 	}
 
 	if(R_ExternalPtrTag(ref) != Rf_install("MultiCURLHandle")) {
-		PROBLEM "External pointer with wrong tag passed to libcurl (not MultiCURLHandle), but %s", 
-                        CHAR(PRINTNAME(R_ExternalPtrTag(ref)))
-		ERROR;
+		Rf_error("External pointer with wrong tag passed to libcurl (not MultiCURLHandle), but %s", 
+			 CHAR(PRINTNAME(R_ExternalPtrTag(ref))));
 	}
 
 	return(handle);
@@ -1570,8 +1546,7 @@ R_curlMultiPerform(SEXP m, SEXP repeat)
 				 &max_fd);
 
         if(state != CURLM_OK /* || max_fd == -1 */) {
-           PROBLEM "curl_multi_fdset"
-           ERROR;
+	    Rf_error("curl_multi_fdset");
 	}
 
 	if(max_fd != -1) {

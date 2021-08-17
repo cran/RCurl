@@ -24,7 +24,7 @@ complete(obj, ...)
   of processing the pending requests.
 }
 \references{
- \url{http://curl.haxx.se}, specifically the multi interface of libcurl.
+ \url{https://curl.se/}, specifically the multi interface of libcurl.
 }
 \author{Duncan Temple Lang}
 \seealso{

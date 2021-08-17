@@ -20,8 +20,7 @@
 }
 \source{
 The table of MIME types and extensions was programmatically extracted
-from \samp{http://www.webmaster-toolkit.com/mime-types.shtml} or
-\url{http://reference.sitepoint.com/html/mime-types-full} with
+from \samp{http://www.webmaster-toolkit.com/mime-types.shtml} with
 \code{
   tbls = readHTMLTable("http://www.webmaster-toolkit.com/mime-types.shtml")
   tmp = tbls[[1]][-1,]

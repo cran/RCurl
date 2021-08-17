@@ -43,7 +43,7 @@ binaryBuffer(initialSize = 5000)
   After the contents have been read, one can convert this object to an R
   raw vector using \code{as(buf, "raw")}.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

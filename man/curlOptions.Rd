@@ -87,7 +87,7 @@ getCurlOptionTypes(opts = getCurlOptionsConstants())
   large number corresponding to a \code{curl_off_t}.
 }
 
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
  \seealso{

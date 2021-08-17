@@ -41,7 +41,7 @@ scp(host, path, keypasswd = NA, user = getUserName(), rsa = TRUE,
  Either a raw or character vector giving the contents of the file.
 }
 \references{
- libcurl \url{http://curl.haxx.se}
+ libcurl \url{https://curl.se/}
 }
 \author{
 Duncan Temple Lang

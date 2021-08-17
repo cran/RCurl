@@ -26,7 +26,7 @@ Class \code{"oldClass"}, directly.
 }
 %\section{Methods}{  \describe{}}
 \references{
- \url{http://curl.haxx.se}, the libcurl web site.
+ \url{https://curl.se/}, the libcurl web site.
 }
 \author{Duncan Temple Lang}
 

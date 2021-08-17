@@ -123,7 +123,7 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
   and assign it and then call \code{getURL} and then access the result.
   Instead, the 3 steps can be inlined in a single call.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 
@@ -137,9 +137,9 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
   omegahatExists = url.exists("http://www.omegahat.net")
 
    # Regular HTTP
-  if(omegahatExists) withAutoprint({
+  if(omegahatExists && requireNamespace("XML", quietly = TRUE)) withAutoprint({
      txt = getURL("http://www.omegahat.net/RCurl/")
-        # Then we could parse the result.
+     ## Then we could parse the result.
      XML::htmlTreeParse(txt, asText = TRUE)
   })
 

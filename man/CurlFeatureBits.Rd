@@ -17,7 +17,7 @@
   and used in C-level computations.
 }
 \source{
-  libcurl (see \url{http://curl.haxx.se})
+  libcurl (see \url{https://curl.se/})
 }
 %\references{}
 %\seealso{}

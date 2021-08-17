@@ -61,7 +61,7 @@ curlMultiPerform(curl, multiple = TRUE)
   This should be 0 as other errors will generate
   errors.
 }
-\references{Curl homepage \url{http://curl.haxx.se}}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 
 \seealso{

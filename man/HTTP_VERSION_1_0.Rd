@@ -16,7 +16,7 @@ options of \code{\link{curlPerform}}.
 }
 \usage{HTTP_VERSION_1_0}
 \references{
- \url{http://curl.haxx.se/libcurl/c/curl_easy_setopt.html}
+ \url{https://curl.se/libcurl/c/curl_easy_setopt.html}
 }
 %\examples{}
 \keyword{datasets}
