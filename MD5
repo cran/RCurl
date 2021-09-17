@@ -1,4 +1,4 @@
-ed9874affe63f96cf13ec763e7e99027 *DESCRIPTION
+834f4128a483674e8f3fdb790010820b *DESCRIPTION
 2612e26855b0ff1c756bff9e0c7545f6 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -32,8 +32,8 @@ cd7bac8adc72089ab8abf1ceb904d124 *R/urlExists.R
 efbfb83dcdae6f04056188c8a41ecbb0 *R/zclone.R
 8cfb5944429e1a25c4947f01843272a8 *R/zzz.R
 cabb7f48acb3dd85a0acbcd4729d9ddd *README
-92444748de854b7fc91c186586a3004b *configure
-d00c74e10446bb081bf45ebf9de05dba *configure.ac
+0e9496f447b280164785da091956fa1a *configure
+f393989017aa53ff6890a7f610d99f3c *configure.ac
 d41d8cd98f00b204e9800998ecf8427e *configure.win
 a1f6addec97ef547de92290f014f4deb *data/mimeTypeExtensions.rda
 3ff9d631b3ee4b545e9904b0e805f6d9 *inst/CurlSSL/boost.pem

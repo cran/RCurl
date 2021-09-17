@@ -1,4 +1,5 @@
-AC_INIT(DESCRIPTION)
+AC_INIT
+AC_CONFIG_SRCDIR([DESCRIPTION])
 
 AC_ARG_ENABLE(debug, [--enable-debug turn on debugging information])
 
@@ -23,16 +24,13 @@ AC_PROG_CPP
 CURL_CPPFLAGS=`$CURL_CONFIG --cflags`
 CPPFLAGS="${CPPFLAGS} $CURL_CPPFLAGS"
 
-AC_TRY_COMPILE([
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <curl/curl.h>
-],
-[
+]], [[
  curl_version_info_data *data;
  char *ptr;
  ptr = data->libidn;
-],
-[DEFINES="$DEFINES -DHAVE_LIBIDN_FIELD=1"; echo "Version has a libidn field"], 
-[echo "No libidn field in version structure."])
+]])],[DEFINES="$DEFINES -DHAVE_LIBIDN_FIELD=1"; echo "Version has a libidn field"],[echo "No libidn field in version structure."])
 
 
 LDFLAGS=`${CURL_CONFIG} --libs`
@@ -40,15 +38,12 @@ LDFLAGS=`${CURL_CONFIG} --libs`
 
 AC_DEFUN([RCURL_CHECK_ENUM], [
 
-AC_TRY_COMPILE([
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <curl/curl.h>
-],
-[
+]], [[
   int val;
   val = $1;
-],
-[DEFINES="$DEFINES -DHAVE_$1=1"; echo "Version has $1"], 
-[echo "No $1 enumeration value."])
+]])],[DEFINES="$DEFINES -DHAVE_$1=1"; echo "Version has $1"],[echo "No $1 enumeration value."])
 ])
 
 RCURL_CHECK_ENUM(CURLOPT_URL)
@@ -159,7 +154,7 @@ dnl Next we determine if the Curl_base64_encode routine has an extra parameter
 dnl which appeared in curl-7.18.0 (approx?). This routine is not in the header
 dnl file, so we can't use compilation warnings, etc. So we use the old style call and
 dnl make  a sample program that uses this invocation. If it seg faults, we need the new style.
-#AC_TRY_RUN([
+#AC_RUN_IFELSE([AC_LANG_SOURCE([[
 ##include <curl/curl.h>
 ##include <string.h>
 #
@@ -170,10 +165,8 @@ dnl make  a sample program that uses this invocation. If it seg faults, we need 
 #  len = Curl_base64_encode(text, strlen(text), &ans);
 #  return(0);
 #}
-#],
-#[echo "Using older Curl_base64_enccode form with _no_ SessionHandle parameter."],
-#[echo "Using Curl_base64_encode with SessionHandle parameter."; DEFINES="$DEFINES -DBASE64_NEEDS_SESSION_DATA=1"] 
-#)
+#]])],[#echo "Using older Curl_base64_enccode form with _no_ SessionHandle parameter."],[#echo "Using Curl_base64_encode with SessionHandle parameter."; DEFINES="$DEFINES -DBASE64_NEEDS_SESSION_DATA=1" 
+#],[])
 
 
 CURL_LIBS=`${CURL_CONFIG} --libs`
@@ -189,6 +182,7 @@ AC_SUBST(CURL_LIBS)
 
 echo "libcurl version: `${CURL_CONFIG} --version`"
 
-AC_OUTPUT(src/Makevars)
+AC_CONFIG_FILES([src/Makevars])
+AC_OUTPUT
 
 
