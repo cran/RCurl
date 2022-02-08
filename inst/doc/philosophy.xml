@@ -4,7 +4,7 @@
           xmlns:c="http://www.C.org"
           xmlns:r="http://www.r-project.org"
           xmlns:html="http://www.w3.org/TR/html401"
-	  xmlns:curl="http://curl.haxx.se"
+	  xmlns:curl="https://curl.se/"
 >
 
 <articleinfo>
@@ -56,7 +56,7 @@ boundary strings and creating the "Content-Disposition" elements.  In
 short, there is a lot of work to do and significant potential for
 error.  Rather than doing this in R, RCurl uses an existing
 implementation that is provided in a widely used C library - 
-<ulink url="http://curl.haxx.se">libcurl</ulink>.
+<ulink url="https://curl.se/">libcurl</ulink>.
 This has several benefits:
 <itemizedlist>
 <listitem> libcurl is well tested and very portable. As a result it
@@ -102,7 +102,7 @@ It doesn't try to provide all the details.  The R function help files
 and the libcurl documentation have all the relevant information.
 Since the package is an interface to libcurl, it is important to use
 the documentation for it regarding features, options, etc.  You can
-consult the <ulink url="http://curl.haxx.se/docs">libcurl
+consult the <ulink url="https://curl.se/docs">libcurl
 documentation</ulink> and <ulink
 url="http://curl.planetmirror.com/libcurl/c/example.html">libcurl
 examples</ulink> (in C code).

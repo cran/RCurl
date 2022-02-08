@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title></title><link rel="stylesheet" type="text/css" href="../OmegaTech.css"></link><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></meta><meta name="keywords" content="HTTP, RCurl, R"></meta></head><body class="yui-skin-sam"><div class="article"><div class="titlepage"><div><div><div class="author"><h3 class="author"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span></h3><div class="affiliation"><span class="orgname">Department of Statistics, UC Davis<br></br></span></div></div></div></div><hr></hr></div><div class="section" title="Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="id1170723591729"></a>Overview</h2></div></div></div><p></p>
-The <a class="ulink" href="http://www.omegahat.net/RCurl" target="_top">RCurl package</a> provides
+The <a class="ulink" href="http://www.omegahat.net/RCurl/" target="_top">RCurl package</a> provides
 high-level facilities in R to communicate with HTTP servers.  Simply,
 it allows us to download URLs, submit forms in different ways, and
 generally compose HTTP requests.  It supports HTTPS, the secure HTTP;
@@ -29,7 +29,7 @@ boundary strings and creating the "Content-Disposition" elements.  In
 short, there is a lot of work to do and significant potential for
 error.  Rather than doing this in R, RCurl uses an existing
 implementation that is provided in a widely used C library - 
-<a class="ulink" href="http://curl.haxx.se" target="_top">libcurl</a>.
+<a class="ulink" href="https://curl.se/" target="_top">libcurl</a>.
 This has several benefits:
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"> libcurl is well tested and very portable. As a result it
 is available on many platforms and bugs have been identified and
@@ -71,7 +71,7 @@ and the libcurl documentation have all the relevant information.
 Since the package is an interface to libcurl, it is important to use
 the documentation for it regarding features, options, etc.  
 
-<!-- You can consult the <a class="ulink" href="http://curl.haxx.se/docs"
+<!-- You can consult the <a class="ulink" href="https://curl.se/docs"
 target="_top">libcurl documentation</a> and <a class="ulink"
 href="http://curl.planetmirror.com/libcurl/c/example.html"
 target="_top">libcurl examples</a> (in C code). -->
@@ -133,7 +133,7 @@ It allows us to specify an R function that is called each time
 libcurl has some text as part of the HTTP response.
 It hands this text (as a sequence of bytes) to the function
 so that it can process it in whatever way it deems fit.
-This corresponds to the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writefunction</font> option 
+This corresponds to the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">writefunction</font> option 
 for the libcurl operation described next. We have it as an explicit
 argument simply because we need to use it to get the return value
 in a single action as the default behavior.
@@ -233,7 +233,7 @@ explanation.
 <p></p>
 The names of the options require a slight explanation.  These
 correspond to symbolic names in the C code of libcurl.  For example,
-the option <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">url</font> in R corresponds to
+the option <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">url</font> in R corresponds to
 <i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_URL</i> in C.  Firstly, uppercase
 letters are annoying to type and read, so we have mapped them to lower
 case letters in R.  We have also removed the prefix "CURLOPT_" since
@@ -241,8 +241,8 @@ we know the context in which they option names are being used.  And
 lastly, any option names that have a _ (after we have removed the
 CURLOPT_ prefix) are changed to replace the '_' with a '.'  so we can
 type them in R without having to quote them.  For example, combining
-these three rules, "CURLOPT_URL" becomes <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">url</font> and
-<i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_NETRC_FILE</i> becomes <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">netrc.file</font>.
+these three rules, "CURLOPT_URL" becomes <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">url</font> and
+<i xmlns="" xmlns:c="http://www.C.org" xmlns:cpp="http://www.cplusplus.org" class="cenumValue">CURLOPT_NETRC_FILE</i> becomes <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">netrc.file</font>.
 That is the mapping scheme.
 
 <p></p>
@@ -313,10 +313,10 @@ expect a number or logical value.
 [53] "unrestricted.auth"       "upload"                 
 [55] "verbose"                
 </pre>
-The <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">connecttimeout</font> gives the maximum number 
+The <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">connecttimeout</font> gives the maximum number 
 of seconds the connection should take before
 raising an error, so this is a number.
-The <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">header</font> option, on the other hand, 
+The <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">header</font> option, on the other hand, 
 is merely a flag to indicate whether header information
 from the response should be included.
 So this can be a logical value (or a number that is
@@ -338,7 +338,7 @@ working (or are working in a particular way!).
 
 <p></p>
 Another example of using strings is to
-specify a <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">referer</font> URI and a user-agent.
+specify a <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">referer</font> URI and a user-agent.
 <pre xmlns="" class="S">
 getURL("http://www.omegahat.net/RCurl/index.html", useragent="RCurl", referer="http://www.omegahat.net")
 </pre>
@@ -348,10 +348,10 @@ to see what libcurl  is doing with this information.)
 
 <p></p>
 The libcurl facilities allow us to not only set our own values for
-fields used in the HTTP request header (such as the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">referer</font> or
+fields used in the HTTP request header (such as the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">referer</font> or
 user-agent), but it also allows us to set an entire collection of new
 fields or replacements for any existing field.  We do this in R using
-the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">httpheader</font> option for libcurl and we specify a value which is a
+the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">httpheader</font> option for libcurl and we specify a value which is a
 named character vector.
 For example, suppose we want to provide a value
 for the Accept field and add a new field named,
@@ -405,8 +405,8 @@ to specify a C routine from R (using
 <br xmlns="">), we currently don't
 support this.  Instead, it is more natural to specify an R function
 which is to be called when appropriate.  And this is indeed how we do
-things in RCurl.  One can specify a function for the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writefunction</font><font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">writeheader</font> and <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">debugfunction</font> options.  (We can add support for
-the others such as <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">readfunction</font>.) To use these is quite simple.  We
+things in RCurl.  One can specify a function for the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">writefunction</font><font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">writeheader</font> and <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">debugfunction</font> options.  (We can add support for
+the others such as <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">readfunction</font>.) To use these is quite simple.  We
 expect an R function that takes a single argument which is the
 character of bytes to process.  The function can do what it wants with
 this argument.  Typically, it will accumulate it in a persistent
@@ -422,7 +422,7 @@ of the idea and this mechanism is used in
 to read the header information that was returned by HTTP server in the
 response to our request.  (This has interesting things like cookies,
 content type, etc.  that libcurl uses internally, but we may also want
-to process.)  Then we would firstly use the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">header</font> option to turn on
+to process.)  Then we would firstly use the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">header</font> option to turn on
 the libcurl facility to report the response header information.
 If we just do this, the header information will be included in
 the text that <pre xmlns="" class="rfunction">getURL</pre>
@@ -465,7 +465,7 @@ its actions.  By default, these will be written on the console
 (e.g. stderr).  In some cases, we would not want these to be on the
 screen but instead, for example, displayed in a GUI or stored in a
 variable for closer examination.  We can do this by providing a
-callback function for the debugging output via the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">debugfunction</font>
+callback function for the debugging output via the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">debugfunction</font>
 option for libcurl.
 The <pre xmlns="" class="rfunction">debugGatherer</pre>
 <br xmlns=""> is a simple
@@ -958,7 +958,7 @@ We have to add the appropriate fields to the HTTP header to identify
 the SOAP call and then insert the XML that defines the method call
 in the body of the request.
 Using our favorite client SOAP facility
-(e.g. SOAP::Lite, <a class="ulink" href="http://www.omegahat.net/SSOAP" target="_top">SSOAP</a>), 
+(e.g. SOAP::Lite, <a class="ulink" href="http://www.omegahat.net/SSOAP/" target="_top">SSOAP</a>), 
 we can send the SOAP request that performs the HTTP request. 
 We can find out what the actual HTTP request looks like using
 facilities in those tools or actually sniffing the packets as they go across the wire using
@@ -1004,7 +1004,7 @@ Content-Type: text/xml; charset=utf-8<br></br>
 </p></div>
 libcurl should take care of the Content-Length field.
 
-The body is specified for the HTTP request using the <font xmlns="" xmlns:curl="http://curl.haxx.se" color="red" class="curlOpt">postfields</font> option.
+The body is specified for the HTTP request using the <font xmlns="" xmlns:curl="https://curl.se/" color="red" class="curlOpt">postfields</font> option.
 To do this using the <i xmlns=""><a href="https://cran.r-project.org/package=RCurl">RCurl</a></i> package, we use
 the following code.
 <pre xmlns="" class="S">
@@ -1137,12 +1137,12 @@ a lot to the user to do to setup the request and process the response.
 RCurl inherits many, many good features for "free" from libcurl.
 </p><p>
 libcurl is not the only C-level library that we could have used.
-Alternative libraries include <a class="ulink" href="http://www.w3.org/Library/" target="_top">libwww</a> from the W3 group.  We
+Alternative libraries include <a class="ulink" href="https://dev.w3.org/libwww/Library//" target="_top">libwww</a> from the W3 group.  We
 <span class="emphasis"><em>may</em></span> find that that is more suitable, but libcurl
 will definitely suffice for the present.
 <!-- </p></div><div class="section" title="Notes"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592792"></a>Notes</h3></div></div></div><p> -->
 <!-- libcurl can use <a class="ulink" href="ftp://athena-dist.mit.edu/pub/ATHENA/ares/" target="_top">ares</a> for -->
 <!-- asynchronous DNS resolution. -->
-</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592811"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.net/RHTMLForms" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1170723592757" href="#id1170723592757" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
+</p></div></div><div class="section"><div class="titlepage"></div><div class="bibliography" title="Bibliography"><div class="titlepage"><div><div><h3 class="title"><a id="id1170723592811"></a>Bibliography</h3></div></div></div><div class="biblioentry" title="The RHTMLForms package: creating S functions from HTML forms."><a id="bib:odbAccess"></a><p>[1] <span class="authorgroup"><span class="firstname">Duncan</span> <span class="surname">Temple Lang</span>, <span class="firstname">Sandrine</span> <span class="surname">Dudoit</span>, and <span class="firstname">Sunduz</span> <span class="surname">Keles</span>. </span><span class="title"><em>The RHTMLForms package: creating S functions from HTML forms.</em>. </span><a class="ulink" href="http://www.omegahat.net/RHTMLForms/" target="_top">RHTMLForms</a></p></div><div class="biblioentry" title="Programming Web Services with SOAP"><a id="bib:SOAP"></a><p>[2] <span class="authorgroup"><span class="firstname">James</span> <span class="surname">Snell</span>, <span class="firstname">Doug</span> <span class="surname">Tidwell</span>, and <span class="firstname">Pavel</span> <span class="surname">Kulchenko</span>. </span><span class="title"><em>Programming Web Services with SOAP</em>. </span><a class="ulink" href="http://www.oreilly.com/catalog/progwebsoap/" target="_top">O'Reilly</a></p></div></div></div><div class="footnotes"><br></br><hr width="100" align="left"></hr><div class="footnote"><p><sup>[<a id="ftn.id1170723592757" href="#id1170723592757" class="para">1</a>] </sup>I have a local version (not with SSL) but they are not
 connections since the connection data structure is not exposed in the
 R API, yet!</p></div></div></div></body></html>

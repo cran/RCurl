@@ -155,9 +155,11 @@ if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
   d$value()[["headerIn"]]
 
 
-    ## This hangs on Solaris
+    ## This hung on Solaris
+    ## 2022-02-08 philosophy.html is malformed UTF-8
   uris = c("http://www.omegahat.net/RCurl/index.html",
            "http://www.omegahat.net/RCurl/philosophy.html")
+\dontrun{
   g = multiTextGatherer(uris)
   txt = getURIAsynchronous(uris,  write = g)
   names(txt) # no names this way
@@ -168,6 +170,7 @@ if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
   txt = getURIAsynchronous(uris,  write = g)
   names(txt)
   nchar(txt)
+}
 })
 
 
