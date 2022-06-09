@@ -1,4 +1,4 @@
-5a3a837edad9487f42d29d789a9c193f *DESCRIPTION
+8e7f5bbf2e85db91d19861d8529e9b96 *DESCRIPTION
 b7e3b7d7512e387c2e3256a7d7bc5b15 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -35,7 +35,7 @@ cabb7f48acb3dd85a0acbcd4729d9ddd *README
 0e9496f447b280164785da091956fa1a *configure
 f393989017aa53ff6890a7f610d99f3c *configure.ac
 d41d8cd98f00b204e9800998ecf8427e *configure.win
-a1f6addec97ef547de92290f014f4deb *data/mimeTypeExtensions.rda
+33b7e9c072d752f93a34675e82ed2578 *data/mimeTypeExtensions.rda
 3ff9d631b3ee4b545e9904b0e805f6d9 *inst/CurlSSL/boost.pem
 83e2ea55aeb9fc9578554decfb0ec5f6 *inst/CurlSSL/ca-bundle.crt
 c726ae88fd600aa26df1d30f42b51fec *inst/CurlSSL/cacert.pem
@@ -117,7 +117,7 @@ fe1931c41a6bf09f3f49a98fb76bdcd5 *man/basicTextGatherer.Rd
 b8ca83760e37e80f1f1db526d24c37ac *man/clone.Rd
 70a29e3de2b6cbe6c3478660301bf228 *man/complete.Rd
 af109e94138009dc642fea350333e8fb *man/curlError.Rd
-8934f67348d0c8793265dca5893d65b3 *man/curlEscape.Rd
+6d95af74ea262449fb4c8b22c3e1db3e *man/curlEscape.Rd
 eca87a5a639f5c05d250f7bdbdd4ddd1 *man/curlGlobalInit.Rd
 1addae1cd78dc7f033bd689afcde1d1a *man/curlOptions.Rd
 163b594af8a732ef74696b4a6aa9bb11 *man/curlPerform.Rd
@@ -128,7 +128,7 @@ c764ee32849c47119824f6ac8d592a31 *man/enums.Rd
 dd598387b97152565122014af72171b7 *man/fileUpload.Rd
 929db5b50da92d52507498985c3c622e *man/findHTTPHeaderEncoding.Rd
 0ac4db64fa8c0b246f04c41900ec458a *man/ftpUpload.Rd
-dad2bfc7eaa4dddba64a350c577f0ea1 *man/getBinaryURL.Rd
+ab56e2b2fe99fa3963b23b3b6b671ad0 *man/getBinaryURL.Rd
 14fb10c4d0e001b2695c500e7aa652e5 *man/getBitIndicators.Rd
 9ab011d7f67c1671d89826bea1183d56 *man/getCurlErrorClassNames.Rd
 136be8674c7e39d1fcd0b010a7ea7ac7 *man/getCurlHandle.Rd

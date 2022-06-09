@@ -23,7 +23,7 @@ curlPercentEncode(x, amp = TRUE, codes = PercentCodes, post.amp = FALSE)
   \item{urls}{ a character vector giving the strings to be escaped or
     unescaped.}
   \item{x}{the strings to be encoded via the percent-encoding method}
-  \item{amp}{a  logical value indicating whether to encode \&
+  \item{amp}{a  logical value indicating whether to encode &
     characters.}
   \item{codes}{the named character vector giving the encoding map. The
     names are the characters we encode, the values are what we encode them

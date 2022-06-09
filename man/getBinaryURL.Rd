@@ -26,7 +26,7 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(),
     This can be a regular URL or a
     \code{application/x-www-form-urlencoded} URL,
     i.e. with name=value parameters appended to the location via a ?,
-    and separated  from each other via a \&.}
+    and separated  from each other via a &.}
   \item{\dots}{additional arguments that are passed to \code{\link{getURL}}.}
   \item{.opts}{a list of named values that are passed to
     \code{\link{getURL}} as the \code{.opts} argument.}
