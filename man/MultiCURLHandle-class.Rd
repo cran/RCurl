@@ -51,7 +51,7 @@
 }
 
 \references{Curl homepage \url{https://curl.se/}
-  \url{http://www.omegahat.net/RCurl/}
+  \url{https://www.omegahat.net/RCurl/}
 }
 \author{Duncan Temple Lang}
 \seealso{

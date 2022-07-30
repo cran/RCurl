@@ -96,18 +96,18 @@ dynCurlReader(curl = getCurlHandle(), txt = character(), max = NA,
 
    # Each of these examples can be done with getURLContent().
    # These are here just to illustrate the dynamic reader.
-if(url.exists("http://www.omegahat.net/Rcartogram/demo.jpg")) withAutoprint({
+if(url.exists("https://www.omegahat.net/Rcartogram/demo.jpg")) withAutoprint({
   header = dynCurlReader()
-  curlPerform(url = "http://www.omegahat.net/Rcartogram/demo.jpg",
+  curlPerform(url = "https://www.omegahat.net/Rcartogram/demo.jpg",
               headerfunction = header$update, curl = header$curl())
   class( header$value() )
   length( header$value() )
 })
 
-if(url.exists("http://www.omegahat.net/dd.gz")) withAutoprint({
+if(url.exists("https://www.omegahat.net/dd.gz")) withAutoprint({
      # gzip example.
   header = dynCurlReader()
-  curlPerform(url = "http://www.omegahat.net/dd.gz",
+  curlPerform(url = "https://www.omegahat.net/dd.gz",
               headerfunction = header$update, curl = header$curl())
   class( header$value() )
   length( header$value() )

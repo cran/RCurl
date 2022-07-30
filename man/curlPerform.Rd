@@ -71,9 +71,9 @@ curlMultiPerform(curl, multiple = TRUE)
  \code{\link{curlSetOpt}}
 }
 \examples{
-if(url.exists("http://www.omegahat.net/RCurl")) withAutoprint({
+if(url.exists("https://www.omegahat.net/RCurl")) withAutoprint({
   h = basicTextGatherer()
-  curlPerform(url = "http://www.omegahat.net/RCurl", writefunction = h$update)
+  curlPerform(url = "https://www.omegahat.net/RCurl", writefunction = h$update)
    # Now read the text that was cumulated during the query response.
   cat(h$value())
 })
@@ -110,9 +110,9 @@ if(url.exists("http://services.soaplite.com/hibye.cgi")) withAutoprint({
 
 
    # Using a C routine as the reader of the body of the response.
-if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
+if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
   routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-  curlPerform(URL = "http://www.omegahat.net/RCurl/index.html",
+  curlPerform(URL = "https://www.omegahat.net/RCurl/index.html",
               writefunction = routine)
 })
 }

@@ -68,9 +68,11 @@ function()
 
 s = summer()
 
-if(url.exists("http://www.omegahat.net/RCurl/matrix.data"))
-   getURL("http://www.omegahat.net/RCurl/matrix.data", write = chunkToLineReader(s$read)$read)
-}
+\dontrun{
+## broken, 2022-07-29
+if(url.exists("https://www.omegahat.net/RCurl/matrix.data"))
+   getURL("https://www.omegahat.net/RCurl/matrix.data", write = chunkToLineReader(s$read)$read)
+}}
 \keyword{IO}
 \concept{Web}
 \concept{HTTP}

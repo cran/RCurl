@@ -50,11 +50,11 @@ binaryBuffer(initialSize = 5000)
  \code{R_curl_write_binary_data}
 }
 \examples{
-if(url.exists("http://www.omegahat.net/RCurl/xmlParse.html.gz")) {
+if(url.exists("https://www.omegahat.net/RCurl/xmlParse.html.gz")) {
   buf = binaryBuffer()
 
      # Now fetch the binary file.
-  getURI("http://www.omegahat.net/RCurl/xmlParse.html.gz",
+  getURI("https://www.omegahat.net/RCurl/xmlParse.html.gz",
          write = getNativeSymbolInfo("R_curl_write_binary_data")$address,
          file = buf@ref)
 

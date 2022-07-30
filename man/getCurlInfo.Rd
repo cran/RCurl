@@ -49,9 +49,9 @@ getCurlInfoConstants()
   \code{\link{getCurlHandle}}
 }
 \examples{
- if(url.exists("http://www.omegahat.net/RCurl/index.html")) withAutoprint({
+ if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
     curl = getCurlHandle()
-    txt = getURL("http://www.omegahat.net/RCurl/index.html", curl = curl)
+    txt = getURL("https://www.omegahat.net/RCurl/index.html", curl = curl)
     getCurlInfo(curl)
     rm(curl)  # release the curl!
  })

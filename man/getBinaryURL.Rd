@@ -56,7 +56,7 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(),
   \code{\link{memDecompress}}
 }
 \examples{
-  u = "http://www.omegahat.net/RCurl/data.gz"
+  u = "https://www.omegahat.net/RCurl/data.gz"
 
 if(url.exists(u)) withAutoprint({
 
