@@ -55,7 +55,7 @@ SEXP StringValue(void *input, int len)
     char *stext = st0, *bp = st0;
     int wcnt = 0;
     ucs_t wcs[10001];
-    Rboolean oct_or_hex = FALSE, use_wcs = FALSE;
+//    Rboolean oct_or_hex = FALSE, use_wcs = FALSE;
 
     while (pos < len && (c = xxgetc()) != R_EOF && c != quote) {
 	CTEXT_PUSH(c);
@@ -86,7 +86,7 @@ SEXP StringValue(void *input, int len)
 		    CTEXT_POP();
 		}
 		c = octal;
-		oct_or_hex = TRUE;
+//		oct_or_hex = TRUE;
 	    }
 	    else if(c == 'x') {
 		int val = 0; int i, ext;
@@ -107,7 +107,7 @@ SEXP StringValue(void *input, int len)
 		    val = 16*val + ext;
 		}
 		c = val;
-		oct_or_hex = TRUE;
+//		oct_or_hex = TRUE;
 	    }
 	    else if(c == 'u') {
 		unsigned int val = 0; int i, ext; 
@@ -140,7 +140,7 @@ SEXP StringValue(void *input, int len)
 		    } else CTEXT_PUSH(c);
 		}
 		WTEXT_PUSH(val); /* this assumes wchar_t is Unicode */
-		use_wcs = TRUE;
+//		use_wcs = TRUE;
 		continue;
 	    }
 	    else if(c == 'U') {
@@ -173,7 +173,7 @@ SEXP StringValue(void *input, int len)
 		    } else CTEXT_PUSH(c);
 		}
 		WTEXT_PUSH(val);
-		use_wcs = TRUE;
+//		use_wcs = TRUE;
 		continue;
 	    }
 	    else {
@@ -227,7 +227,7 @@ SEXP StringValue(void *input, int len)
 }
 
 SEXP
-R_checkStringValue()
+R_checkStringValue(void)
 {
     char str[6];
     str[0] = '\\';

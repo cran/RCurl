@@ -99,7 +99,7 @@ R_curl_easy_perform(SEXP handle, SEXP opts, SEXP isProtected, SEXP encoding)
 }
 
 SEXP
-R_curl_global_cleanup()
+R_curl_global_cleanup(void)
 {
 	curl_global_cleanup();
 	return(R_NilValue);
@@ -508,7 +508,7 @@ addFormElement(SEXP el, SEXP name, struct curl_httppost **post, struct curl_http
    Not currently exported via the registration mechanism.
 */
 SEXP
-R_curl_version()
+R_curl_version(void)
 {
 	return(mkString(curl_version()));
 }
@@ -1480,7 +1480,7 @@ getMultiCURLPointerRObject(SEXP obj)
 
 
 SEXP
-R_getCurlMultiHandle()
+R_getCurlMultiHandle(void)
 {
     CURLM *h;
     h =  curl_multi_init();

@@ -57,7 +57,7 @@ typedef struct {
 SEXP R_curl_easy_setopt(SEXP handle, SEXP values, SEXP opts, SEXP isProtected, SEXP encoding);
 SEXP R_curl_easy_init(void);
 SEXP R_curl_easy_duphandle(SEXP);
-SEXP R_curl_global_cleanup();
+SEXP R_curl_global_cleanup(void);
 SEXP R_curl_global_init(SEXP);
 SEXP R_curl_version_info(SEXP flag);
 SEXP R_curl_easy_perform(SEXP handle, SEXP opts, SEXP isProtected, SEXP encoding);

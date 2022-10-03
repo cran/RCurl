@@ -1,4 +1,4 @@
-9359e4534ecb72ab67fd4684aa5a1357 *DESCRIPTION
+c7339c14f714e4a9bec22adee7e4df59 *DESCRIPTION
 b7e3b7d7512e387c2e3256a7d7bc5b15 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -152,15 +152,15 @@ f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 2a4673b5e9bd2a0845a6f660369f2826 *src/Makevars.in
 0aafad188d4b9a72b1588aae8d7def2c *src/Makevars.ucrt
 88560cecb035c22788476f1ccd5f4059 *src/Makevars.win
-14565a4da4e399f549b4a24f9e0e6134 *src/Rcurl.h
+b5268fd0be3977c9342450803fd50145 *src/Rcurl.h
 f4daafa34f3bbe5d06708179decb4742 *src/base64.c
-89c59289dd749bfa9877ec0fbeefb7cc *src/curl.c
+565cbd4800ae8c027cb74336129296f4 *src/curl.c
 cb212d4fee48aae22995023392a96ee8 *src/curl.c-expt
 d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c
 3e912561cc0d15eec15063be6e18c49a *src/curl_base64.c
 39fedd40e25feae55cc5e1db5701a278 *src/enums.c
 ab492601019f01233afe8a9d7b706b74 *src/json.c
 47a662d343136f9b69aab6b9b92b485b *src/memoryManagement.c
-b7eb8ec3e6d327c6a0f37641b2abaf53 *src/myUTF8.c
+82c58e571bef222e4c5e1eb74ee86bea *src/myUTF8.c
 5a214a4ba72067193718de76f2d6e682 *tests/dynSetReader.R
 bf521bd0c80a8b87eb3ac711cb838c65 *tests/jpeg.R
