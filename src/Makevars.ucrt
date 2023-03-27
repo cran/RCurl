@@ -4,5 +4,5 @@ DEFINES += -DCURL_STATICLIB
 
 PKG_CPPFLAGS = $(DEFINES)
 
-PKG_LIBS = -lwinhttp -lcurl -lrtmp -lssl -lssh2 -lgcrypt -lcrypto -lgdi32 -lz -lgdi32 -lcrypt32 -lidn2 -lunistring -liconv -lgpg-error -lws2_32 -lwldap32 -lwinmm -lzstd
+PKG_LIBS = -lwinhttp -lcurl -lbcrypt -lrtmp -lssl -lssh2 -lgcrypt -lcrypto -lgdi32 -lz -lgdi32 -lcrypt32 -lidn2 -lunistring -liconv -lgpg-error -lws2_32 -lwldap32 -lwinmm -lzstd
 
