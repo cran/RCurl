@@ -1,4 +1,4 @@
-5d3eb96a87c2d93d64e6966ec8de907a *DESCRIPTION
+138394805a4e7951d2caf7ff1b1a5700 *DESCRIPTION
 8bee7640d27e71a21edfe6178c0dcfd0 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -50,13 +50,13 @@ dc7cd605de74c70c165064b5f5fb672f *inst/CurlSSL/certs.pem
 00f28f64cbf9a8d58c9116a2e138eb0f *inst/CurlSSL/server.pem
 4c7269b0f0ccff811fbca84bf86fd3dc *inst/CurlSSL/statEth.pem
 5621c4bbff9afc92b49e7391007ada18 *inst/HTTPErrors/makeErrorClasses.R
-49dfa4273a848302541362c838bf338b *inst/doc/Changes.html
+392b4917253ecaa280176de9e2d33b4d *inst/doc/Changes.html
 2c72b0fa6f31a27345d079e389c62455 *inst/doc/FAQ.html
 1276f809fdfc48502f8ebc50fb03c65b *inst/doc/RCurl.tex
 68f704b46294b46e68ac1257824f956c *inst/doc/cookies.xml
 fbb29df6a29a38673037bb5a9fe3fc58 *inst/doc/fileUploads.xml
 0aab7ffbdf2502d064984e704a1bc016 *inst/doc/getURL.html
-59c3d2ab2aca0af5ac7e2170ae48bec7 *inst/doc/philosophy.html
+003be068d668649cf369c4599e1c2260 *inst/doc/philosophy.html
 98c0f57cf1674ddaffbf8716af940645 *inst/doc/philosophy.xml
 eb2a4f621cfa614df5959b616045ecce *inst/doc/withCookies.Rdb
 1b71285053ffc37e9457cdcc4deb9d8c *inst/doc/withCookies.html
@@ -150,8 +150,8 @@ f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
 127f29d0474be515745e22c91409be42 *src/Makevars.in
-3b18d44bac625e0e56a45077ae2cfd4c *src/Makevars.ucrt
-88560cecb035c22788476f1ccd5f4059 *src/Makevars.win
+5eba7d2e43c6886412df4651e2f056e1 *src/Makevars.ucrt
+eb466d3058a6c32460eb323d774b40f5 *src/Makevars.win
 b5268fd0be3977c9342450803fd50145 *src/Rcurl.h
 f4daafa34f3bbe5d06708179decb4742 *src/base64.c
 565cbd4800ae8c027cb74336129296f4 *src/curl.c
