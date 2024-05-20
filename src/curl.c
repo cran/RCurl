@@ -768,6 +768,7 @@ getCurlPointerForData(SEXP el, CURLoption option, Rboolean isProtected, CURL *cu
 		    if(option == CURLOPT_HTTPHEADER ||
                        option == CURLOPT_QUOTE || 
                        option == CURLOPT_PREQUOTE ||
+                       option == CURLOPT_HTTP200ALIASES ||
                        option == CURLOPT_POSTQUOTE) {
 
                                    /* struct curl_slist */
