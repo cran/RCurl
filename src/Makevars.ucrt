@@ -4,4 +4,12 @@ DEFINES += -DCURL_STATICLIB -DCURL_DISABLE_DEPRECATION
 
 PKG_CPPFLAGS = $(DEFINES)
 
-PKG_LIBS = -lwinhttp -lcurl -lbcrypt -lrtmp -lssl -lssh2 -lgcrypt -lcrypto -lgdi32 -lz -lgdi32 -lcrypt32 -lidn2 -lunistring -liconv -lgpg-error -lws2_32 -lwldap32 -lwinmm -lzstd
+ifeq (,$(shell pkg-config --version 2>/dev/null))
+  LIBPSL = $(or $(and $(wildcard $(R_TOOLS_SOFT)/lib/libpsl.a),-lpsl),)
+  LIBBROTLI = $(or $(and $(wildcard $(R_TOOLS_SOFT)/lib/libbrotlidec.a),-lbrotlidec -lbrotlicommon),)
+  PKG_LIBS = -lwinhttp -lcurl $(LIBPSL) $(LIBBROTLI) -lbcrypt -lrtmp -lssl -lssh2 -lgcrypt -lcrypto -lgdi32 -lz -lgdi32 -lcrypt32 -lidn2 -lunistring -liconv -lgpg-error -lws2_32 -lwldap32 -lwinmm -lzstd
+else
+  PKG_LIBS = $(shell pkg-config --libs libcurl)
+  PKG_CPPFLAGS += $(shell pkg-config --cflags libcurl)
+endif
+

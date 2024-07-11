@@ -1,4 +1,4 @@
-138394805a4e7951d2caf7ff1b1a5700 *DESCRIPTION
+07761bcbdec1e4e46fbffae25cdd8e2a *DESCRIPTION
 8bee7640d27e71a21edfe6178c0dcfd0 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -150,7 +150,7 @@ f34ce779bd78b3b384dad3ef274e7fa2 *src/CURLOptTable.h
 77942883df968ce6593f8e29030299fb *src/CurlInfoEnums.h
 12f4251ca3390779490d9dca2cce325c *src/CurlOptEnums.h
 127f29d0474be515745e22c91409be42 *src/Makevars.in
-5eba7d2e43c6886412df4651e2f056e1 *src/Makevars.ucrt
+a14842f2139cf1dd4ec5d8bcdd352ae7 *src/Makevars.ucrt
 eb466d3058a6c32460eb323d774b40f5 *src/Makevars.win
 b5268fd0be3977c9342450803fd50145 *src/Rcurl.h
 f4daafa34f3bbe5d06708179decb4742 *src/base64.c
