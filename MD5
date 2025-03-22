@@ -1,4 +1,4 @@
-07761bcbdec1e4e46fbffae25cdd8e2a *DESCRIPTION
+8dca910ab03c9506e9448e0a94f6430b *DESCRIPTION
 8bee7640d27e71a21edfe6178c0dcfd0 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -62,7 +62,7 @@ eb2a4f621cfa614df5959b616045ecce *inst/doc/withCookies.Rdb
 1b71285053ffc37e9457cdcc4deb9d8c *inst/doc/withCookies.html
 eec77bb996fa92609f23413fcf51c9f3 *inst/enums/Renums.c
 6c6df7d819f306fcd0fb3319a752524f *inst/etc/README
-308c55e7a7d56a27fcfb3983169c3491 *inst/etc/ca-bundle.crt
+1a7de82bb9f0fcc779ca18a7a9310898 *inst/etc/ca-bundle.crt
 7a8cf4a6ec500974ee79e2ed0091452c *inst/examples/CIS/cis.R
 5aeba08867683170f7181fbd2ac147c1 *inst/examples/CIS/cis1.R
 a67eecd3a70221c1ca42ebec5bec7a86 *inst/examples/chunks.S
