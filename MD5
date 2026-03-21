@@ -1,4 +1,4 @@
-8dca910ab03c9506e9448e0a94f6430b *DESCRIPTION
+eec13b64e28bd543d90067d4f83fa8a3 *DESCRIPTION
 8bee7640d27e71a21edfe6178c0dcfd0 *LICENSE
 56eb3e6bd8cdb962b7fda019a2b605e4 *NAMESPACE
 2e5893f298d1c69b4fcb16377c41a905 *R/aclassesEnums.R
@@ -154,7 +154,7 @@ a14842f2139cf1dd4ec5d8bcdd352ae7 *src/Makevars.ucrt
 eb466d3058a6c32460eb323d774b40f5 *src/Makevars.win
 b5268fd0be3977c9342450803fd50145 *src/Rcurl.h
 f4daafa34f3bbe5d06708179decb4742 *src/base64.c
-565cbd4800ae8c027cb74336129296f4 *src/curl.c
+880473665cb1cdf191959cebd5238108 *src/curl.c
 cb212d4fee48aae22995023392a96ee8 *src/curl.c-expt
 d947382c1c5155d7c7156c18111b4b6a *src/curlInit.c
 3e912561cc0d15eec15063be6e18c49a *src/curl_base64.c

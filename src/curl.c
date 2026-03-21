@@ -721,6 +721,10 @@ R_curl_getpasswd(SEXP fun, char *prompt, char* buffer, int  buflen  )
 	return(status);
 }
 
+#if R_VERSION >= R_Version(4, 5, 0)
+//# undef findVarInFrame
+# define Rf_findVarInFrame(env, sym) R_getVar(sym, env, FALSE)
+#endif
 
 char *
 getCurlError(CURL *h, int throw, CURLcode status)
@@ -1051,7 +1055,7 @@ checkEncoding(char *buffer, size_t len, RWriteDataInfo *data)
 #else
 	PROTECT(ns_name = mkString("RCurl"));
 	ns_env = PROTECT(R_FindNamespace(ns_name));
-	SETCAR(e, findVarInFrame(ns_env, Rf_install("findHTTPHeaderEncoding")));
+	SETCAR(e, Rf_findVarInFrame(ns_env, Rf_install("findHTTPHeaderEncoding")));
 	UNPROTECT(2);
 #endif
 	SETCAR(CDR(e), ScalarString(mkCharLen(buffer, (int)len)));
