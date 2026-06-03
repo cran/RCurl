@@ -28,14 +28,11 @@ Duncan Temple Lang
 }
 
 \examples{
-if(url.exists("https://www.omegahat.net/foo/bob.R")) withAutoPrint({
-
-  getFormParams("https://www.omegahat.net/foo/bob.R?xyz=1&abc=verylong")
+  getFormParams("https://example.invalid/foo/bob.R?xyz=1&abc=verylong")
 
   getFormParams("xyz=1&abc=verylong")
   getFormParams("xyz=1&abc=&on=true")
   getFormParams("xyz=1&abc=")
-})
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

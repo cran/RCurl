@@ -1,6 +1,6 @@
 url.exists =
-function(url, ..., .opts = list(...), curl = getCurlHandle(.opts = .opts),
-         .header = FALSE)
+function(url, maxredirs = 20, ..., .opts = list(maxredirs = maxredirs, ...),
+         curl = getCurlHandle(.opts = .opts), .header = FALSE)
 {
   if(length(url) > 1) {
           # Really want to do this with a multi curl so asynchronous.

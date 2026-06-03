@@ -133,15 +133,12 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
   \code{\link{curlOptions}}
 }
 \examples{
-
-  omegahatExists = url.exists("https://www.omegahat.net")
-
    # Regular HTTP
-  if(omegahatExists && requireNamespace("XML", quietly = TRUE)) withAutoprint({
-     txt = getURL("https://www.omegahat.net/RCurl/")
+  if(requireNamespace("XML", quietly = TRUE)) tryCatch(withAutoprint({
+     txt = getURL("https://r-project.org/", maxredirs = 20)
      ## Then we could parse the result.
      XML::htmlTreeParse(txt, asText = TRUE)
-  })
+  }), GenericCurlError = identity)
 
 
         # HTTPS. First check to see that we have support compiled into
@@ -158,22 +155,24 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
 
 
      # Create a CURL handle that we will reuse.
-  if(interactive() && omegahatExists) {
-     curl = getCurlHandle()
+  if(interactive()) {
+     curl = getCurlHandle(maxredirs = 20)
      pages = list()
-     for(u in c("https://www.omegahat.net/RCurl/index.html",
-                "https://www.omegahat.net/RGtk/index.html")) {
-         pages[[u]] = getURL(u, curl = curl)
+     for(u in c("https://r-project.org",
+                "https://aitap.grebedoc.dev/RCurl/concurrent.html")) {
+         pages[[u]] = tryCatch(getURL(u, curl = curl),
+                               GenericCurlError = identity)
      }
   }
 
 
     # Set additional fields in the header of the HTTP request.
     # verbose option allows us to see that they were included.
-  if(omegahatExists)
-     getURL("https://www.omegahat.net", httpheader = c(Accept = "text/html", 
-                                                      MyField = "Duncan"), 
-               verbose = TRUE)
+  tryCatch(withAutoprint(
+    getURL("https://r-project.org", httpheader = c(Accept = "text/html",
+                                                   MyField = "Duncan"),
+           verbose = TRUE)
+  ), GenericCurlError = identity)
 
 
 
@@ -181,31 +180,31 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
     # a separate "stream". Then we can break it into name-value
     # pairs. (The first line is the HTTP/1.1 200 Ok or 301 Moved Permanently
     # status line)
-  if(omegahatExists) withAutoprint({
+  tryCatch(withAutoprint({
      h = basicTextGatherer()
-     txt = getURL("https://www.omegahat.net/RCurl/index.html",
+     txt = getURL("https://www.r-project.org",
                   header= TRUE, headerfunction = h$update, 
                   httpheader = c(Accept="text/html", Test=1), verbose = TRUE) 
      print(paste(h$value(NULL)[-1], collapse=""))
      con <- textConnection(paste(h$value(NULL)[-1], collapse=""))
      read.dcf(con)
      close(con)
-  })
+  }), GenericCurlError = identity)
 
 
 
-   # Test the passwords.
-  if(omegahatExists) withAutoprint({
-     x = getURL("https://www.omegahat.net/RCurl/testPassword/index.html",  userpwd = "bob:duncantl")
+\dontrun{
+  # Test the passwords.
+  x = getURL("https://example.invalid/RCurl/testPassword/index.html",  userpwd = "bob:duncantl")
 
-       # Catch an error because no authorization
-       # We catch the generic HTTPError, but we could catch the more specific "Unauthorized" error
-       # type.
-      x = tryCatch(getURLContent("https://www.omegahat.net/RCurl/testPassword/index.html"),
-                    HTTPError = function(e) {
-                                   cat("HTTP error: ", e$message, "\n")
-                                })
-  })
+  # Catch an error because no authorization
+  # We catch the generic HTTPError, but we could catch the more specific "Unauthorized" error
+  # type.
+  x = tryCatch(getURLContent("https://example.invalid/RCurl/testPassword/index.html"),
+               HTTPError = function(e) {
+                              cat("HTTP error: ", e$message, "\n")
+                           })
+}
 
 \dontrun{
   #  Needs specific information from the cookie file on a per user basis
@@ -219,73 +218,78 @@ getURLContent(url, ..., curl = getCurlHandle(.opts = .opts), .encoding = NA,
                  followlocation = TRUE)
 }
 
-   if(interactive() && omegahatExists) {
+   if(interactive()) tryCatch(withAutoprint({
        d = debugGatherer()
-       x = getURL("https://www.omegahat.net", debugfunction = d$update, verbose = TRUE)
+       x = getURL("https://r-project.org", debugfunction = d$update, verbose = TRUE)
        d$value()
-   }
+   }), GenericCurlError = identity)
 
-    #############################################
-    #  Using an option set in R
+\dontrun{
+   #############################################
+   #  Using an option set in R
 
-   if(interactive() && omegahatExists) {
-      opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-      getURL("https://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
+   opts = curlOptions(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
+   getURL("https://example.invalid/RCurl/testPassword/index.html", verbose = TRUE, .opts = opts)
 
-         # Using options in the CURL handle.
-      h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
-      getURL("https://www.omegahat.net/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
-   }
-
+      # Using options in the CURL handle.
+   h = getCurlHandle(header = TRUE, userpwd = "bob:duncantl", netrc = TRUE)
+   getURL("https://example.invalid/RCurl/testPassword/index.html", verbose = TRUE, curl = h)
+}
 
 
    # Use a C routine as the reader. Currently gives a warning.
-  if(interactive() && omegahatExists) {
+  if(interactive()) tryCatch(withAutoprint({
      routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-     getURL("https://www.omegahat.net/RCurl/index.html", writefunction = routine)
-  }
+     getURL("https://r-project.org", writefunction = routine)
+  }), GenericCurlError = identity)
 
 
 
   # Example
-  if(interactive() && omegahatExists) {
-     uris = c("https://www.omegahat.net/RCurl/index.html",
-              "https://www.omegahat.net/RCurl/philosophy.xml")
-     txt = getURI(uris)
+  if(interactive()) {
+     uris = c("https://r-project.org",
+              "https://aitap.grebedoc.dev/RCurl/philosophy.xml")
+     txt = tryCatch(getURI(uris), GenericCurlError = conditionMessage)
      names(txt)
      nchar(txt)
 
-     txt = getURI(uris, async = FALSE)
+     txt = tryCatch(getURI(uris, async = FALSE),
+                    GenericCurlError = conditionMessage)
      names(txt)
      nchar(txt)
 
 
      routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-     txt = getURI(uris, write = routine, async = FALSE)
+     txt = tryCatch(getURI(uris, write = routine, async = FALSE),
+                    GenericCurlError = conditionMessage)
      names(txt)
      nchar(txt)
 
 
          # getURLContent() for text and binary
-     x = getURLContent("https://www.omegahat.net/RCurl/index.html")
+     x = tryCatch(getURLContent("https://r-project.org"),
+                  GenericCurlError = identity)
      class(x)
 
-     x = getURLContent("https://www.omegahat.net/RCurl/data.gz")
+     x = tryCatch(getURLContent("https://aitap.codeberg.page/RCurl/data.gz"),
+                  GenericCurlError = identity)
      class(x)
      attr(x, "Content-Type")
 
-     x = getURLContent("https://www.omegahat.net/Rcartogram/demo.jpg")
+     x = tryCatch(getURLContent("https://www.r-project.org/Rlogo.png"),
+                  GenericCurlError = identity)
      class(x)
      attr(x, "Content-Type")
 
 
      curl = getCurlHandle()
-     dd = getURLContent("https://www.omegahat.net/RJSONIO/RJSONIO.pdf",
-                        curl = curl,
-                        header = dynCurlReader(curl, binary = TRUE,
-                                           value = function(x) {
-                                                    print(attributes(x)) 
-                                                    x}))
+     dd = tryCatch(getURLContent("https://aitap.grebedoc.dev/RCurl/RJSONIO.pdf",
+                                 curl = curl,
+                                 header = dynCurlReader(curl, binary = TRUE,
+                                                    value = function(x) {
+                                                             print(attributes(x))
+                                                             x})),
+                   GenericCurlError = identity)
    }
 
 
@@ -309,7 +313,7 @@ if(interactive() && url.exists('ftp://ftp.wcc.nrcs.usda.gov')) {
    contents = sapply(filenames[1:5], function(x) try(getURL(x, curl = con)))
    names(contents) = filenames[1:length(contents)]
 }
-   
+
 }
 \keyword{IO}
 \concept{Web}

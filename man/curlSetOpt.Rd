@@ -64,7 +64,7 @@ curlSetOpt(..., .opts = list(), curl = getCurlHandle(),
   \code{\link{dupCurlHandle}}  
 }
 \examples{
-if(url.exists("https://www.omegahat.net")) {
+tryCatch({
 
   curl = getCurlHandle()
      # Note the header that extends across two lines with the second line
@@ -72,8 +72,8 @@ if(url.exists("https://www.omegahat.net")) {
    curlSetOpt( .opts = list(httpheader = c(Date = "Wed, 1/2/2000 10:01:01",
                             foo="abc\n    extra line"), verbose = TRUE),
                curl = curl)
-   ans = getURL("https://www.omegahat.net", curl = curl)
-}
+   ans = getURL("https://r-project.org", curl = curl)
+}, GenericCurlError = identity)
 }
 \keyword{IO}
 

@@ -50,9 +50,7 @@
   }
 }
 
-\references{Curl homepage \url{https://curl.se/}
-  \url{https://www.omegahat.net/RCurl/}
-}
+\references{Curl homepage \url{https://curl.se/}}
 \author{Duncan Temple Lang}
 \seealso{
   \code{\link{getCurlMultiHandle}}

@@ -50,11 +50,11 @@ binaryBuffer(initialSize = 5000)
  \code{R_curl_write_binary_data}
 }
 \examples{
-if(url.exists("https://www.omegahat.net/RCurl/xmlParse.html.gz")) {
+tryCatch(withAutoprint({
   buf = binaryBuffer()
 
      # Now fetch the binary file.
-  getURI("https://www.omegahat.net/RCurl/xmlParse.html.gz",
+  getURI("https://aitap.grebedoc.dev/RCurl/xmlParse.html.gz",
          write = getNativeSymbolInfo("R_curl_write_binary_data")$address,
          file = buf@ref)
 
@@ -64,7 +64,7 @@ if(url.exists("https://www.omegahat.net/RCurl/xmlParse.html.gz")) {
   if (getRversion() >= "4")
     txt = memDecompress(b, asChar = TRUE)
   ## or txt = Rcompression::gunzip(b)
- }
+}), GenericCurlError = identity)
 }
 \keyword{IO}
 \keyword{programming}

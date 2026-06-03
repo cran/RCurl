@@ -420,11 +420,13 @@ buildForm(SEXP params, struct curl_httppost **post, struct curl_httppost **last)
 	SEXP names;
 
 	n = GET_LENGTH(params);
-	names = GET_NAMES(params);
+	names = PROTECT(GET_NAMES(params));
 
 	for(i =0; i < n ; i++) {
 		addFormElement(VECTOR_ELT(params, i), STRING_ELT(names, i), post, last, i);
 	} 
+
+	UNPROTECT(1);
 }
 
 void

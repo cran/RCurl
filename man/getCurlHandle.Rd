@@ -69,10 +69,10 @@ getCurlMultiHandle(..., .handles = list(...))
                               followlocation = TRUE,
                               autoreferer = TRUE,
                               nosignal = TRUE))
-  if(url.exists("https://www.omegahat.net/RCurl")) {
-     x = getURL("https://www.omegahat.net/RCurl")
+  if(url.exists("https://r-project.org")) {
+     x = getURL("https://r-project.org")
         # here we override one of these.
-     x = getURL("https://www.omegahat.net/RCurl", verbose = FALSE)
+     x = getURL("https://r-project.org", verbose = FALSE)
   }
 }
 \keyword{IO}

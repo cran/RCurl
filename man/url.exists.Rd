@@ -8,12 +8,14 @@
   not to return the body. We just process the header.
 }
 \usage{
-url.exists(url, ..., .opts = list(...),
-            curl = getCurlHandle(.opts = .opts),
-             .header = FALSE)
+url.exists(url, maxredirs = 20, ...,
+           .opts = list(maxredirs = maxredirs, ...),
+           curl = getCurlHandle(.opts = .opts), .header = FALSE)
 }
 \arguments{
   \item{url}{a vector of one or more URLs whose existence we are to test}
+  \item{maxredirs}{The maximal number of redirects. Set to 20 in order to fail
+    redirect loops.}
   \item{\dots}{name = value pairs of Curl options.}
   \item{.opts}{a list of name = value pairs of Curl options.}
   \item{curl}{a Curl handle that the caller can specify if she wants to
@@ -47,7 +49,7 @@ Duncan Temple Lang
  \code{\link{curlPerform}}
 }
 \examples{
- url.exists("https://www.omegahat.net/RCurl")
- try(url.exists("https://www.omegahat.net/RCurl-xxx"))
+ url.exists("https://r-project.org")
+ try(url.exists("http://example.invalid"))
 }
 

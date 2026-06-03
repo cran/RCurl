@@ -71,14 +71,15 @@ curlMultiPerform(curl, multiple = TRUE)
  \code{\link{curlSetOpt}}
 }
 \examples{
-if(url.exists("https://www.omegahat.net/RCurl")) withAutoprint({
+tryCatch(withAutoprint({
   h = basicTextGatherer()
-  curlPerform(url = "https://www.omegahat.net/RCurl", writefunction = h$update)
+  curlPerform(url = "https://r-project.org", writefunction = h$update)
    # Now read the text that was cumulated during the query response.
   cat(h$value())
-})
+}), GenericCurlError = identity)
 
 
+\dontrun{
 ## this no longer exists
 if(url.exists("http://services.soaplite.com/hibye.cgi")) withAutoprint({
      # SOAP request
@@ -107,14 +108,15 @@ if(url.exists("http://services.soaplite.com/hibye.cgi")) withAutoprint({
   body = h$value()
 
 })
+}
 
 
    # Using a C routine as the reader of the body of the response.
-if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
+tryCatch(withAutoprint({
   routine = getNativeSymbolInfo("R_internalWriteTest", PACKAGE = "RCurl")$address
-  curlPerform(URL = "https://www.omegahat.net/RCurl/index.html",
+  curlPerform(URL = "https://r-project.org",
               writefunction = routine)
-})
+}), GenericCurlError = identity)
 }
 \keyword{IO}
 

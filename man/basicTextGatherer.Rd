@@ -130,17 +130,17 @@ debugGatherer()
   \code{\link{dynCurlReader}}  
 }
 \examples{
-if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
-  txt = getURL("https://www.omegahat.net/RCurl/index.html", write = basicTextGatherer())
+tryCatch(withAutoprint({
+  txt = getURL("https://r-project.org", write = basicTextGatherer())
 
   h = basicTextGatherer()
-  txt = getURL("https://www.omegahat.net/RCurl/index.html", write = h$update)
+  txt = getURL("https://r-project.org", write = h$update)
     ## Cumulate across pages.
-  txt = getURL("https://www.omegahat.net/index.html", write = h$update)
+  txt = getURL("https://aitap.grebedoc.dev/RCurl/concurrent.html", write = h$update)
 
 
   headers = basicTextGatherer()
-  txt = getURL("https://www.omegahat.net/RCurl/index.html",
+  txt = getURL("https://aitap.grebedoc.dev/RCurl/concurrent.html",
                header = TRUE, headerfunction = headers$update)
 
      ## Now read the headers.
@@ -150,35 +150,41 @@ if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
 
     ## Debugging callback
   d = debugGatherer()
-  x = getURL("https://www.omegahat.net/RCurl/index.html", debugfunction = d$update, verbose = TRUE)
+  x = getURL(
+    "https://aitap.grebedoc.dev/RCurl/concurrent.html",
+    debugfunction = d$update, verbose = TRUE
+  )
   cat(names(d$value()))
   d$value()[["headerIn"]]
 
 
     ## This hung on Solaris
     ## 2022-02-08 philosophy.html is malformed UTF-8
-  uris = c("https://www.omegahat.net/RCurl/index.html",
-           "https://www.omegahat.net/RCurl/philosophy.html")
+  uris = c("https://aitap.grebedoc.dev/RCurl/concurrent.html",
+           "https://aitap.grebedoc.dev/RCurl/philosophy.html")
 \dontrun{
   g = multiTextGatherer(uris)
-  txt = getURIAsynchronous(uris,  write = g)
+  txt = tryCatch(getURIAsynchronous(uris,  write = g),
+                 GenericCurlError = conditionMessage)
   names(txt) # no names this way
   nchar(txt)
 
    # Now don't use names for the gatherer elements.
   g = multiTextGatherer(length(uris))
-  txt = getURIAsynchronous(uris,  write = g)
+  txt = tryCatch(getURIAsynchronous(uris,  write = g),
+                 GenericCurlError = conditionMessage)
   names(txt)
   nchar(txt)
 }
-})
+}),
+GenericCurlError = identity)
 
 
 \dontrun{
  Sys.setlocale(,"en_US.latin1")
  Sys.setlocale(,"en_US.UTF-8")
- uris = c("https://www.omegahat.net/RCurl/index.html",
-          "https://www.omegahat.net/RCurl/philosophy.html")
+ uris = c("https://aitap.grebedoc.dev/RCurl/concurrent.html",
+          "https://aitap.grebedoc.dev/RCurl/philosophy.html")
  g = multiTextGatherer(uris)
  txt = getURIAsynchronous(uris,  write = g)
 }

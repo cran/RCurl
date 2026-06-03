@@ -49,12 +49,12 @@ getCurlInfoConstants()
   \code{\link{getCurlHandle}}
 }
 \examples{
- if(url.exists("https://www.omegahat.net/RCurl/index.html")) withAutoprint({
+ tryCatch(withAutoprint({
     curl = getCurlHandle()
-    txt = getURL("https://www.omegahat.net/RCurl/index.html", curl = curl)
+    txt = getURL("https://r-project.org", curl = curl)
     getCurlInfo(curl)
     rm(curl)  # release the curl!
- })
+ }), GenericCurlError = identity)
 }
 \keyword{IO}
 

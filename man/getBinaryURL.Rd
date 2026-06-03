@@ -56,9 +56,9 @@ getBinaryURL(url, ..., .opts = list(), curl = getCurlHandle(),
   \code{\link{memDecompress}}
 }
 \examples{
-  u = "https://www.omegahat.net/RCurl/data.gz"
+  u = "https://aitap.grebedoc.dev/RCurl/data.gz"
 
-if(url.exists(u)) withAutoprint({
+tryCatch(withAutoprint({
 
   content = getBinaryURL(u)
 
@@ -90,7 +90,7 @@ if(url.exists(u)) withAutoprint({
     }
   }
 
-})
+}), GenericCurlError = identity)
 }
 \keyword{IO}
 \keyword{programming}

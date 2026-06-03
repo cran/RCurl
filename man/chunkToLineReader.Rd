@@ -68,11 +68,11 @@ function()
 
 s = summer()
 
-\dontrun{
-## broken, 2022-07-29
-if(url.exists("https://www.omegahat.net/RCurl/matrix.data"))
-   getURL("https://www.omegahat.net/RCurl/matrix.data", write = chunkToLineReader(s$read)$read)
-}}
+tryCatch(
+  getURL("https://aitap.grebedoc.dev/RCurl/matrix.data", write = chunkToLineReader(s$read)$read),
+  GenericCurlError = identity
+)
+}
 \keyword{IO}
 \concept{Web}
 \concept{HTTP}
