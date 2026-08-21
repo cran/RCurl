@@ -10,6 +10,8 @@
 }
 \usage{
 base64(txt, encode = !inherits(txt, "base64"), mode = "character")
+base64Encode(txt, mode = "character")
+base64Decode(txt, mode = "character")
 }
 \arguments{
   \item{txt}{character string to encode or decode}

@@ -33,6 +33,10 @@ getURIAsynchronous(url, ..., .opts = list(), write = NULL,
                    curl = getCurlHandle(),
                    multiHandle = getCurlMultiHandle(), perform = Inf,
                   .encoding = integer(), binary = rep(NA, length(url)))
+getURLAsynchronous(url, ..., .opts = list(), write = NULL,
+                   curl = getCurlHandle(),
+                   multiHandle = getCurlMultiHandle(), perform = Inf,
+                  .encoding = integer(), binary = rep(NA, length(url)))
 }
 \arguments{
   \item{url}{a character vector identifying the URIs to download.}

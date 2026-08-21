@@ -1,6 +1,6 @@
 # RCurl:::AUTH_BASIC | RCurl:::AUTH_DIGEST | RCurl:::AUTH_NTLM
 
-CURLAUTHValues = structure(c(-.Machine$integer.max, -17, 8, -18, 32, 16, 1, 2, 4, 0), .Names = c("CURLAUTH_ONLY", 
+CURLAUTHValues = structure(c(-.Machine$integer.max, -17, 8, -18, 32, 16, 1, 2, 4, 0), names = c("CURLAUTH_ONLY", 
  "CURLAUTH_ANY", "CURLAUTH_NTLM", "CURLAUTH_ANYSAFE", "CURLAUTH_NTLM_WB", 
  "CURLAUTH_DIGEST_IE", "CURLAUTH_BASIC", "CURLAUTH_DIGEST", "CURLAUTH_GSSNEGOTIATE", 
  "CURLAUTH_NONE"))
